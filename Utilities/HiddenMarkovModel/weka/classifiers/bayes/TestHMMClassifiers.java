@@ -1,4 +1,4 @@
-package test;
+package weka.classifiers.bayes;
 
 
 import java.util.Random;
@@ -11,12 +11,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.HMM;
 import weka.core.Instances;
 import weka.core.SelectedTag;
 import weka.core.matrix.DoubleVector;
 import weka.core.matrix.Matrix;
 import weka.estimators.MultivariateNormalEstimator;
+import weka.core.WekaPackageManager;
 //import junit.framework.TestCase;
 
 public class TestHMMClassifiers {

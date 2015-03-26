@@ -1,6 +1,4 @@
-package hmm.core.matrix;
-
-import weka.core.matrix.DoubleVector;
+package weka.core.matrix;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package weka.estimators;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import weka.core.matrix.DoubleVector;
 import weka.core.matrix.Matrix;
-import weka.estimators.MultivariateNormalEstimator;
 
 /**
  * @author marco
@@ -67,7 +66,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#MultivariateNormalEstimator()}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#MultivariateNormalEstimator()}.
 	 * just checks that it doesn't throw and exception
 	 */
 	@Test
@@ -90,7 +89,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#MultivariateNormalEstimator(MultivariateNormalEstimator)}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#MultivariateNormalEstimator(weka.estimators.MultivariateNormalEstimator)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -118,7 +117,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#setMean(DoubleVector)}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#setMean(weka.core.matrix.DoubleVector)}.
 	 */
 	@Test
 	public void testSetMean() {
@@ -130,7 +129,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#setVariance(Matrix)}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#setVariance(weka.core.matrix.Matrix)}.
 	 */
 	@Test
 	public void testSetVariance() {
@@ -152,7 +151,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#addValue(DoubleVector, double)}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#addValue(weka.core.matrix.DoubleVector, double)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -174,7 +173,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#getProbability(DoubleVector)}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#getProbability(weka.core.matrix.DoubleVector)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -206,7 +205,7 @@ public class TestMultivariateNormalEstimator {
 	}
 
 	/**
-	 * Test method for {@link MultivariateNormalEstimator#sample()}.
+	 * Test method for {@link weka.estimators.MultivariateNormalEstimator#sample()}.
 	 * @throws Exception 
 	 */
 	@Test

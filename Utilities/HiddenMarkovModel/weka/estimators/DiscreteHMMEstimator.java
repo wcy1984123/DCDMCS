@@ -1,4 +1,4 @@
-package hmm.estimators;
+package weka.estimators;
 
 import java.util.Random;
 
@@ -6,12 +6,10 @@ import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.matrix.DoubleVector;
-import weka.estimators.*;
-import weka.estimators.HMMEstimator;
 
 //import weka.estimators.*;
 
-public class DiscreteHMMEstimator extends weka.estimators.AbstractHMMEstimator implements HMMEstimator, java.io.Serializable {
+public class DiscreteHMMEstimator extends AbstractHMMEstimator implements HMMEstimator, java.io.Serializable {
 
 	
 	private static final long serialVersionUID = 4585903204046324781L;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package weka.estimators;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author marco
  *
  */
-public class MultivariateNormalHMMEstimatorTest {
+public class TestMultivariateNormalHMMEstimator {
 
 	/**
 	 * Test method for {@link weka.estimators.MultivariateNormalHMMEstimator#getOutputDimension()}.

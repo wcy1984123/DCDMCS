@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package weka.estimators;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import weka.core.matrix.DoubleVector;
-import weka.estimators.DiscreteHMMEstimator;
 
 /**
  * @author marco
@@ -49,7 +48,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#DiscreteHMMEstimator(int, int, boolean)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#DiscreteHMMEstimator(int, int, boolean)}.
 	 */
 	@Test
 	public void testDiscreteHMMEstimatorIntIntBoolean() {
@@ -62,7 +61,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#DiscreteHMMEstimator(DiscreteHMMEstimator)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#DiscreteHMMEstimator(weka.estimators.DiscreteHMMEstimator)}.
 	 * @throws Exception 
 	 */
 	@Test
@@ -90,7 +89,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#addValue(double, double, DoubleVector, double)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#addValue(double, double, weka.core.matrix.DoubleVector, double)}.
 	 */
 	@Test
 	public void testAddValueDoubleDoubleDoubleVectorDouble() {
@@ -134,7 +133,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#getProbability(double, double, DoubleVector)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#getProbability(double, double, weka.core.matrix.DoubleVector)}.
 	 */
 	@Test
 	public void testGetProbabilityDoubleDoubleDoubleVector() {
@@ -169,7 +168,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#addValue(double, double, double, double)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#addValue(double, double, double, double)}.
 	 */
 	@Test
 	public void testAddValueDoubleDoubleDoubleDouble() {
@@ -230,7 +229,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#addValue0(double, double, double)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#addValue0(double, double, double)}.
 	 */
 	@Test
 	public void testAddValue0DoubleDoubleDouble() {
@@ -279,7 +278,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#getProbability(double, double, double)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#getProbability(double, double, double)}.
 	 */
 	@Test
 	public void testGetProbabilityDoubleDoubleDouble() {
@@ -324,7 +323,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#Sample0(weka.core.Instances, Random)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#Sample0(weka.core.Instances, Random)}.
 	 */
 	@Test
 	public void testSample0() {
@@ -332,7 +331,7 @@ public class TestDiscreteHMMEstimator {
 	}
 
 	/**
-	 * Test method for {@link DiscreteHMMEstimator#Sample(weka.core.Instances, int, Random)}.
+	 * Test method for {@link weka.estimators.DiscreteHMMEstimator#Sample(weka.core.Instances, int, Random)}.
 	 */
 	@Test
 	public void testSample() {

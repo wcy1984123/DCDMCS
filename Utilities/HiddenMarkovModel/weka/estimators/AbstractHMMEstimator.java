@@ -1,7 +1,4 @@
-package hmm.estimators;
-
-import weka.estimators.DiscreteEstimator;
-import weka.estimators.Estimator;
+package weka.estimators;
 
 import java.io.Serializable;
 

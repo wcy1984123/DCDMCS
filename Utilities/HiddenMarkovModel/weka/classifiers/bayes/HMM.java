@@ -1,4 +1,4 @@
-package hmm.classifiers.bayes;
+package weka.classifiers.bayes;
 
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import weka.estimators.MultivariateNormalHMMEstimator;
 /*
  * A hidden Markov Model classifier class.
  */
-public class HMM extends RandomizableClassifier implements OptionHandler, MultiInstanceCapabilitiesHandler {
+public class HMM extends weka.classifiers.RandomizableClassifier implements weka.core.OptionHandler, weka.core.MultiInstanceCapabilitiesHandler {
 
 	
 	
@@ -477,7 +477,7 @@ public class HMM extends RandomizableClassifier implements OptionHandler, MultiI
 	 * @param instance the data instance (sequence) to evaluate 
 	 * @return a two dimensional array of probabilities (doubles). Item [i][j] gives the probability of being in state j for the ith item in the sequence.
 	 */
-	public double [][] probabilitiesForInstance(int classId, Instance instance) throws Exception
+	public double [][] probabilitiesForInstance(int classId, weka.core.Instance instance) throws Exception 
 	{
 		Instances sequence = instance.relationalValue(m_SeqAttr);
 		double alpha[][] = new double[sequence.numInstances()][m_NumStates];
@@ -516,7 +516,7 @@ public class HMM extends RandomizableClassifier implements OptionHandler, MultiI
 	 * @param instance the data instance (sequence)
 	 * @return an array of probabilities (doubles). The nth value is the probability that the sequence is of the nth class.
 	 */
-	public double[] distributionForInstance(Instance instance) throws Exception {
+	public double[] distributionForInstance(weka.core.Instance instance) throws Exception {
 		
 		if(estimators == null)
 		{
@@ -1123,7 +1123,11 @@ public class HMM extends RandomizableClassifier implements OptionHandler, MultiI
 			kmeans[i].setDisplayStdDevs(true);
 			kmeans[i].buildClusterer(flatdata[i]);
 			System.out.print("Kmeans cluster " + i + " sizes ");
-			double [] clusterSizes = kmeans[i].getClusterSizes();
+			double [] temp = kmeans[i].getClusterSizes();
+			int[] clusterSizes = new int[temp.length];
+			for (int j = 0; j < clusterSizes.length; j++) {
+				clusterSizes[i] = (int)temp[i];
+			}
 			for (int j = 0; j < clusterSizes.length; j++)
 				System.out.print(clusterSizes[j] + " ");
 			System.out.println("");
@@ -1283,7 +1287,7 @@ public class HMM extends RandomizableClassifier implements OptionHandler, MultiI
 	 * 
 	 * @param data the data set to use in training
 	 */
-	public void buildClassifier(Instances data) throws Exception {
+	public void buildClassifier(weka.core.Instances data) throws Exception {
 		
 		System.out.println("starting build classifier");
 		// check that we have class data and that it is in the right form

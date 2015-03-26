@@ -1,7 +1,7 @@
 /**
  * 
  */
-package hmm.estimators;
+package weka.estimators;
 
 import java.util.Random;
 

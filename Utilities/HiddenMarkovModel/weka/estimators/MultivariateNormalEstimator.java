@@ -1,4 +1,4 @@
-package hmm.estimators;
+package weka.estimators;
 
 import java.io.Serializable;
 

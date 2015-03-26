@@ -1,4 +1,4 @@
-package hmm.estimators;
+package weka.estimators;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -8,11 +8,8 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.matrix.DoubleVector;
 import weka.core.matrix.Matrix;
-import weka.estimators.*;
-import weka.estimators.HMMEstimator;
-import weka.estimators.MultivariateNormalEstimator;
 
-public class MultivariateNormalHMMEstimator extends weka.estimators.AbstractHMMEstimator
+public class MultivariateNormalHMMEstimator extends AbstractHMMEstimator
 		implements HMMEstimator, Serializable {
 	
 	/**
@@ -29,7 +26,7 @@ public class MultivariateNormalHMMEstimator extends weka.estimators.AbstractHMME
 		m_Tied = tied;
 	}
 
-	protected int m_CovarianceType = weka.estimators.MultivariateNormalEstimator.COVARIANCE_FULL;
+	protected int m_CovarianceType = MultivariateNormalEstimator.COVARIANCE_FULL;
 	
 	public int getCovarianceType() {
 		return m_CovarianceType;
@@ -52,7 +49,7 @@ public class MultivariateNormalHMMEstimator extends weka.estimators.AbstractHMME
 		return m_outputEstimators[0].getDimension();
 	}
 
-	protected weka.estimators.MultivariateNormalEstimator m_outputEstimators[];
+	protected MultivariateNormalEstimator m_outputEstimators[];
 
 
 	public MultivariateNormalHMMEstimator() {
@@ -62,10 +59,10 @@ public class MultivariateNormalHMMEstimator extends weka.estimators.AbstractHMME
 	public MultivariateNormalHMMEstimator(int numStates, boolean laplace) {
 		super(numStates, laplace);
 		
-		m_outputEstimators = new weka.estimators.MultivariateNormalEstimator[numStates];
+		m_outputEstimators = new MultivariateNormalEstimator[numStates];
 		for (int s = 0; s < numStates; s++)
 		{
-			m_outputEstimators[s] = new weka.estimators.MultivariateNormalEstimator();
+			m_outputEstimators[s] = new MultivariateNormalEstimator();
 			m_outputEstimators[s].setCovarianceType(getCovarianceType());
 		}
 	}
@@ -74,27 +71,27 @@ public class MultivariateNormalHMMEstimator extends weka.estimators.AbstractHMME
 	{
 		super(a);
 		
-		m_outputEstimators = new weka.estimators.MultivariateNormalEstimator[a.getNumStates()];
+		m_outputEstimators = new MultivariateNormalEstimator[a.getNumStates()];
 		for (int i = 0; i < m_outputEstimators.length; i++)
-			m_outputEstimators[i] = new weka.estimators.MultivariateNormalEstimator(a.m_outputEstimators[i]);
+			m_outputEstimators[i] = new MultivariateNormalEstimator(a.m_outputEstimators[i]);
 	}
 	
 	public void copyOutputParameters(MultivariateNormalHMMEstimator a) throws Exception
 	{
 		setCovarianceType(a.getCovarianceType());
 		setTied(a.isTied());
-		m_outputEstimators = new weka.estimators.MultivariateNormalEstimator[a.getNumStates()];
+		m_outputEstimators = new MultivariateNormalEstimator[a.getNumStates()];
 		for (int i = 0; i < m_outputEstimators.length; i++)
-			m_outputEstimators[i] = new weka.estimators.MultivariateNormalEstimator(a.m_outputEstimators[i]);
+			m_outputEstimators[i] = new MultivariateNormalEstimator(a.m_outputEstimators[i]);
 	}
 	
 	@Override
 	public void setNumStates(int NumStates) {
 		super.setNumStates(NumStates);
-		m_outputEstimators = new weka.estimators.MultivariateNormalEstimator[m_NumStates];
+		m_outputEstimators = new MultivariateNormalEstimator[m_NumStates];
 		for (int s = 0; s < m_NumStates; s++)
 		{
-			m_outputEstimators[s] = new weka.estimators.MultivariateNormalEstimator();
+			m_outputEstimators[s] = new MultivariateNormalEstimator();
 			m_outputEstimators[s].setCovarianceType(getCovarianceType());
 		}
 	}
