@@ -55,13 +55,13 @@ public class HypnogramDao extends AbstractDaoInput {
      * @return two dimensional array including data
      */
     @Override
-    public int[][] getDataSource(String path, String args) {
+    public double[][] getDataSource(String path, String args) {
 
-        int[][] data = readFile(path);
+        double[][] data = readFile(path);
 
-        int[][] formatData = formatHypnogrmas(data, Integer.parseInt(args));
+        double[][] formatData = formatHypnogrmas(data, Integer.parseInt(args));
 
-        int[][] res = Utilities.convertToTwoDimensionArray(getHypnogramData(formatData));
+        double[][] res = Utilities.convertToTwoDimensionDoubleArray(getHypnogramData(formatData));
 
         return res;
     }
@@ -71,17 +71,17 @@ public class HypnogramDao extends AbstractDaoInput {
      * @param path external file path
      * @return two dimensional array
      */
-    private int[][] readFile(String path) {
+    private double[][] readFile(String path) {
 
-        List<List<Integer>> cache = new ArrayList<List<Integer>>();
+        List<List<Double>> cache = new ArrayList<List<Double>>();
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String line = null;
             while((line = br.readLine()) != null){
-                List<Integer> curline = new ArrayList<Integer>();
+                List<Double> curline = new ArrayList<Double>();
                 String[] values = line.split(",");
                 for (int i = 0; i < values.length; i++) {
-                    curline.add(Integer.parseInt(values[i]));
+                    curline.add(Double.parseDouble(values[i]));
                 }
                 cache.add(curline);
             }
@@ -92,7 +92,7 @@ public class HypnogramDao extends AbstractDaoInput {
         }
 
         // convert list structures into primitive data
-        int[][] res = readFile(cache);
+        double[][] res = readFile(cache);
         return res;
     }
 
@@ -101,8 +101,8 @@ public class HypnogramDao extends AbstractDaoInput {
      * @param datasource list of list data source
      * @return two dimensional array
      */
-    private int[][] readFile(List<List<Integer>> datasource) {
-        int[][] res = null;
+    private double[][] readFile(List<List<Double>> datasource) {
+        double[][] res = null;
         if (datasource == null) {
             LOGGER.log(Level.INFO, "data source is null!");
             return res;
@@ -113,10 +113,10 @@ public class HypnogramDao extends AbstractDaoInput {
             return res;
         }
 
-        List<Integer> data = datasource.get(0);
+        List<Double> data = datasource.get(0);
         int ROW = datasource.size();
         int COLUMN = data.size();
-        res = new int[ROW][COLUMN];
+        res = new double[ROW][COLUMN];
         for (int i = 0; i < ROW; i++) {
            data = datasource.get(i);
             if (data == null || data.size() == 0) {
@@ -138,7 +138,7 @@ public class HypnogramDao extends AbstractDaoInput {
      * @param format 3 types of formats
      * @return formatted data
      */
-    private int[][] formatHypnogrmas(int[][] data, int format) {
+    private double[][] formatHypnogrmas(double[][] data, int format) {
         if (data == null) {
             LOGGER.log(Level.INFO, "data is null!");
             return data;
@@ -151,7 +151,7 @@ public class HypnogramDao extends AbstractDaoInput {
 
         int ROW = data.length;
         int COLUMN = data[0].length;
-        int[][] res = new int[ROW][COLUMN];
+        double[][] res = new double[ROW][COLUMN];
 
         // copy data
         // Delete '4','6' from hypnogram before translating 5 states into 3 states
@@ -215,7 +215,7 @@ public class HypnogramDao extends AbstractDaoInput {
      * @param data processed hypnogram by function "formatHypngrams"
      * @return removed states dataset
      */
-    private List<List<Integer>> getHypnogramData(int[][] data) {
+    private List<List<Double>> getHypnogramData(double[][] data) {
         int ROW = data.length;
         int COLUMN = data[0].length;
         for (int i = 0; i < ROW; i++) {
@@ -233,10 +233,10 @@ public class HypnogramDao extends AbstractDaoInput {
         }
 
         // delete the unused values bigger than 3
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        List<Integer> level = null;
+        List<List<Double>> res = new ArrayList<List<Double>>();
+        List<Double> level = null;
         for (int i = 0; i < ROW; i++) {
-            level = new ArrayList<Integer>();
+            level = new ArrayList<Double>();
             for (int j = 0; j < COLUMN; j++) {
                 if (data[i][j] <= 3) {
                     level.add(data[i][j]);
@@ -253,18 +253,18 @@ public class HypnogramDao extends AbstractDaoInput {
      * @param data processed hypnogram by function "getHypnogramData"
      * @return removed data with no state duration info
      */
-    private List<List<Integer>> removeHypnogramBoutDuration(int[][] data) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        List<Integer> level = null;
+    private List<List<Double>> removeHypnogramBoutDuration(double[][] data) {
+        List<List<Double>> res = new ArrayList<List<Double>>();
+        List<Double> level = null;
 
         int ROW = data.length;
         int COLUMN = data[0].length;
         for (int i = 0; i < ROW; i++) {
-            int currentState = data[i][0];
-            level = new ArrayList<Integer>();
+            double currentState = data[i][0];
+            level = new ArrayList<Double>();
             level.add(currentState);
             for (int j = 1; j < COLUMN; j++) {
-                int nextState = data[i][j];
+                double nextState = data[i][j];
                 if (currentState != nextState) {
                     level.add(nextState);
                     currentState = nextState;

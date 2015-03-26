@@ -1,4 +1,4 @@
-package initializer;
+package initializer.initializers;
 
 /**
  * Project: DCDMC
@@ -15,5 +15,5 @@ public interface IInitializer {
      * @param clusterNum the maximum number of clusters
      * @return initial cluster guesses
      */
-    public int[] initializer(int[][] instances, int clusterNum);
+    public int[] initializer(double[][] instances, int clusterNum);
 }

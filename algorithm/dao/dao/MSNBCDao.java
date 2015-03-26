@@ -27,7 +27,7 @@ public class MSNBCDao extends AbstractDaoInput {
      * @return two dimensional array including data
      */
     @Override
-    public int[][] getDataSource(String path, String args) {
+    public double[][] getDataSource(String path, String args) {
         // args refers to length info path
         return readFile(path, args);
     }
@@ -37,13 +37,13 @@ public class MSNBCDao extends AbstractDaoInput {
      * @param path data file path
      * @return a list of integers
      */
-    private List<Integer> getData(String path) {
-        List<Integer> res = new ArrayList<Integer>();
+    private List<Double> getData(String path) {
+        List<Double> res = new ArrayList<Double>();
         try{
             BufferedReader br = new BufferedReader(new FileReader(path));
             String line = null;
             while ((line = br.readLine()) != null) {
-                res.add(Integer.parseInt(line));
+                res.add(Double.parseDouble(line));
             }
 
             br.close();
@@ -59,11 +59,11 @@ public class MSNBCDao extends AbstractDaoInput {
      * @param lengthpath file of length of data path
      * @return two dimensional array
      */
-    private int[][] readFile(String datapath, String lengthpath) {
+    private double[][] readFile(String datapath, String lengthpath) {
 
-        List<List<Integer>> cache = new ArrayList<List<Integer>>();
-        List<Integer> sessionData = getData(datapath);
-        List<Integer> sessionLength = getData(lengthpath);
+        List<List<Double>> cache = new ArrayList<List<Double>>();
+        List<Double> sessionData = getData(datapath);
+        List<Double> sessionLength = getData(lengthpath);
 
         if (sessionData == null || sessionData.size() == 0) {
             LOGGER.log(Level.INFO, "session data is null or empty!");
@@ -74,12 +74,13 @@ public class MSNBCDao extends AbstractDaoInput {
             LOGGER.log(Level.INFO, "session length is null or empty!");
         }
 
-        List<Integer> data = new ArrayList<Integer>();
+        List<Double> data = new ArrayList<Double>();
         int offset = 0;
         int maxlength = 0;
         for (int i = 0; i < sessionLength.size(); i++) {
-            data = new ArrayList<Integer>();
-            int length = sessionLength.get(i);
+            data = new ArrayList<Double>();
+            double temp = sessionLength.get(i);
+            int length = (int)temp;
             for (int j = 0; j < length; j++) {
                 data.add(sessionData.get(offset + j));
             }
@@ -87,10 +88,10 @@ public class MSNBCDao extends AbstractDaoInput {
             cache.add(data);
         }
 
-        int[][] res = new int[sessionLength.size()][maxlength];
+        double[][] res = new double[sessionLength.size()][maxlength];
 
         for (int i = 0; i < cache.size(); i++) {
-            List<Integer> sequence = cache.get(i);
+            List<Double> sequence = cache.get(i);
             for (int j = 0; j < sequence.size(); j++) {
                 res[i][j] = sequence.get(j);
             }

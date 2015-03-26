@@ -93,6 +93,14 @@ public class TimeSeries
    }
 
 
+   /**
+    * Time series constructor from the given input file
+    * @param inputFile
+    * @param colToInclude
+    * @param isFirstColTime
+    * @param isLabeled
+    * @param delimiter
+    */
    public TimeSeries(String inputFile, int[] colToInclude, boolean isFirstColTime, boolean isLabeled, char delimiter)
    {
       this();

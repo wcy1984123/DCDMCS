@@ -1,4 +1,4 @@
-package initializer;
+package initializer.initializers;
 
 /**
  * Project: DCDMC
@@ -15,7 +15,7 @@ public class DDTWInitializer extends AbstractInitializer implements IInitializer
      * @param clusterNum the maximum number of clusters
      * @return initial cluster guesses
      */
-    public int[] initializer(int[][] instances, int clusterNum) {
+    public int[] initializer(double[][] instances, int clusterNum) {
         //TODO
         return new int[0];
     }

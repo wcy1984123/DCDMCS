@@ -1,4 +1,4 @@
-package initializer;
+package initializer.initializers;
 
 import Utilities.Utilities;
 import hierarchicalclustering.*;
@@ -23,7 +23,6 @@ public class HierarchicalClusterAdapter {
     private static final Logger LOGGER = Logger.getLogger(HierarchicalClusterAdapter.class.getName());
     private double[][] distances; // distance matrix
     private LinkageStrategy linkageStrategy;
-
 
     /**
      * class constructor

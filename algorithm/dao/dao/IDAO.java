@@ -19,5 +19,5 @@ public interface IDAO {
      * @args sparing parameters for other functionality
      * @return two dimensional array including data
      */
-    public int[][] getDataSource(String path, String args);
+    public double[][] getDataSource(String path, String args);
 }

@@ -99,6 +99,31 @@ public class Utilities {
     }
 
     /**
+     * Print out a two-dimensional matrix
+     * @param matrix a two-dimensional matrix
+     */
+    public static void printMatrix (double[][] matrix) {
+        if (matrix == null) {
+            LOGGER.log(Level.INFO, "The matrix is null!");
+            return;
+        }
+
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            LOGGER.log(Level.INFO, "The matrix is empty!");
+            return;
+        }
+
+        System.out.println();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    /**
      * Print out a two-dimensional lists
      * @param matrix a two-dimensional lists
      */
@@ -174,7 +199,7 @@ public class Utilities {
      * @param data list of list of integers
      * @return a two-dimensional array
      */
-    public static int[][] convertToTwoDimensionArray(List<List<Integer>> data) {
+    public static int[][] convertToTwoDimensionIntegerArray(List<List<Integer>> data, int format) {
 
         int[][] res = null;
 
@@ -197,6 +222,50 @@ public class Utilities {
         }
 
         res = new int[ROW][COLUMN];
+
+        for (int i = 0; i < ROW; i++) {
+            int colNum = data.get(i).size();
+            for (int j = 0; j < colNum; j++) {
+                res[i][j] = data.get(i).get(j);
+            }
+
+            for (int j = colNum; j < COLUMN; j++) {
+                res[i][j] = 1; // padding values with 1
+            }
+        }
+
+        return res;
+
+    }
+
+    /**
+     * Convert list of list of doubles into two dimensional array
+     * @param data list of list of doubles
+     * @return a two-dimensional double array
+     */
+    public static double[][] convertToTwoDimensionDoubleArray(List<List<Double>> data) {
+
+        double[][] res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The list of list of integers is null!");
+            return res;
+        }
+
+        if (data.size() == 0 || data.get(0).size() == 0) {
+            LOGGER.log(Level.INFO, "The list of lsit of integers is empty!");
+            return res;
+        }
+
+        int ROW = data.size();
+
+        // since each row may have different length, it is necessary to get the maximum value among column as the final column
+        int COLUMN = data.get(0).size();
+        for (int i = 1; i < ROW; i++) {
+            COLUMN = Math.max(COLUMN, data.get(i).size());
+        }
+
+        res = new double[ROW][COLUMN];
 
         for (int i = 0; i < ROW; i++) {
             int colNum = data.get(i).size();

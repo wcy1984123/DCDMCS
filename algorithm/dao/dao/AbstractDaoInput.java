@@ -19,9 +19,9 @@ public abstract class AbstractDaoInput implements IDAO {
      * @return two dimensional array including data
      */
     @Override
-    public int[][] getDataSource(String datapath, String args) {
+    public double[][] getDataSource(String datapath, String args) {
         // TODO
-        return new int[0][];
+        return new double[0][];
     }
 
     /**

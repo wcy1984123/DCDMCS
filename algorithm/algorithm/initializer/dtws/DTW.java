@@ -1,90 +1,104 @@
-package initializer;
+package initializer.dtws;
 
 import Utilities.Utilities;
-import hierarchicalclustering.*;
+import initializer.initializers.HierarchicalClusterAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Project: DCDMC
- * Package: initializer
- * Date: 23/Mar/2015
- * Time: 20:44
- * System Time: 8:44 PM
+ * Package: initializer.dtws
+ * Date: 26/Mar/2015
+ * Time: 15:37
+ * System Time: 3:37 PM
  */
 
 /*
-    Dynamic time warping computation class
+    Dynamic time warping computation class by Alex Wong
     It transfered from matlab program from: http://www.ee.columbia.edu/ln/rosa/matlab/dtw/ to java program
  */
 
-public class DTWInitializer extends AbstractInitializer implements IInitializer{
+public class DTW implements IDTW{
 
-    private static final Logger LOGGER = Logger.getLogger(DTWInitializer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DTW.class.getName());
 
-    private int[][] DPMatrix; // dynamic programming of time warping matrix
+    private double[][] DPMatrix; // dynamic programming of time warping matrix
     private List<Integer> p; // x coordinates in the optimal path
     private List<Integer> q; // y coordinates in the optimal path
-    private HierarchicalClusterAdapter hcAdapter; // hierarchical clustering
 
 
     /**
      * class constructor
      */
-    public DTWInitializer() {
-        super();
+    public DTW() {
         DPMatrix = null;
         p = null;
         p = null;
-        hcAdapter = null;
     }
 
     /**
-     * Calculate initial cluster labels for input data
-     * @param instances input data
-     * @param clusterNum the maximum number of clusters
-     * @return initial cluster guesses
+     * Compute the DTW-related distance between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the distance between two time series
      */
-    public int[] initializer(int[][] instances, int clusterNum) {
+    public double computeDistance(double[] timeseries1, double[] timeseries2) {
 
-        int[] clusterLabels = null;
-        if (instances == null) {
-            LOGGER.log(Level.INFO, "The instances are null!");
-            return clusterLabels;
+        // two parameters could be null
+
+        double distance = Integer.MIN_VALUE;
+
+        if (timeseries1 == null || timeseries2 == null) {
+            LOGGER.log(Level.INFO, "The time series are null!");
+            return distance;
         }
 
-        if (instances.length == 0 || instances[0].length == 0) {
-            LOGGER.log(Level.INFO, "The instances are empty!");
-            return clusterLabels;
+        if (timeseries1.length == 0 || timeseries2.length == 0) {
+            LOGGER.log(Level.INFO, "The time series are empty!");
+            return distance;
         }
 
-        int ROW = instances.length;
-        int COLUMN = instances[0].length;
-        double[][] distanceMatrix = new double[ROW][COLUMN];
+        // compute the DPMatrix two-dimensional matrix
+        computeDTW(timeseries1, timeseries2);
 
-        for (int i = 0; i < ROW; i++) {
-            for (int j = i + 1; j < ROW; j++) {
-                computeDTW(instances[i], instances[j]);
+        // get the dynamic time warping distance between two sequences
+        int ROW = timeseries1.length;
+        int COLUMN = timeseries2.length;
+        distance = this.DPMatrix[ROW - 1][COLUMN - 1];
 
-                // get the dynamic time warping distance between two sequences
-                distanceMatrix[i][j] = this.DPMatrix[instances[i].length - 1][instances[j].length - 1];
 
-                // here assume it guarantees the symmetric feature for DTW
-                if (j < ROW && i < COLUMN) distanceMatrix[j][i] = distanceMatrix[i][j];
-            }
+        return distance;
+    }
+
+    /**
+     * Compute the optimal warping path between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the optimal warping path between two time series
+     */
+    public List<List<Integer>> computePath(double[] timeseries1, double[] timeseries2){
+        List<List<Integer>> optimalPath = null;
+
+        if (timeseries1 == null || timeseries2 == null) {
+            LOGGER.log(Level.INFO, "The time series are null!");
+            return optimalPath;
         }
 
-        // do hierarchical cluster to provide initial cluster guesses
-        hcAdapter = new HierarchicalClusterAdapter(distanceMatrix);
+        if (timeseries1.length == 0 || timeseries2.length == 0) {
+            LOGGER.log(Level.INFO, "The time series are empty!");
+            return optimalPath;
+        }
 
-        // set a new linkage strategy
-        // hcAdapter.setLinkageStrategy(new CompleteLinkageStrategy());
-        int[] clusterAssignments = hcAdapter.getClusterAssignment(clusterNum);
+        int N = this.p.size();
+        for (int i = 0; i < N; i++) {
+            optimalPath.add(Arrays.asList(p.get(i), q.get(i)));
+        }
 
-        return clusterAssignments;
+        return optimalPath;
     }
 
     /**
@@ -93,11 +107,11 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
      * @param seq2 the second sequence
      * @return local cost matrix
      */
-    private int[][] computeDTW(int[] seq1, int[] seq2) {
+    private double[][] computeDTW(double[] seq1, double[] seq2) {
         int length1 = seq1.length;
         int length2 = seq2.length;
 
-        int[][] localCostMatrix = new int[length1][length2];
+        double[][] localCostMatrix = new double[length1][length2];
 
         // compute the local cost matrix by two sequences
         for (int i = 0; i < length1; i++) {
@@ -121,26 +135,26 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
      * @param costMatrix cost matrix constructed by two sequences
      * @return a dynamic time warping matrix
      */
-    private int[][] dpDTW(int[][] costMatrix) {
+    private int[][] dpDTW(double[][] costMatrix) {
 
-        int[][] DP = null; // dynamic programming
+        double[][] DP = null; // dynamic programming
         int[][] phi = null; // trace back
 
         clearAll(); // clear all member variables
 
         if (costMatrix == null) {
             LOGGER.log(Level.INFO, "The cost matrix is null!");
-            return DP;
+            return phi;
         }
 
         if (costMatrix.length == 0 || costMatrix[0].length == 0) {
             LOGGER.log(Level.INFO, "The cost matrix is empty!");
-            return DP;
+            return phi;
         }
 
         int ROW = costMatrix.length; // The length of the first sequence
         int COLUMN = costMatrix[0].length; // The length of the second sequence
-        DP = new int[ROW + 1][COLUMN + 1];
+        DP = new double[ROW + 1][COLUMN + 1];
         phi = new int[ROW][COLUMN]; // store the optimal path info
 
         // initialize the first row and the first column
@@ -164,7 +178,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
         //--------- dynamic programming for calculating DP matrix ----------//
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {
-                int min = DP[i][j];
+                double min = DP[i][j];
                 int index = 0;
 
                 // compare DP[i][j] with DP[i][j + 1]
@@ -172,7 +186,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
                 index = min == DP[i][j] ? 0 : 1;
 
                 // compare the larger one with DP[i + 1][j]
-                int mincopy = min; // only to be consistent with the algorithm in matlab
+                double mincopy = min; // only to be consistent with the algorithm in matlab
                 min = Math.min(min, DP[i + 1][j]);
                 index = min == mincopy ? index : 2;
 
@@ -208,7 +222,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
         }
 
         // strip off the edges of the DP matrix before returning
-        int[][] cache = new int[ROW][COLUMN];
+        double[][] cache = new double[ROW][COLUMN];
         for (i = 1; i <= ROW; i++) {
             for (j = 1; j <= COLUMN; j++) {
                 cache[i-1][j-1] = DP[i][j];
@@ -227,7 +241,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
      * @param element2 a discrete value in sequence 2
      * @return if they are the same, return 0; otherwise return 1.
      */
-    private int getLocalCostMeasure(int element1, int element2) {
+    private int getLocalCostMeasure(double element1, double element2) {
         if (element1 == element2) return 0;
         else return 1;
     }
@@ -245,7 +259,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
      * Getter function for DPMatrix
      * @return member variable DPMatrix
      */
-    public int[][] getDPMatrix() {
+    public double[][] getDPMatrix() {
         return this.DPMatrix;
     }
 
@@ -270,10 +284,10 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
      * @param args user input
      */
     public static void main(String[] args) {
-        DTWInitializer test = new DTWInitializer();
-        int[] a = new int[]{1, 1, 0, 1};
-        int[] b = new int[]{1, 0, 1, 0};
-        int[][] localCostMatrix = test.computeDTW(a ,b);
+        DTW test = new DTW();
+        double[] a = new double[]{1, 1, 0, 1};
+        double[] b = new double[]{1, 0, 1, 0};
+        double[][] localCostMatrix = test.computeDTW(a ,b);
 
         // print out local cost matrix
         Utilities.printMatrix(localCostMatrix);

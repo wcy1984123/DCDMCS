@@ -3,9 +3,9 @@ package starter;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
-import initializer.IInitializer;
-import initializer.INITIALIZERTYPE;
-import initializer.InitializerFactory;
+import initializer.initializers.IInitializer;
+import initializer.initializers.INITIALIZERTYPE;
+import initializer.initializers.InitializerFactory;
 import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
@@ -112,7 +112,7 @@ public class Starter {
 
         //------------------- Initialization --------------------//
         String[] strings = this.mConfigs[2].split(" ");
-        int[][] instances = this.mIdao.getDataSource(strings[1], strings[2]);
+        double[][] instances = this.mIdao.getDataSource(strings[1], strings[2]);
         int[] initialClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
 
         //--------------- CDMC Iterative Process ----------------//

@@ -1,4 +1,4 @@
-package initializer;
+package initializer.initializers;
 
 import java.util.List;
 
