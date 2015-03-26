@@ -33,6 +33,7 @@ import weka.estimators.MultivariateNormalEstimator;
 import weka.estimators.MultivariateNormalHMMEstimator;
 /*
  * A hidden Markov Model classifier class.
+ * From: http://doc.gold.ac.uk/~mas02mg/software/hmmweka/#download
  */
 public class HMM extends RandomizableClassifier implements OptionHandler, MultiInstanceCapabilitiesHandler {
 
