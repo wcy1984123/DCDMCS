@@ -1,0 +1,17 @@
+Algorithm:
+1. algorithm design pattern
+    * it takes strategic design pattern to includes:
+        1) initialization
+        2) clustering
+        3) modeling
+        4) stopping criteria
+2. for each parts in algorithm
+    * it takes singleton and factory design pattern to instantiate instances:
+        1) singleton design pattern to create unique instance for each part
+        2) each unique instance takes corresponding type of instance according to configuration in config file.
+
+Data Access Operator:
+1. dao designs and implements the function of loading data into system
+
+Starter:
+1. starter works as the main function
