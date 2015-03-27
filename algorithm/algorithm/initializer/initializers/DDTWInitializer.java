@@ -7,6 +7,11 @@ package initializer.initializers;
  * Time: 20:45
  * System Time: 8:45 PM
  */
+
+/*
+    Apply Deviated dynamic time warping to do cluster initialization
+ */
+
 public class DDTWInitializer extends AbstractInitializer implements IInitializer {
 
     /**

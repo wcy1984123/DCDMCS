@@ -1,5 +1,7 @@
 package initializer.initializers;
 
+import java.util.logging.Logger;
+
 /**
  * Project: DCDMC
  * Package: initializer
@@ -8,8 +10,9 @@ package initializer.initializers;
  * System Time: 8:41 PM
  */
 public class InitializerFactory {
+
+    private static final Logger LOGGER = Logger.getLogger(InitializerFactory.class.getName());
     private static InitializerFactory ourInstance = new InitializerFactory();
-    
 
     /**
      *
@@ -32,18 +35,28 @@ public class InitializerFactory {
      */
     public IInitializer createInitializer(INITIALIZERTYPE dt) {
         IInitializer iInitializer = null;
+
         switch (dt) {
-            case DTW:
-                iInitializer = new MatlabOriginalDTWInitializer();
-                break;
-            case CDTW:
+            case ORIGINALDTW:
                 iInitializer = new OriginalDTWInitializer();
                 break;
-            case DDTW:
+            case SAKOECHIBADTW:
+                iInitializer = new SakoeChibaDTWInitializer();
+                break;
+            case ITAKURAPARALLELOGRAMDTW:
+                iInitializer = new ItakuraParallelogramDTWInitializer();
+                break;
+            case FASTOPTIMALDTW:
+                iInitializer = new FastOptimalDTWInitializer();
+                break;
+            case MATLABORIGINALDTW:
+                iInitializer = new MatlabOriginalDTWInitializer();
+                break;
+            case DEVIATEDDTW:
                 iInitializer = new DDTWInitializer();
                 break;
             default:
-                System.out.println("No Matching Instance To Created!");
+                LOGGER.info("No Matching Instance To Created!");
         }
 
         return iInitializer;

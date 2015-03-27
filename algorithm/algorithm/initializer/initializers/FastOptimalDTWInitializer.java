@@ -13,6 +13,10 @@ import java.util.logging.Logger;
  * Time: 23:02
  * System Time: 11:02 PM
  */
+
+/*
+    Apply Fast dynamic time warping to do cluster initialization
+ */
 public class FastOptimalDTWInitializer extends AbstractInitializer implements IInitializer {
     private static final Logger LOGGER = Logger.getLogger(FastOptimalDTWInitializer.class.getName());
 

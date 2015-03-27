@@ -13,6 +13,10 @@ import java.util.logging.Logger;
  * Time: 20:44
  * System Time: 8:44 PM
  */
+
+/*
+    Apply Original dynamic time warping to do cluster initialization
+ */
 public class OriginalDTWInitializer extends AbstractInitializer implements IInitializer {
 
     private static final Logger LOGGER = Logger.getLogger(OriginalDTWInitializer.class.getName());

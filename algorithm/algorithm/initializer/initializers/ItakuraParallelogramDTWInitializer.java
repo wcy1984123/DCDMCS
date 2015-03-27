@@ -13,6 +13,10 @@ import java.util.logging.Logger;
  * Time: 23:02
  * System Time: 11:02 PM
  */
+
+/*
+    Apply ItakuraParallelogram dynamic time warping to do cluster initialization
+ */
 public class ItakuraParallelogramDTWInitializer extends AbstractInitializer implements IInitializer{
     private static final Logger LOGGER = Logger.getLogger(ItakuraParallelogramDTWInitializer.class.getName());
 
