@@ -1,6 +1,6 @@
 package initializer.initializers;
 
-import initializer.dtws.MatlabOriginalDTW;
+import initializer.dtws.FastOptimalDTW;
 import initializer.dtws.IDTW;
 
 import java.util.logging.Level;
@@ -8,24 +8,18 @@ import java.util.logging.Logger;
 
 /**
  * Project: DCDMC
- * Package: initializer
- * Date: 23/Mar/2015
- * Time: 20:44
- * System Time: 8:44 PM
+ * Package: initializer.initializers
+ * Date: 26/Mar/2015
+ * Time: 23:02
+ * System Time: 11:02 PM
  */
-
-/*
-    Apply original dynamic time warping to do cluster initialization
- */
-
-public class DTWInitializer extends AbstractInitializer implements IInitializer{
-
-    private static final Logger LOGGER = Logger.getLogger(DTWInitializer.class.getName());
+public class FastOptimalDTWInitializer extends AbstractInitializer implements IInitializer {
+    private static final Logger LOGGER = Logger.getLogger(FastOptimalDTWInitializer.class.getName());
 
     /**
      * class constructor
      */
-    public DTWInitializer() {
+    public FastOptimalDTWInitializer() {
         super();
     }
 
@@ -50,7 +44,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
         }
 
         // initialize a dynamic time warping instance
-        IDTW idtw = new MatlabOriginalDTW();
+        IDTW idtw = new FastOptimalDTW("BinaryDistance");
 
         // do hierarchical cluster to provide initial cluster guesses
         IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
@@ -64,7 +58,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
      * @param args user input
      */
     public static void main(String[] args) {
-        DTWInitializer test = new DTWInitializer();
+        FastOptimalDTWInitializer test = new FastOptimalDTWInitializer();
 
     }
 }

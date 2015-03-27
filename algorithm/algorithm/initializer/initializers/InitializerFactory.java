@@ -34,10 +34,10 @@ public class InitializerFactory {
         IInitializer iInitializer = null;
         switch (dt) {
             case DTW:
-                iInitializer = new DTWInitializer();
+                iInitializer = new MatlabOriginalDTWInitializer();
                 break;
             case CDTW:
-                iInitializer = new CDTWInitializer();
+                iInitializer = new OriginalDTWInitializer();
                 break;
             case DDTW:
                 iInitializer = new DDTWInitializer();

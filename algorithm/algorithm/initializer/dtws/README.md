@@ -11,3 +11,6 @@
     * Original Dynamic Time Warping In Matlab 
 6. DDTW
     * Deviated Dynamic Time Warping
+
+###Class Diagram
+![DTWS](/classdiagrams/dtwsdiagram.jpg)
