@@ -1,6 +1,6 @@
 package initializer.initializers;
 
-import initializer.dtws.DTW;
+import initializer.dtws.MatlabOriginalDTW;
 import initializer.dtws.IDTW;
 
 import java.util.logging.Level;
@@ -57,7 +57,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
         double[][] distanceMatrix = new double[ROW][COLUMN];
 
         // initialize a dynamic time warping instance
-        IDTW idtw = new DTW();
+        IDTW idtw = new MatlabOriginalDTW();
 
 
         // compute distance matrix

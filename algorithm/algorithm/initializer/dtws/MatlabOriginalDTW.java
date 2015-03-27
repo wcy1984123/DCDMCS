@@ -21,9 +21,9 @@ import java.util.logging.Logger;
     It transfered from matlab program from: http://www.ee.columbia.edu/ln/rosa/matlab/dtw/ to java program
  */
 
-public class DTW implements IDTW{
+public class MatlabOriginalDTW implements IDTW{
 
-    private static final Logger LOGGER = Logger.getLogger(DTW.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MatlabOriginalDTW.class.getName());
 
     private double[][] DPMatrix; // dynamic programming of time warping matrix
     private List<Integer> p; // x coordinates in the optimal path
@@ -33,7 +33,7 @@ public class DTW implements IDTW{
     /**
      * class constructor
      */
-    public DTW() {
+    public MatlabOriginalDTW() {
         DPMatrix = null;
         p = null;
         p = null;
@@ -283,7 +283,7 @@ public class DTW implements IDTW{
      * @param args user input
      */
     public static void main(String[] args) {
-        DTW test = new DTW();
+        MatlabOriginalDTW test = new MatlabOriginalDTW();
         double[] a = new double[]{1, 1, 0, 1};
         double[] b = new double[]{1, 0, 1, 0};
         double[][] localCostMatrix = test.computeDTW(a ,b);

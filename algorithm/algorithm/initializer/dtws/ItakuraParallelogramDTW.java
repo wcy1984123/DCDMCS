@@ -1,5 +1,8 @@
 package initializer.dtws;
 
+import com.dtw.DTW;
+import com.dtw.ParallelogramWindow;
+import com.dtw.SearchWindow;
 import com.dtw.TimeWarpInfo;
 import com.timeseries.TimeSeries;
 import com.util.DistanceFunction;
@@ -19,14 +22,19 @@ import java.util.logging.Logger;
  * System Time: 3:38 PM
  */
 
-public class CDTW implements IDTW{
+/**
+ * Itakura parallelogram Dynamic Time Warping
+ */
+public class ItakuraParallelogramDTW implements IDTW{
 
-    private final static Logger LOGGER = Logger.getLogger(CDTW.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ItakuraParallelogramDTW.class.getName());
     private DistanceFunction mDistFn;
     private TimeWarpInfo mInfo;
+    private int mSearchRadius;
 
-    public CDTW(String distanceName){
+    public ItakuraParallelogramDTW(String distanceName, int searchRadius){
         this.mDistFn = DistanceFunctionFactory.getDistFnByName(distanceName);
+        this.mSearchRadius = searchRadius;
     }
 
     /**
@@ -40,7 +48,11 @@ public class CDTW implements IDTW{
         // timeseries1 and timeseries2 should be null
         TimeSeries t1 = new TimeSeries(timeseries1, ',');
         TimeSeries t2 = new TimeSeries(timeseries2, ',');
-        this.mInfo = com.dtw.DTW.getWarpInfoBetween(t1, t2, this.mDistFn);
+
+        //****************************** Itakura parallelogram DTW ****************************//
+        SearchWindow constrainedWindow = new ParallelogramWindow(t1, t2, this.mSearchRadius);
+
+        this.mInfo = DTW.getWarpInfoBetween(t1, t2, constrainedWindow, this.mDistFn);
 
         return mInfo.getDistance();
     }
@@ -69,16 +81,22 @@ public class CDTW implements IDTW{
      * @param args user input
      */
     public static void main(String[] args) {
-        CDTW test = new CDTW("EuclideanDistance");
+
         double[] t1 = new double[275];
         double[] t2 = new double[275];
+        ItakuraParallelogramDTW test = new ItakuraParallelogramDTW("BinaryDistance", 100);
          try {
+
             BufferedReader br = new BufferedReader(new FileReader("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/Utilities/FastDynamicTimeWarping/trace0.csv"));
+
             String line = null;
             int count = 0;
             while((line = br.readLine()) != null) {
                 t1[count++] = Double.parseDouble(line);
             }
+
+
+
              br.close();
          } catch(IOException e) {
              e.printStackTrace();
