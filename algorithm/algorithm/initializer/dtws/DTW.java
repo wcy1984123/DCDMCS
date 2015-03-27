@@ -1,7 +1,6 @@
 package initializer.dtws;
 
 import Utilities.Utilities;
-import initializer.initializers.HierarchicalClusterAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

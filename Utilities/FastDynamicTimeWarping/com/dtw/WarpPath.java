@@ -10,6 +10,7 @@ package com.dtw;
 import com.matrix.ColMajorCell;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.NoSuchElementException;
 import java.io.BufferedReader;
@@ -198,6 +199,25 @@ public class WarpPath
       return new String(outStr.append("]"));
    }  // end toString()
 
+   /**
+    * Get the optimal warping path
+    * @return a list of points in the optimal warping path
+    */
+   public List<List<Integer>> getOptimalPath() {
+      List<List<Integer>> optimalPath = new ArrayList<List<Integer>>();
+      for (int i = 0; i < tsIindexes.size(); i++)
+      {
+         List<Integer> point = new ArrayList<Integer>();
+         Integer x = (Integer)tsIindexes.get(i);
+         Integer y = (Integer)tsJindexes.get(i);
+         point.add(x);
+         point.add(y);
+         optimalPath.add(point);
+
+      }  // end for loop
+
+      return optimalPath;
+   }
 
    public boolean equals(Object obj)
    {

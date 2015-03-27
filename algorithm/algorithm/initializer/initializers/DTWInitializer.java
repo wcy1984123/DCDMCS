@@ -1,11 +1,8 @@
 package initializer.initializers;
 
-import Utilities.Utilities;
 import initializer.dtws.DTW;
 import initializer.dtws.IDTW;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
