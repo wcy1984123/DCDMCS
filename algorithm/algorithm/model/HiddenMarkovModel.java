@@ -1,5 +1,8 @@
 package model;
 
+import cluster.ICluster;
+
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,7 +13,7 @@ import java.util.logging.Logger;
  * Time: 09:33
  * System Time: 9:33 AM
  */
-public class HiddenMarkovModel {
+public class HiddenMarkovModel implements IModel, ICluster{
     private static final Logger LOGGER = Logger.getLogger(HiddenMarkovModel.class.getName());
 
     private int stateNum;
@@ -21,12 +24,38 @@ public class HiddenMarkovModel {
     /**
      * class constructor
      */
+    public HiddenMarkovModel() {
+
+    }
+
+    /**
+     * class constructor
+     */
     public HiddenMarkovModel(int stateNum, int emitNum) {
         this.stateNum = stateNum;
         this.emitNum = emitNum;
         tranMatrix = new double[stateNum][stateNum];
         emitMatrix = new double[stateNum][emitNum];
         initializeHMM();
+    }
+
+    /**
+     * Build models over instances
+     * @param instances input instances
+     */
+    @Override
+    public void trainModel(List<List<Double>> instances) {
+        return;
+    }
+
+    /**
+     * Assign instances into clusters in terms of input
+     * @param data data matrix
+     * @return cluster labels
+     */
+    @Override
+    public int[] assignClusterLabels(int[][] data) {
+        return new int[0];
     }
 
     /**

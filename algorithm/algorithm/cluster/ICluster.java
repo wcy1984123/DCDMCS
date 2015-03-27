@@ -9,10 +9,5 @@ package cluster;
  */
 public interface ICluster {
 
-    /**
-     * Assign instances into clusters in terms of input
-     * @param data data matrix
-     * @return cluster labels
-     */
-    public int[] assignClusterLabels(int[][] data);
+    // only just for contract
 }

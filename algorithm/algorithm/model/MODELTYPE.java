@@ -8,4 +8,7 @@ package model;
  * System Time: 8:00 AM
  */
 public enum MODELTYPE {
+    MARKOVCHAINMODEL,     // Markov Chain Model
+    SEMIMARKOVCHAINMODEL, // semi-Markov Chain Model
+    HIDDENMARKOVMODEL;    // Hidden Markov Model
 }

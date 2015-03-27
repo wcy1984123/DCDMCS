@@ -1,5 +1,6 @@
 package Utilities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -162,6 +163,7 @@ public class Utilities {
     /**
      * Convert list of list of integers into two dimensional array
      * @param data list of list of integers
+     * @param format only just for differ from the same function name
      * @return a two-dimensional array
      */
     public static int[][] convertToTwoDimensionIntegerArray(List<List<Integer>> data, int format) {
@@ -174,7 +176,7 @@ public class Utilities {
         }
 
         if (data.size() == 0 || data.get(0).size() == 0) {
-            LOGGER.log(Level.INFO, "The list of lsit of integers is empty!");
+            LOGGER.log(Level.INFO, "The list of list of integers is empty!");
             return res;
         }
 
@@ -208,17 +210,97 @@ public class Utilities {
      * @param data list of list of doubles
      * @return a two-dimensional double array
      */
+    public static int[][] convertToTwoDimensionIntegerArray(List<List<Double>> data) {
+
+        int[][] res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The list of list of doubles is null!");
+            return res;
+        }
+
+        if (data.size() == 0 || data.get(0).size() == 0) {
+            LOGGER.log(Level.INFO, "The list of list of doubles is empty!");
+            return res;
+        }
+
+        int ROW = data.size();
+
+        // since each row may have different length, it is necessary to get the maximum value among column as the final column
+        int COLUMN = data.get(0).size();
+        for (int i = 1; i < ROW; i++) {
+            COLUMN = Math.max(COLUMN, data.get(i).size());
+        }
+
+        res = new int[ROW][COLUMN];
+
+        for (int i = 0; i < ROW; i++) {
+            int colNum = data.get(i).size();
+            for (int j = 0; j < colNum; j++) {
+                double temp = data.get(i).get(j);
+                res[i][j] = (int)temp;
+            }
+
+            for (int j = colNum; j < COLUMN; j++) {
+                res[i][j] = 1; // padding values with 1
+            }
+        }
+
+        return res;
+
+    }
+
+    /**
+     * Convert list of list of doubles into two dimensional array
+     * @param data list of list of doubles
+     * @return a two-dimensional double array
+     */
+    public static int[][] convertToTwoDimensionIntegerArray(double[][] data) {
+
+        int[][] res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The list of list of doubles is null!");
+            return res;
+        }
+
+        if (data.length == 0 || data[0].length == 0) {
+            LOGGER.log(Level.INFO, "The list of list of doubles is empty!");
+            return res;
+        }
+
+        int ROW = data.length;
+        int COLUMN = data[0].length;
+
+        res = new int[ROW][COLUMN];
+
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                double temp = data[i][j];
+                res[i][j] = (int)temp;
+            }
+        }
+
+        return res;
+
+    }
+
+    /**
+     * Convert list of list of doubles into two dimensional array
+     * @param data list of list of doubles
+     * @return a two-dimensional double array
+     */
     public static double[][] convertToTwoDimensionDoubleArray(List<List<Double>> data) {
 
         double[][] res = null;
 
         if (data == null) {
-            LOGGER.log(Level.INFO, "The list of list of integers is null!");
+            LOGGER.log(Level.INFO, "The list of list of doubles is null!");
             return res;
         }
 
         if (data.size() == 0 || data.get(0).size() == 0) {
-            LOGGER.log(Level.INFO, "The list of lsit of integers is empty!");
+            LOGGER.log(Level.INFO, "The list of list of doubles is empty!");
             return res;
         }
 
@@ -244,6 +326,91 @@ public class Utilities {
         }
 
         return res;
+
+    }
+
+    /**
+     * Convert two dimensional array into a list of list of doubles
+     * @param data a two-dimensional double array
+     * @return list of list of doubles
+     */
+    public static List<List<Double>> convertToTwoDimensionalDoubleList(double[][] data) {
+
+        List<List<Double>> res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The two dimensional array of doubles is null!");
+            return res;
+        }
+
+        if (data.length == 0 || data[0].length == 0) {
+            LOGGER.log(Level.INFO, "The two dimensional array of doubles is empty!");
+            return res;
+        }
+
+        int ROW = data.length;
+        int COLUMN = data[0].length;
+        res = new ArrayList<List<Double>>();
+
+        for (int i = 0; i < ROW; i++) {
+            List<Double> list = new ArrayList<Double>();
+            for (int j = 0; j < COLUMN; j++) {
+                list.add(data[i][j]);
+            }
+
+            res.add(list);
+
+        }
+
+        return res;
+
+    }
+
+    /**
+     * Normalize the given two dimensional matrix
+     * @param matrix two dimensional matrix
+     * @return a normalized two dimensional matrix
+     */
+    public static double[][] normalizeMatrix(int[][] matrix) {
+
+        double[][] res = null;
+
+        if (matrix == null) {
+            LOGGER.log(Level.INFO, "The two dimensional array of integers is null!");
+            return res;
+        }
+
+        if (matrix.length == 0 || matrix[0].length == 0) {
+            LOGGER.log(Level.INFO, "The two dimensional array of integers is empty!");
+            return res;
+        }
+
+        int ROW = matrix.length;
+        int COLUMN = matrix[0].length;
+        res = new double[ROW][COLUMN];
+        for (int i = 0; i < ROW; i++) {
+            double sum = 0.0;
+            for (int j = 0; j < COLUMN; j++) {
+                sum += matrix[i][j];
+            }
+
+            if (sum != 0) {
+                for (int j = 0; j < COLUMN; j++) {
+                    res[i][j] = (matrix[i][j] * 1.0 / sum);
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+
+    /**
+     * test
+     * @param args user input
+     */
+    public static void main(String[] args) {
 
     }
 

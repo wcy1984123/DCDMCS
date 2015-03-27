@@ -1,11 +1,16 @@
 package starter;
 
+import Utilities.Utilities;
+import cluster.ICluster;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
 import initializer.initializers.IInitializer;
 import initializer.initializers.INITIALIZERTYPE;
 import initializer.initializers.InitializerFactory;
+import model.IModel;
+import model.MODELTYPE;
+import model.ModelFactory;
 import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
@@ -39,6 +44,7 @@ public class Starter {
     private String[] mConfigs; // configuation
     private int mClusterNum; // maximum number of clusters
     private double mSimilarity; // minimum similarity of clustering results
+    private IModel mIModel; // dynamic model
 
     /**
      * class constructor
@@ -102,6 +108,7 @@ public class Starter {
         this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
         this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
         this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
+        this.mIModel = ModelFactory.getInstance().createModel(MODELTYPE.valueOf(this.mConfigs[5].toUpperCase()));
 
     }
 
@@ -113,18 +120,32 @@ public class Starter {
         //------------------- Initialization --------------------//
         String[] strings = this.mConfigs[2].split(" ");
         double[][] instances = this.mIdao.getDataSource(strings[1], strings[2]);
-        int[] initialClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
+        int[][] instancesArray = Utilities.convertToTwoDimensionIntegerArray(instances);
+        List<List<Double>> instancesList = Utilities.convertToTwoDimensionalDoubleList(instances);
+        int[] previousClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
 
         //--------------- CDMC Iterative Process ----------------//
         int instancesNum = instances.length;
-        int[] previousClusterLabels = new int[instancesNum];
+        int[] initialClusterLabels  = new int[instancesNum];
         double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
 
         while(similarity < this.mSimilarity) {
-            //TODO
+
+            // build dynamic model
+            this.mIModel.trainModel(instancesList);
+
+            // assign cluster labels
+            int[] currentClusterLabels = this.mIModel.assignClusterLabels(instancesArray);
+
+            // compute similarity
+            similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
+
+            // update cluster labels
+            previousClusterLabels = currentClusterLabels;
         }
 
     }
+
     /**
      * test
      * @param args user input
