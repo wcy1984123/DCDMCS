@@ -18,31 +18,41 @@ import java.util.logging.Logger;
 /**
  * Hierarchical cluster adapter works for mapping hierarchical clustering into cluster assignment
  */
-public class HierarchicalClusterAdapter {
+public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
 
     private static final Logger LOGGER = Logger.getLogger(HierarchicalClusterAdapter.class.getName());
-    private double[][] distances; // distance matrix
     private LinkageStrategy linkageStrategy;
 
     /**
      * class constructor
-     * @param distances distance matrix of instances
      */
-    public HierarchicalClusterAdapter(double[][] distances) {
-        this.distances = distances;
+    public HierarchicalClusterAdapter() {
         this.linkageStrategy = new AverageLinkageStrategy(); // linkage strategy at default
     }
 
     /**
      * Get cluster assignment starting with 0 as class labels
+     * @param clusterNum the maximum of clusters
+     * @param distanceMatrix distance matrix of sequences
      * @return an array of cluster assignments
      */
-    public int[] getClusterAssignment(int clusterNum) {
+    @Override
+    public int[] getClusterAssignment(int clusterNum, double[][] distanceMatrix) {
+
+        if (distanceMatrix == null) {
+            LOGGER.info("The distance matrix is null!");
+            return null;
+        }
+
+        if (distanceMatrix.length == 0 || distanceMatrix[0].length == 0) {
+            LOGGER.info("The distance matrix is empty!");
+            return null;
+        }
 
         int[] clusterAssignment = null;
 
         // get hierarchical cluster
-        Cluster cluster = getClusterAlgorithm(this.linkageStrategy);
+        Cluster cluster = getClusterAlgorithm(this.linkageStrategy, distanceMatrix);
 
         // get a map of distance with corresponding instances
         Stack<ClusterWrapperNode> listClusterNodes = getCluster(cluster);
@@ -57,7 +67,7 @@ public class HierarchicalClusterAdapter {
             return clusterAssignment;
         }
 
-        clusterAssignment = new int[this.distances.length];
+        clusterAssignment = new int[distanceMatrix.length];
 
         int curClusterNum = listClusterNodes.size();
         while(curClusterNum > clusterNum) {
@@ -92,13 +102,12 @@ public class HierarchicalClusterAdapter {
             for (Integer seqNo : node.instances) {
                 clusterAssignment[seqNo - 1] = classLabel;
             }
-            
+
             classLabel++;
         }
 
         return clusterAssignment;
     }
-
 
     /**
      * A stack of instances in the wrapper class of the distance with corresponding instances
@@ -180,21 +189,21 @@ public class HierarchicalClusterAdapter {
      * @param linkageStrategy linkage strategy
      * @return a hierarchical clustering instance
      */
-    private Cluster getClusterAlgorithm(LinkageStrategy linkageStrategy) {
+    private Cluster getClusterAlgorithm(LinkageStrategy linkageStrategy, double[][] distances) {
 
         Cluster cluster = null;
-        if (this.distances == null) {
+        if (distances == null) {
             LOGGER.log(Level.INFO, "Distance matrix is null!");
             return cluster;
         }
 
-        if (this.distances.length == 0 || this.distances[0].length == 0) {
+        if (distances.length == 0 || distances[0].length == 0) {
             LOGGER.log(Level.INFO, "Distance matrix is empty!");
             return cluster;
         }
 
-        int ROW = this.distances.length;
-        int COLUMN = this.distances[0].length;
+        int ROW = distances.length;
+        int COLUMN = distances[0].length;
 
         if (ROW != COLUMN) {
             LOGGER.log(Level.INFO, "The dimensions in distance matrix is not consistent!");
@@ -209,7 +218,7 @@ public class HierarchicalClusterAdapter {
         ClusteringAlgorithm alg = new DefaultClusteringAlgorithm();
 
         // do hierarchical clustering algorithm
-        cluster = alg.performClustering(this.distances, names, linkageStrategy);
+        cluster = alg.performClustering(distances, names, linkageStrategy);
 
         return cluster;
 
@@ -265,25 +274,22 @@ public class HierarchicalClusterAdapter {
      * @param args user input
      */
     public static void main(String[] args) {
-        double[][] distances = new double[][] { { 0, 1, 9, 7, 11, 14, 1},
-                                                { 1, 0, 4, 3, 8, 10, 1},
-                                                { 9, 4, 0, 9, 2, 8, 1},
-                                                { 7, 3, 9, 0, 6, 13, 1},
-                                                { 11, 8, 2, 6, 0, 10, 1},
-                                                { 14, 10, 8, 13, 10, 0, 1},
-                                                { 3, 6, 7, 13, 10, 0, 1}};
 
-        HierarchicalClusterAdapter test = new HierarchicalClusterAdapter(distances);
-        int[] clusterAssignments = test.getClusterAssignment(5);
+        // justify the correction with DengrogramPanel java file
+        double[][] distances = new double[][] { { 0, 1, 9, 7, 11, 14 }, { 1, 0, 4, 3, 8, 10 }, { 9, 4, 0, 9, 2, 8 },
+                { 7, 3, 9, 0, 6, 13 }, { 11, 8, 2, 6, 0, 10 }, { 14, 10, 8, 13, 10, 0 } };
+
+        HierarchicalClusterAdapter test = new HierarchicalClusterAdapter();
+        int[] clusterAssignments = test.getClusterAssignment(5, distances);
         Utilities.printArray(clusterAssignments);
 
-        clusterAssignments = test.getClusterAssignment(4);
+        clusterAssignments = test.getClusterAssignment(4, distances);
         Utilities.printArray(clusterAssignments);
 
-        clusterAssignments = test.getClusterAssignment(3);
+        clusterAssignments = test.getClusterAssignment(3, distances);
         Utilities.printArray(clusterAssignments);
 
-        clusterAssignments = test.getClusterAssignment(2);
+        clusterAssignments = test.getClusterAssignment(2, distances);
         Utilities.printArray(clusterAssignments);
     }
 }

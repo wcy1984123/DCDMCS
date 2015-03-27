@@ -1,9 +1,13 @@
 ##Initializer
-1. DTW
-    * Dynamic Time Warping
-2. CDTW
-    * Constrained Dynamic Time Warping
-3. DDTW
-    * Deviated Dynamic Time Warping
+1. OriginalDTW
+    * Original Dynamic Time Warping
+2. SakoeChibaDTW
+    * Sakoe-Chiba Band Dynamic Time Warping
+3. ItakuraParallelogramDTW
+    * Itakura-Parallelogram Band Dynamic Time Warping
 4. FDTW
     * Fast Dynamic Time Warping
+5. MatlabOriginalDTW
+    * Original Dynamic Time Warping In Matlab 
+6. DDTW
+    * Deviated Dynamic Time Warping
