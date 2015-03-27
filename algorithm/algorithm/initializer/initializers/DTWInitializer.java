@@ -55,7 +55,7 @@ public class DTWInitializer extends AbstractInitializer implements IInitializer{
         // do hierarchical cluster to provide initial cluster guesses
         IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
 
-        // call super method to
+        // call super method to do initialize cluster guesses
         return super.initializer(instances, clusterNum, idtw, ica);
     }
 
