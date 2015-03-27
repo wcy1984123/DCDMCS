@@ -8,4 +8,6 @@ package model;
  * System Time: 7:59 AM
  */
 public interface IModel {
+    // only just for contracts
+    // no function declaration
 }

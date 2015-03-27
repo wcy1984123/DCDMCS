@@ -11,10 +11,8 @@ public interface ICluster {
 
     /**
      * Assign instances into clusters in terms of input
-     * @param tranMatrix transition matrix
-     * @param emitMatrix emission matrix
-     * @param args other arguments
+     * @param data data matrix
      * @return cluster labels
      */
-    public int[] assignClusterLabels(int[][] data, int[][] tranMatrix, int[][] emitMatrix, int[] args);
+    public int[] assignClusterLabels(int[][] data);
 }

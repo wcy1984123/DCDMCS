@@ -13,6 +13,11 @@ import java.util.logging.Logger;
  * Time: 14:46
  * System Time: 2:46 PM
  */
+
+/*
+
+ */
+
 public class Utilities {
     private final static Logger LOGGER = Logger.getLogger(Utilities.class.getName());
 
@@ -31,46 +36,6 @@ public class Utilities {
         for (int i = 1; i < array.length; i++) res = Math.max(res, array[i]);
 
         return res;
-    }
-
-    /**
-     * Count state transition of a sequence in a matrix
-     * @param seq a sequence of data whose index starts with 0
-     * @return a matrix of state transition
-     */
-    public static int[][] countStateTransition(int[] seq) {
-
-        // a sequence of data whose index starts with 0
-        int[][] stateTransition = null;
-        if (seq == null || seq.length < 2) {
-            LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
-            return stateTransition;
-        }
-
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
-        for (int i = 0; i < seq.length; i++) {
-            if (!set.contains(seq[i])) {
-                uniqueCount++;
-                set.add(seq[i]);
-            }
-        }
-
-        // check at least there are two unique elements and thus there is at least one state transition
-        if (uniqueCount < 2) {
-            LOGGER.log(Level.INFO, "No more than 2 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
-
-        // count state transition
-        for (int i = 0; i < seq.length - 1; i++) {
-            stateTransition[seq[i]][seq[i + 1]]++;
-        }
-
-        return stateTransition;
     }
 
     /**

@@ -7,5 +7,13 @@ package model;
  * Time: 07:57
  * System Time: 7:57 AM
  */
+
+/**
+ * Markov Chain Model
+ */
 public class MarkovChainModel {
+
+    double[][] data;
+
+    //private
 }

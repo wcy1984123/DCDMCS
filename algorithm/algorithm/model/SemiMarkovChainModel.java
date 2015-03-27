@@ -7,5 +7,6 @@ package model;
  * Time: 07:57
  * System Time: 7:57 AM
  */
+
 public class SemiMarkovChainModel {
 }
