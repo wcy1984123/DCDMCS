@@ -10,8 +10,8 @@ import java.util.logging.Logger;
  * Time: 09:33
  * System Time: 9:33 AM
  */
-public class HMM {
-    private static final Logger LOGGER = Logger.getLogger(HMM.class.getName());
+public class HiddenMarkovModel {
+    private static final Logger LOGGER = Logger.getLogger(HiddenMarkovModel.class.getName());
 
     private int stateNum;
     private int emitNum;
@@ -21,7 +21,7 @@ public class HMM {
     /**
      * class constructor
      */
-    public HMM(int stateNum, int emitNum) {
+    public HiddenMarkovModel(int stateNum, int emitNum) {
         this.stateNum = stateNum;
         this.emitNum = emitNum;
         tranMatrix = new double[stateNum][stateNum];
@@ -117,7 +117,7 @@ public class HMM {
      * @param args user input
      */
     public static void main(String[] args) {
-        HMM test = new HMM(3, 3);
+        HiddenMarkovModel test = new HiddenMarkovModel(3, 3);
         double[][] tranGuess = test.getTranMatrix();
         double[][] emitGuess = test.getEmitMatrix();
         
