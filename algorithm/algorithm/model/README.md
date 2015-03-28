@@ -8,3 +8,5 @@
 3. Hidden Markov Model
     * Hidden Markov models introduce unobservable states to further describe internal complications of time signal processing. In contrast to the use of geometric state duration in HMMs, semi-Markov chain models explicitly parameterize the state duration to better capture the dynamic features in time series dataset.
 
+###Class Diagram
+![DMS](/classdiagrams/dynamicmodelsdiagram.jpg)
