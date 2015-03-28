@@ -1,6 +1,6 @@
 3
 0.8
-hypnogram /Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMC/dataset/hypnogram.csv 3
-dtw
+hypnogram /Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/hypnogram.csv 3
+originaldtw
 randindex
-statebaseddynamicmodel markovchainmodel
+statebaseddynamicmodels markovchainmodel

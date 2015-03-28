@@ -89,7 +89,7 @@ public class Starter {
     private void init() {
 
         // read config file
-        String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMC/config/config.txt";
+        String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
         readConfigFile(configPath);
 
         if (this.mConfigs == null) {
@@ -97,23 +97,23 @@ public class Starter {
             return;
         }
 
-        //------------------- Cluster Numbers -------------------//
+        //---------------------- Cluster Numbers ----------------------//
         this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
 
-        //--------------------- Similarity ----------------------//
+        //------------------------- Similarity ------------------------//
         this.mSimilarity = Double.parseDouble(this.mConfigs[1]);
 
-        // create the objects through factory pattern
+        //-------------------------- Dataset --------------------------//
         String[] strings = this.mConfigs[2].split(" ");
         this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
 
-        // create initialization
+        //----------------------- Initialization ----------------------//
         this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
 
-        // create the stopping criteria
+        //--------------------- Stopping Criteria ---------------------//
         this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
 
-        // create the dynamic models
+        //----------------------- Dynamic Models ----------------------//
         String[] modelArgs = this.mConfigs[5].split(" ");
         this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(modelArgs[0].toUpperCase()));
 
@@ -125,32 +125,41 @@ public class Starter {
     private void runCDMC() {
 
         //------------------- Initialization --------------------//
+        LOGGER.info("Initialization Begins");
         String[] strings = this.mConfigs[2].split(" ");
         double[][] instances = this.mIdao.getDataSource(strings[1], strings[2]);
-        int[][] instancesArray = Utilities.convertToTwoDimensionIntegerArray(instances);
         List<List<Double>> instancesList = Utilities.convertToTwoDimensionalDoubleList(instances);
         int[] previousClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
+        LOGGER.info("Initialization Ends");
 
         //--------------- CDMC Iterative Process ----------------//
         int instancesNum = instances.length;
         int[] initialClusterLabels  = new int[instancesNum];
         double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
 
+        LOGGER.info("Cluster & Models Starts");
         while(similarity < this.mSimilarity) {
 
+            LOGGER.info("Train Models Starts");
             // build dynamic model
             String[] modelArgs = this.mConfigs[5].split(" ");
             this.mIModels.trainDynamicModels(instancesList, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1]));
+            LOGGER.info("Train Models Ends");
 
+            LOGGER.info("Cluster Process Starts");
             // assign cluster labels
             int[] currentClusterLabels = this.mIModels.assignClusterLabels(instancesList);
+            LOGGER.info("Cluster Process Ends");
 
+            LOGGER.info("Cluster Agreement Evaluation Starts");
             // compute similarity
             similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
+            LOGGER.info("Cluster Agreement Evaluation Ends");
 
             // update cluster labels
             previousClusterLabels = currentClusterLabels;
         }
+        LOGGER.info("Cluster & Models Ends");
 
     }
 

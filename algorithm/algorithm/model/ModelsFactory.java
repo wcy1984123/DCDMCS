@@ -40,7 +40,7 @@ public class ModelsFactory {
     public IModels createModels(MODELSTYPE mt) {
         IModels iModels =  null;
         switch(mt) {
-            case STATEBASEDDYNAMICMODLES:    // Markov Chain Model
+            case STATEBASEDDYNAMICMODELS:    // Markov Chain Model
                 iModels = new StateBasedDynamicModels();
                 break;
             default:

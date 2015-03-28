@@ -8,5 +8,5 @@ package model;
  * System Time: 6:28 PM
  */
 public enum MODELSTYPE {
-    STATEBASEDDYNAMICMODLES; //state-based dynamic models
+    STATEBASEDDYNAMICMODELS; //state-based dynamic models
 }
