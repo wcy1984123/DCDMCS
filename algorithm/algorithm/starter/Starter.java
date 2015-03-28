@@ -1,16 +1,16 @@
 package starter;
 
 import Utilities.Utilities;
-import cluster.ICluster;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
 import initializer.initializers.IInitializer;
 import initializer.initializers.INITIALIZERTYPE;
 import initializer.initializers.InitializerFactory;
-import model.IModel;
+import model.IModels;
+import model.MODELSTYPE;
 import model.MODELTYPE;
-import model.ModelFactory;
+import model.ModelsFactory;
 import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
@@ -44,7 +44,7 @@ public class Starter {
     private String[] mConfigs; // configuation
     private int mClusterNum; // maximum number of clusters
     private double mSimilarity; // minimum similarity of clustering results
-    private IModel mIModel; // dynamic model
+    private IModels mIModels; // dynamic model
 
     /**
      * class constructor
@@ -106,9 +106,16 @@ public class Starter {
         // create the objects through factory pattern
         String[] strings = this.mConfigs[2].split(" ");
         this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
+
+        // create initialization
         this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
+
+        // create the stopping criteria
         this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
-        this.mIModel = ModelFactory.getInstance().createModel(MODELTYPE.valueOf(this.mConfigs[5].toUpperCase()));
+
+        // create the dynamic models
+        String[] modelArgs = this.mConfigs[5].split(" ");
+        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(modelArgs[0].toUpperCase()));
 
     }
 
@@ -132,10 +139,11 @@ public class Starter {
         while(similarity < this.mSimilarity) {
 
             // build dynamic model
-            this.mIModel.trainModel(instancesList);
+            String[] modelArgs = this.mConfigs[5].split(" ");
+            this.mIModels.trainDynamicModels(instancesList, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1]));
 
             // assign cluster labels
-            int[] currentClusterLabels = this.mIModel.assignClusterLabels(instancesArray);
+            int[] currentClusterLabels = this.mIModels.assignClusterLabels(instancesList);
 
             // compute similarity
             similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);

@@ -251,6 +251,80 @@ public class Utilities {
     }
 
     /**
+     * Convert two dimensional doubles into a list of list of integers
+     * @param data list of list of doubles
+     * @return a list of list Integers
+     */
+    public static List<List<Integer>> convertToListOfListOfIntegers(double[][] data) {
+
+        List<List<Integer>> res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The two dimensional array of doubles is null!");
+            return res;
+        }
+
+        if (data.length == 0 || data[0].length == 0) {
+            LOGGER.log(Level.INFO, "The two dimensional array of doubles is empty!");
+            return res;
+        }
+
+        int ROW = data.length;
+        int COLUMN = data[0].length;
+
+        for (int i = 0; i < ROW; i++) {
+            List<Integer> eachRow = new ArrayList<Integer>();
+            for (int j = 0; j < COLUMN; j++) {
+                double temp = data[i][j];
+                eachRow.add((int)temp);
+            }
+
+            res.add(eachRow);
+        }
+
+        return res;
+
+    }
+
+    /**
+     * Convert list of list of doubles into a list of list of integers
+     * @param data list of list of doubles
+     * @return a list of list Integers
+     */
+    public static List<List<Integer>> convertToListOfListOfIntegers(List<List<Double>> data) {
+
+        List<List<Integer>> res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The list of list of doubles is null!");
+            return res;
+        }
+
+        if (data.size() == 0 || data.get(0).size() == 0) {
+            LOGGER.log(Level.INFO, "The list of list of doubles is empty!");
+            return res;
+        }
+
+        int ROW = data.size();
+
+        res = new ArrayList<List<Integer>>();
+
+        for (int i = 0; i < ROW; i++) {
+            int COLUMN = data.get(i).size();
+            List<Integer> eachRow = new ArrayList<Integer>();
+            for (int j = 0; j < COLUMN; j++) {
+                double temp = data.get(i).get(j);
+                eachRow.add((int) temp);
+            }
+
+            res.add(eachRow);
+        }
+
+        return res;
+
+    }
+
+    /**
      * Convert list of list of doubles into two dimensional array
      * @param data list of list of doubles
      * @return a two-dimensional double array
@@ -367,6 +441,37 @@ public class Utilities {
     }
 
     /**
+     * Convert one dimensional double list into one dimensional integer array
+     * @param data a two-dimensional double array
+     * @return one dimensional integer array
+     */
+    public static int[] convertToOneDimensionalIntegerArray(List<Double> data) {
+
+        int[] res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The one dimensional list is null!");
+            return res;
+        }
+
+        if (data.size() == 0) {
+            LOGGER.log(Level.INFO, "The one dimensional list is empty!");
+            return res;
+        }
+
+        int N = data.size();
+        res = new int[N];
+
+        for (int i = 0; i < N; i++) {
+            double temp = data.get(i);
+            res[i] = (int)temp;
+        }
+
+        return res;
+
+    }
+
+    /**
      * Normalize the given two dimensional matrix
      * @param matrix two dimensional matrix
      * @return a normalized two dimensional matrix
@@ -403,8 +508,6 @@ public class Utilities {
 
         return res;
     }
-
-
 
     /**
      * test

@@ -11,7 +11,6 @@ package model;
 import Utilities.Utilities;
 import Utilities.Models;
 import cluster.ICluster;
-import com.sun.org.apache.bcel.internal.generic.LOOKUPSWITCH;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,10 +23,11 @@ public class MarkovChainModel implements IModel, ICluster {
     private static final Logger LOGGER = Logger.getLogger(MarkovChainModel.class.getName());
 
     double[][] mStateTransitionProbability;
-    int[][] mInstances;
+    List<List<Integer>> mInstances;
 
     public MarkovChainModel() {
         this.mStateTransitionProbability = null;
+        this.mInstances = null;
     }
 
     /**
@@ -37,8 +37,8 @@ public class MarkovChainModel implements IModel, ICluster {
     @Override
     public void trainModel(List<List<Double>> instances) {
 
-        // convert from double array into integer array
-        this.mInstances = Utilities.convertToTwoDimensionIntegerArray(instances);
+        // convert from double list into integer list
+        this.mInstances = Utilities.convertToListOfListOfIntegers(instances);
 
         // compute state transition
         int[][] stateTransition = Models.countStateTransitionForSequences(this.mInstances);
@@ -55,41 +55,42 @@ public class MarkovChainModel implements IModel, ICluster {
     public void trainModel(double[][] instances) {
 
         // convert from double array into integer array
-        this.mInstances = Utilities.convertToTwoDimensionIntegerArray(instances);
+        this.mInstances = Utilities.convertToListOfListOfIntegers(instances);
 
         // compute state transition
         int[][] stateTransition = Models.countStateTransitionForSequences(this.mInstances);
 
         // compute state transition probablity
         this.mStateTransitionProbability = Utilities.normalizeMatrix(stateTransition);
-
     }
 
     /**
-     * Assign instances into clusters in terms of input
-     * @param data data matrix
-     * @return cluster labels
+     * Compute the posterior probability of instances given the model
+     * @param instances instances matrix
+     * @return the posterior probability of instances given the model
      */
     @Override
-    public int[] assignClusterLabels(int[][] data) {
-        return new int[0];
-    }
+    public double[] getInstancesProbs(List<List<Double>> instances) {
 
-    private int[] getClusterLabels(int[][] seqs) {
+        double[] instancesProbs = null;
 
-        int[] clusterLabels = null;
-
-        if (seqs == null) {
+        if (instances == null) {
             LOGGER.info("The sequences are null!");
-            return clusterLabels;
+            return instancesProbs;
         }
 
-        if (seqs.length == 0 || seqs[0].length == 0) {
+        if (instances.size() == 0) {
             LOGGER.info("The sequences are empty!");
-            return clusterLabels;
+            return instancesProbs;
         }
 
-        return new int[0];
+        int N = instances.size();
+        instancesProbs = new double[N];
+        for (int i = 0; i < N; i++) {
+            instancesProbs[i] = getLogProbabilityStateTransition(instances.get(i));
+        }
+
+        return instancesProbs;
     }
 
     /**
@@ -101,6 +102,29 @@ public class MarkovChainModel implements IModel, ICluster {
 
         // seq starts with index 1
         double logProb = 0.0;
+
+        int curState = seq[0];
+
+        for (int i = 1; i < seq.length; i++) {
+            logProb += Math.log(this.mStateTransitionProbability[curState - 1][seq[i] - 1]);
+            curState = seq[i];
+        }
+
+        return logProb;
+    }
+
+    /**
+     * Compute the log probability of a seq staring with index 1 given the model
+     * @param instance a sequence data
+     * @return the log probability of a seq given the model
+     */
+    private double getLogProbabilityStateTransition(List<Double> instance) {
+
+        // seq starts with index 1
+        double logProb = 0.0;
+
+        // convert a list of doubles into an integer array
+        int[] seq = Utilities.convertToOneDimensionalIntegerArray(instance);
 
         int curState = seq[0];
 

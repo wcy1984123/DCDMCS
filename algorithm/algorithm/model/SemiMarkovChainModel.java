@@ -24,12 +24,12 @@ public class SemiMarkovChainModel implements IModel, ICluster{
     }
 
     /**
-     * Assign instances into clusters in terms of input
-     * @param data data matrix
-     * @return cluster labels
+     * Compute the posterior probability of instances given the model
+     * @param instances instances matrix
+     * @return the posterior probability of instances given the model
      */
     @Override
-    public int[] assignClusterLabels(int[][] data) {
-        return new int[0];
+    public double[] getInstancesProbs(List<List<Double>> instances) {
+        return new double[0];
     }
 }

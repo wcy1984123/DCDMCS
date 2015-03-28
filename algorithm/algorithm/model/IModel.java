@@ -12,7 +12,9 @@ import java.util.List;
  * System Time: 7:59 AM
  */
 
-
+/**
+ * A single dynamic model
+ */
 public interface IModel {
 
     /**
@@ -22,10 +24,10 @@ public interface IModel {
     public void trainModel(List<List<Double>> instances);
 
     /**
-     * Assign instances into clusters in terms of input
-     * @param data data matrix
-     * @return cluster labels
+     * Compute the posterior probability of instances given the model
+     * @param instances instances matrix
+     * @return the posterior probability of instances given the model
      */
-    public int[] assignClusterLabels(int[][] data);
+    public double[] getInstancesProbs(List<List<Double>> instances);
 
 }

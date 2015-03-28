@@ -3,4 +3,4 @@
 hypnogram /Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMC/dataset/hypnogram.csv 3
 dtw
 randindex
-markovchainmodel
+statebaseddynamicmodel markovchainmodel
