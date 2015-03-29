@@ -5,6 +5,7 @@ import starter.Starter;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -52,6 +53,7 @@ public class DCDMCGUI extends JFrame{
      */
     public DCDMCGUI() {
         super("Distributed Collective Dynamic Modeling & Clustering");
+        setJMenuBar(createMenuBar());
         setContentPane(DCDMCPanel);
         pack();
 
@@ -60,6 +62,8 @@ public class DCDMCGUI extends JFrame{
         initComponents();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        setLocationRelativeTo(null); // center the current frame
         setVisible(true); // show gui
         startButton.addActionListener(new ActionListener() {
             /**
@@ -69,17 +73,102 @@ public class DCDMCGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
-                DCDMCPanel.setEnabled(false);
+                setAllComponentsEnabled(false);
                 Starter starter = new Starter(parameters);
+                ConsoleGUI consoleGUI = new ConsoleGUI();
                 starter.runCDMC();
-                DCDMCPanel.setEnabled(true);
+                setAllComponentsEnabled(true);
             }
         });
     }
 
+    /**
+     * Initialize components
+     */
     private void initComponents() {
 
     }
+
+    /**
+     * set all components enabled
+     * @param enabled true if it is enabled; otherwise not enabled
+     */
+    private void setAllComponentsEnabled(boolean enabled) {
+
+        clusterNumberTextField.setEnabled(enabled);
+        similarityThresholdTextField.setEnabled(enabled);
+        hierarchicalClusteringRadioButton.setEnabled(enabled);
+        KMeansClusteringRadioButton.setEnabled(enabled);
+        deviatedDynamicTimeWarpingRadioButton.setEnabled(enabled);
+        originalDynamicTimeWarpingRadioButton.setEnabled(enabled);
+        matlabDynamicTimeWarpingRadioButton.setEnabled(enabled);
+        sakoeChibaDynamicTimeRadioButton.setEnabled(enabled);
+        itakuraParallelogramDynamicTimeRadioButton.setEnabled(enabled);
+        fastOptimalDynamicTimeRadioButton.setEnabled(enabled);
+        webUserNavigationBehaviorRadioButton.setEnabled(enabled);
+        hypnogramDatasetRadioButton.setEnabled(enabled);
+        otherDataSourceTextField.setEnabled(enabled);
+        stateNumberTextField.setEnabled(enabled);
+        markovChainModelRadioButton.setEnabled(enabled);
+        semiMarkovChainModelRadioButton.setEnabled(enabled);
+        hiddenMarkovModelRadioButton.setEnabled(enabled);
+        hiddenStateDurationMarkovRadioButton.setEnabled(enabled);
+        normalMutualInformationRadioButton.setEnabled(enabled);
+        adjustedRandIndexRadioButton.setEnabled(enabled);
+        randIndexRadioButton.setEnabled(enabled);
+        stateBasedDynamicModelRadioButton.setEnabled(enabled);
+        purityRadioButton.setEnabled(enabled);
+        hiddenSemiMarkovChainRadioButton.setEnabled(enabled);
+        startButton.setEnabled(enabled);
+        DCDMCPanel.setEnabled(enabled);
+    }
+
+    /**
+     * Create menu bar
+     * @return a object of JMenuBar
+     * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/MenuDemoProject/src/components/MenuDemo.java
+     */
+    public JMenuBar createMenuBar() {
+
+        JMenuBar menuBar;
+        JMenu menu, submenu;
+        JMenuItem menuItem;
+        JRadioButtonMenuItem rbMenuItem;
+        JCheckBoxMenuItem cbMenuItem;
+
+        //Create the menu bar.
+        menuBar = new JMenuBar();
+
+        //Build the first menu.
+        menu = new JMenu("File");
+        menu.setMnemonic(KeyEvent.VK_A);
+        menuBar.add(menu);
+
+        //a group of JMenuItems
+        menuItem = new JMenuItem("Import Config File ...", KeyEvent.VK_T);
+        menu.add(menuItem);
+
+        menu.addSeparator();
+
+        //a submenu
+        submenu = new JMenu("Data Preprocess");
+        submenu.setMnemonic(KeyEvent.VK_S);
+
+        menuItem = new JMenuItem("Calculate Distance Matrix");
+        submenu.add(menuItem);
+        menu.add(submenu);
+
+        //Build second menu in the menu bar.
+        menu = new JMenu("Help");
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Version");
+        menu.add(menuItem);
+        menuItem = new JMenuItem("About Us");
+        menu.add(menuItem);
+
+        return menuBar;
+    }
+
 
     /**
      * Get all parameter settings given the GUI
