@@ -161,8 +161,8 @@ public class RandIndex extends AbstractClusterAgreement implements IStoppingCrit
 
         /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%Compute Result%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
         double RandIndex = 1.0 * Numerator / Denominator;
-        LOGGER.log(Level.INFO, "TP: " + TP + " TN: " + TN);
-        LOGGER.log(Level.INFO, "Numberator: " + Numerator + " Denominator: " + Denominator);
+//        LOGGER.log(Level.INFO, "TP: " + TP + " TN: " + TN);
+//        LOGGER.log(Level.INFO, "Numberator: " + Numerator + " Denominator: " + Denominator);
 
         return RandIndex;
     }

@@ -1,5 +1,6 @@
 package starter;
 
+import Utilities.IOOperation;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
@@ -134,31 +135,35 @@ public class Starter {
         int instancesNum = instances.size();
         int[] initialClusterLabels  = new int[instancesNum];
         double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
+        int[] currentClusterLabels = null;
 
         LOGGER.info("Cluster & Models Starts");
         while(similarity < this.mSimilarity) {
 
+            System.out.println("Previous Similarity = " + similarity + " [ " + this.mSimilarity + " ].");
             LOGGER.info("Train Models Starts");
             // build dynamic model
             String[] modelArgs = this.mConfigs[5].split(" ");
-            this.mIModels.trainDynamicModels(instances, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1]));
+            this.mIModels.trainDynamicModels(instances, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1].toUpperCase()));
             LOGGER.info("Train Models Ends");
 
             LOGGER.info("Cluster Process Starts");
             // assign cluster labels
-            int[] currentClusterLabels = this.mIModels.assignClusterLabels(instances);
+            currentClusterLabels = this.mIModels.assignClusterLabels(instances);
             LOGGER.info("Cluster Process Ends");
 
             LOGGER.info("Cluster Agreement Evaluation Starts");
             // compute similarity
             similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
             LOGGER.info("Cluster Agreement Evaluation Ends");
-
+            System.out.println("Current Similarity = " + similarity + " [ " + this.mSimilarity + " ].");
             // update cluster labels
             previousClusterLabels = currentClusterLabels;
         }
         LOGGER.info("Cluster & Models Ends");
 
+        // save results
+        IOOperation.writeFile(currentClusterLabels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt");
     }
 
     /**

@@ -109,10 +109,10 @@ abstract public class AbstractDynamicModels implements IModels {
         clusterLabels = new int[InstancesNum];
 
         for (int i = 0; i < InstancesNum; i++) {
-            double maxProb = instancesProbsOfModels[i][0];
+            double maxProb = instancesProbsOfModels[0][i];
             int index = 0;
             for (int j = 1; j < ModelsNum; j++) {
-                double curProb = instancesProbsOfModels[i][j];
+                double curProb = instancesProbsOfModels[j][i];
                 if (maxProb < curProb) {
                     maxProb = curProb;
                     index = j;

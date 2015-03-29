@@ -197,7 +197,7 @@ public class Models {
         // count state transition
         for (int i = 0; i < ROW; i++) {
             int COLUMN = seqs.get(i).size();
-            for (int j = 0; j < COLUMN; j++) {
+            for (int j = 0; j < COLUMN - 1; j++) {
                 stateTransition[seqs.get(i).get(j) - 1][seqs.get(i).get(j + 1) - 1]++;
             }
         }
