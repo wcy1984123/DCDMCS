@@ -75,7 +75,7 @@ public class DCDMCGUI extends JFrame{
                 List<String> parameters = getParameters();
                 setAllComponentsEnabled(false);
                 Starter starter = new Starter(parameters);
-                ConsoleGUI consoleGUI = new ConsoleGUI();
+//                ConsoleGUI consoleGUI = new ConsoleGUI();
                 starter.runCDMC();
                 setAllComponentsEnabled(true);
             }
