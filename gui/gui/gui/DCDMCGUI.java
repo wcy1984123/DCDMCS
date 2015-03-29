@@ -1,6 +1,10 @@
 package gui;
 
+import starter.Starter;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,6 +45,7 @@ public class DCDMCGUI extends JFrame{
     private JRadioButton stateBasedDynamicModelRadioButton;
     private JRadioButton purityRadioButton;
     private JRadioButton hiddenSemiMarkovChainRadioButton;
+    private JButton startButton;
 
     /**
      * class constructor
@@ -56,6 +61,20 @@ public class DCDMCGUI extends JFrame{
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true); // show gui
+        startButton.addActionListener(new ActionListener() {
+            /**
+             * Action performed function
+             * @param e event
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> parameters = getParameters();
+                DCDMCPanel.setEnabled(false);
+                Starter starter = new Starter(parameters);
+                starter.runCDMC();
+                DCDMCPanel.setEnabled(true);
+            }
+        });
     }
 
     private void initComponents() {
@@ -81,7 +100,7 @@ public class DCDMCGUI extends JFrame{
         // data source + state number
         String dataSource = getDataSource();
         String stateNumber = stateNumberTextField.getText();
-        configs.add(dataSource + stateNumber);
+        configs.add(dataSource + " " + stateNumber);
 
         // dynamic time warping
         String dynamicTimeWarping = getDynamicTimeWarping();

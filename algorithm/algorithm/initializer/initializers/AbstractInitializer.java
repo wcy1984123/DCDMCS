@@ -42,29 +42,29 @@ public class AbstractInitializer {
         double[][] distanceMatrix = new double[ROW][ROW];
 
         LOGGER.info("Initializer: Compute Distance Matrix");
-//        // compute distance matrix in terms of the given type of dynamic time warping algorithm
-//        for (int i = 0; i < ROW; i++) {
-//            for (int j = i + 1; j < ROW; j++) {
-//
-//                // get the dynamic time warping distance between two sequences
-//                distanceMatrix[i][j] = idtw.computeDistance(instances.get(i), instances.get(j));
-//
-//                // get the optimal warping path between two sequences
-//                // List<List<Integer>> optimalPath = idtw.computePath(null, null);
-//
-//                // here assume it guarantees the symmetric feature for DTW
-//                if (j < ROW && i < ROW) distanceMatrix[j][i] = distanceMatrix[i][j];
-//
-//            }
-//
-//
-//            System.out.println("The distances of instances [ " + i + " ] is finished.");
-//        }
-//
-//        // save distance matrix
-//        IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
+        // compute distance matrix in terms of the given type of dynamic time warping algorithm
+        for (int i = 0; i < ROW; i++) {
+            for (int j = i + 1; j < ROW; j++) {
 
-        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
+                // get the dynamic time warping distance between two sequences
+                distanceMatrix[i][j] = idtw.computeDistance(instances.get(i), instances.get(j));
+
+                // get the optimal warping path between two sequences
+                // List<List<Integer>> optimalPath = idtw.computePath(null, null);
+
+                // here assume it guarantees the symmetric feature for DTW
+                if (j < ROW && i < ROW) distanceMatrix[j][i] = distanceMatrix[i][j];
+
+            }
+
+
+            System.out.println("The distances of instances [ " + i + " ] is finished.");
+        }
+
+        // save distance matrix
+        IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
+
+//        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
 
         LOGGER.info("Initializer: Compute Initial Cluster Labels");
         //  compute the initial cluster guesses in terms of the given type of clustering algorithm

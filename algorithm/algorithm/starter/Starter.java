@@ -168,7 +168,7 @@ public class Starter {
     /**
      * Collective Dynamic Modeling & Clustering algorithm
      */
-    private void runCDMC() {
+    public void runCDMC() {
 
         //------------------- Initialization --------------------//
         LOGGER.info("Initialization Begins");

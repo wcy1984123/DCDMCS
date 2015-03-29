@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.DCDMCGUI">
-  <grid id="27dc6" binding="DCDMCPanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="DCDMCPanel" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="20" y="20" width="977" height="771"/>
@@ -19,7 +19,7 @@
         </constraints>
         <properties/>
         <border type="line" title="BASIC SETTINGS" title-justification="2" title-position="3">
-          <font name="Helvetica Neue" size="16" style="3"/>
+          <font name="Helvetica Neue" size="16" style="1"/>
           <color color="-16777216"/>
         </border>
         <children>
@@ -97,7 +97,7 @@
           <font name="Helvetica Neue"/>
         </properties>
         <border type="line" title="DYNAMIC MODELS" title-justification="2" title-position="3">
-          <font name="Helvetica Neue" size="16" style="3"/>
+          <font name="Helvetica Neue" size="16" style="1"/>
         </border>
         <children>
           <grid id="24aa6" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -202,7 +202,7 @@
           <toolTipText value="Data source is input data source in the system."/>
         </properties>
         <border type="line" title="DATA SOURCE" title-justification="2" title-position="3">
-          <font name="Helvetica Neue" size="16" style="3"/>
+          <font name="Helvetica Neue" size="16" style="1"/>
         </border>
         <children>
           <component id="d48b2" class="javax.swing.JRadioButton" binding="webUserNavigationBehaviorRadioButton" default-binding="true">
@@ -238,7 +238,7 @@
           <toolTipText value="Initialization provides the initial cluster guesses in the first step of DCDMC system."/>
         </properties>
         <border type="line" title="INITIALIZATION" title-justification="2" title-position="3">
-          <font name="Helvetica Neue" size="16" style="3"/>
+          <font name="Helvetica Neue" size="16" style="1"/>
         </border>
         <children>
           <grid id="ed7e4" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -365,7 +365,7 @@
           <toolTipText value="Other settings includes other parameters."/>
         </properties>
         <border type="line" title="OTHERS SETTINGS" title-justification="2" title-position="3">
-          <font name="Helvetica Neue" size="16" style="3"/>
+          <font name="Helvetica Neue" size="16" style="1"/>
         </border>
         <children>
           <component id="41edd" class="javax.swing.JTextField" binding="otherDataSourceTextField">
@@ -402,7 +402,7 @@
           <toolTipText value="Stopping criteria is to determine if iterative process stops in terms of a certain clustering agreement evaluation."/>
         </properties>
         <border type="line" title="STOPPING CRITERIA" title-justification="2" title-position="3">
-          <font name="Helvetica Neue" size="16" style="3"/>
+          <font name="Helvetica Neue" size="16" style="1"/>
         </border>
         <children>
           <component id="bea9d" class="javax.swing.JRadioButton" binding="normalMutualInformationRadioButton" default-binding="true">
@@ -448,6 +448,14 @@
           </component>
         </children>
       </grid>
+      <component id="ef941" class="javax.swing.JButton" binding="startButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Start"/>
+        </properties>
+      </component>
     </children>
   </grid>
   <buttonGroups>
