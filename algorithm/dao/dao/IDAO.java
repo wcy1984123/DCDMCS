@@ -8,6 +8,8 @@ package dao;
  * System Time: 9:39 AM
  */
 
+import java.util.List;
+
 /**
  * define how to read various format data file into system
  */
@@ -19,5 +21,13 @@ public interface IDAO {
      * @args sparing parameters for other functionality
      * @return two dimensional array including data
      */
-    public double[][] getDataSource(String path, String args);
+    public double[][] getDataSourceAsMatrix(String path, String args);
+
+    /**
+     * Generate list of list of doubles including data
+     * @param path source file path
+     * @args sparing parameters for other functionality
+     * @return list of list of doubles including data
+     */
+    public List<List<Double>> getDataSourceAsLists(String path, String args);
 }

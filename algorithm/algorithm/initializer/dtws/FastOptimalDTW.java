@@ -43,6 +43,7 @@ public class FastOptimalDTW implements IDTW{
      * @param timeseries2 the second time series
      * @return the distance between two time series
      */
+    @Override
     public double computeDistance(double[] timeseries1, double[] timeseries2) {
 
         // timeseries1 and timeseries2 should be null
@@ -63,6 +64,7 @@ public class FastOptimalDTW implements IDTW{
      * @param timeseries2 the second time series
      * @return the optimal warping path between two time series
      */
+    @Override
     public List<List<Integer>> computePath(double[] timeseries1, double[] timeseries2) {
         List<List<Integer>> optimalPath = null;
 
@@ -74,6 +76,44 @@ public class FastOptimalDTW implements IDTW{
         return this.mInfo.getPath().getOptimalPath();
     }
 
+    /**
+     * Compute the DTW-related distance between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the distance between two time series
+     */
+    @Override
+    public double computeDistance(List<Double> timeseries1, List<Double> timeseries2) {
+
+        // timeseries1 and timeseries2 should be null
+        TimeSeries t1 = new TimeSeries(timeseries1, ',');
+        TimeSeries t2 = new TimeSeries(timeseries2, ',');
+
+        // 10 refers to search radius
+
+        this.mInfo = FastDTW.getWarpInfoBetween(t1, t2, 10, this.mDistFn);
+
+        return mInfo.getDistance();
+    }
+
+
+    /**
+     * Compute the optimal warping path between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the optimal warping path between two time series
+     */
+    @Override
+    public List<List<Integer>> computePath(List<Double> timeseries1, List<Double> timeseries2) {
+        List<List<Integer>> optimalPath = null;
+
+        if (this.mInfo == null) {
+            LOGGER.info("The time warping information is null!");
+            return optimalPath;
+        }
+
+        return this.mInfo.getPath().getOptimalPath();
+    }
 
     /**
      * test
@@ -113,7 +153,8 @@ public class FastOptimalDTW implements IDTW{
         }
 
         System.out.println(test.computeDistance(t1, t2));
-        List<List<Integer>> path = test.computePath(null, null);
+
+        List<List<Integer>> path = test.computePath(t1, t2);
 
         for (List<Integer> point : path) {
             System.out.println("x = " + point.get(0) + " y = " + point.get(1));

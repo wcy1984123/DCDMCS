@@ -4,6 +4,7 @@ import initializer.dtws.IDTW;
 import initializer.dtws.MatlabOriginalDTW;
 import initializer.dtws.SakoeChibaDTW;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +33,7 @@ public class SakoeChibaDTWInitializer extends AbstractInitializer implements IIn
      * @return initial cluster guesses
      */
     @Override
-    public int[] initializer(double[][] instances, int clusterNum) {
+    public int[] initializer(List<List<Double>> instances, int clusterNum) {
 
         int[] clusterLabels = null;
         if (instances == null) {
@@ -40,13 +41,13 @@ public class SakoeChibaDTWInitializer extends AbstractInitializer implements IIn
             return clusterLabels;
         }
 
-        if (instances.length == 0 || instances[0].length == 0) {
+        if (instances.size() == 0) {
             LOGGER.log(Level.INFO, "The instances are empty!");
             return clusterLabels;
         }
 
         // initialize a dynamic time warping instance
-        int searchRadius = instances[0].length / 5;
+        int searchRadius = instances.get(0).size() / 5;
         IDTW idtw = new SakoeChibaDTW("BinaryDistance", searchRadius);
 
         // do hierarchical cluster to provide initial cluster guesses

@@ -21,6 +21,7 @@ public class DDTW implements IDTW {
      * @param timeseries2 the second time series
      * @return the distance between two time series
      */
+    @Override
     public double computeDistance(double[] timeseries1, double[] timeseries2) {
         return 0.0;
     }
@@ -31,7 +32,30 @@ public class DDTW implements IDTW {
      * @param timeseries2 the second time series
      * @return the optimal warping path between two time series
      */
+    @Override
     public List<List<Integer>> computePath(double[] timeseries1, double[] timeseries2) {
+        return null;
+    }
+
+    /**
+     * Compute the DTW-related distance between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the distance between two time series
+     */
+    @Override
+    public double computeDistance(List<Double> timeseries1, List<Double> timeseries2) {
+        return 0.0;
+    }
+
+    /**
+     * Compute the optimal warping path between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the optimal warping path between two time series
+     */
+    @Override
+    public List<List<Integer>> computePath(List<Double> timeseries1, List<Double> timeseries2) {
         return null;
     }
 }

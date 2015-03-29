@@ -27,7 +27,7 @@ public class MSNBCDao extends AbstractDaoInput {
      * @return two dimensional array including data
      */
     @Override
-    public double[][] getDataSource(String path, String args) {
+    public double[][] getDataSourceAsMatrix(String path, String args) {
         // args refers to length info path
         return readFile(path, args);
     }

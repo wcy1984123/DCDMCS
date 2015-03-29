@@ -5,7 +5,7 @@
     * Sakoe-Chiba Band Dynamic Time Warping
 3. ItakuraParallelogramDTW
     * Itakura-Parallelogram Band Dynamic Time Warping
-4. FDTW
+4. FastOptimalDTW
     * Fast Dynamic Time Warping
 5. MatlabOriginalDTW
     * Original Dynamic Time Warping In Matlab 

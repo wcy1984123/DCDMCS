@@ -45,6 +45,7 @@ public class MatlabOriginalDTW implements IDTW{
      * @param timeseries2 the second time series
      * @return the distance between two time series
      */
+    @Override
     public double computeDistance(double[] timeseries1, double[] timeseries2) {
 
         // two parameters could be null
@@ -79,6 +80,7 @@ public class MatlabOriginalDTW implements IDTW{
      * @param timeseries2 the second time series
      * @return the optimal warping path between two time series
      */
+    @Override
     public List<List<Integer>> computePath(double[] timeseries1, double[] timeseries2){
         List<List<Integer>> optimalPath = null;
 
@@ -88,6 +90,69 @@ public class MatlabOriginalDTW implements IDTW{
         }
 
         if (timeseries1.length == 0 || timeseries2.length == 0) {
+            LOGGER.log(Level.INFO, "The time series are empty!");
+            return optimalPath;
+        }
+
+        int N = this.p.size();
+        for (int i = 0; i < N; i++) {
+            optimalPath.add(Arrays.asList(p.get(i), q.get(i)));
+        }
+
+        return optimalPath;
+    }
+
+    /**
+     * Compute the DTW-related distance between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the distance between two time series
+     */
+    @Override
+    public double computeDistance(List<Double> timeseries1, List<Double> timeseries2) {
+
+        // two parameters could be null
+
+        double distance = Integer.MIN_VALUE;
+
+        if (timeseries1 == null || timeseries2 == null) {
+            LOGGER.log(Level.INFO, "The time series are null!");
+            return distance;
+        }
+
+        if (timeseries1.size() == 0 || timeseries2.size() == 0) {
+            LOGGER.log(Level.INFO, "The time series are empty!");
+            return distance;
+        }
+
+        // compute the DPMatrix two-dimensional matrix
+        computeDTW(timeseries1, timeseries2);
+
+        // get the dynamic time warping distance between two sequences
+        int ROW = timeseries1.size();
+        int COLUMN = timeseries2.size();
+        distance = this.DPMatrix[ROW - 1][COLUMN - 1];
+
+
+        return distance;
+    }
+
+    /**
+     * Compute the optimal warping path between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the optimal warping path between two time series
+     */
+    @Override
+    public List<List<Integer>> computePath(List<Double> timeseries1, List<Double> timeseries2){
+        List<List<Integer>> optimalPath = null;
+
+        if (timeseries1 == null || timeseries2 == null) {
+            LOGGER.log(Level.INFO, "The time series are null!");
+            return optimalPath;
+        }
+
+        if (timeseries1.size() == 0 || timeseries2.size() == 0) {
             LOGGER.log(Level.INFO, "The time series are empty!");
             return optimalPath;
         }
@@ -116,6 +181,35 @@ public class MatlabOriginalDTW implements IDTW{
         for (int i = 0; i < length1; i++) {
             for (int j = 0; j < length2; j++) {
                 localCostMatrix[i][j] = getLocalCostMeasure(seq1[i], seq2[j]);
+            }
+        }
+
+        // compute the dynamic time warping
+        int[][] traceback = dpDTW(localCostMatrix);
+
+        // add the starting point (0, 0) into the minimum cost optimal path
+        this.p.add(0, 0);
+        this.q.add(0, 0);
+
+        return localCostMatrix;
+    }
+
+    /**
+     * Compute the cost matrix with the minimum cost path between these two sequences
+     * @param seq1 the first sequence
+     * @param seq2 the second sequence
+     * @return local cost matrix
+     */
+    private double[][] computeDTW(List<Double> seq1, List<Double> seq2) {
+        int length1 = seq1.size();
+        int length2 = seq2.size();
+
+        double[][] localCostMatrix = new double[length1][length2];
+
+        // compute the local cost matrix by two sequences
+        for (int i = 0; i < length1; i++) {
+            for (int j = 0; j < length2; j++) {
+                localCostMatrix[i][j] = getLocalCostMeasure(seq1.get(i), seq2.get(j));
             }
         }
 

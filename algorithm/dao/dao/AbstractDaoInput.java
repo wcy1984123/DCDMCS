@@ -8,6 +8,9 @@ package dao;
  * System Time: 9:40 AM
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * implement how to read various format data file into system
  */
@@ -19,9 +22,20 @@ public abstract class AbstractDaoInput implements IDAO {
      * @return two dimensional array including data
      */
     @Override
-    public double[][] getDataSource(String datapath, String args) {
+    public double[][] getDataSourceAsMatrix(String datapath, String args) {
         // TODO
         return new double[0][];
+    }
+
+    /**
+     * Generate list of list of doubles including data
+     * @param path source file path
+     * @args sparing parameters for other functionality
+     * @return list of list of doubles including data
+     */
+    public List<List<Double>> getDataSourceAsLists(String path, String args) {
+        // TODO
+        return new ArrayList<List<Double>>();
     }
 
     /**

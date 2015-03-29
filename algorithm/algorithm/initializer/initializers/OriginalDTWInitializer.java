@@ -3,6 +3,7 @@ package initializer.initializers;
 import initializer.dtws.IDTW;
 import initializer.dtws.OriginalDTW;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +36,7 @@ public class OriginalDTWInitializer extends AbstractInitializer implements IInit
      * @return initial cluster guesses
      */
     @Override
-    public int[] initializer(double[][] instances, int clusterNum) {
+    public int[] initializer(List<List<Double>> instances, int clusterNum) {
 
         int[] clusterLabels = null;
         if (instances == null) {
@@ -43,7 +44,7 @@ public class OriginalDTWInitializer extends AbstractInitializer implements IInit
             return clusterLabels;
         }
 
-        if (instances.length == 0 || instances[0].length == 0) {
+        if (instances.size() == 0) {
             LOGGER.log(Level.INFO, "The instances are empty!");
             return clusterLabels;
         }

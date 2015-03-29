@@ -10,6 +10,7 @@ package com.timeseries;
 import com.util.Arrays;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -83,6 +84,128 @@ public class TimeSeries {
         this(inputFile, colToInclude, isFirstColTime, DEFAULT_IS_LABELED, DEFAULT_DELIMITER);
     }
 
+    /**
+     * Created for compatible to other data type
+     * @param timeseries a double array of a time series
+     * @param delimiter delimiter separate values in a line
+     */
+    public TimeSeries(List<Double> timeseries, char delimiter) {
+
+        this();
+        int[] colToInclude = ZERO_ARRAY;
+        boolean isFirstColTime = false;
+        boolean isLabeled = false;
+
+        if (timeseries == null) {
+            System.out.println("Time series is null!");
+        }
+
+        if (timeseries.size() == 0) {
+            System.out.println("Time seires is empty!");
+        }
+
+        // Record the Label names (fropm the top row.of the input file).
+        String line = String.valueOf(timeseries.get(0));
+        StringTokenizer st = new StringTokenizer(line, String.valueOf(delimiter));
+
+        if (isLabeled) {
+            int currentCol = 0;
+            while (st.hasMoreTokens()) {
+                final String currentToken = st.nextToken();
+                if ((colToInclude.length == 0) || (Arrays.contains(colToInclude, currentCol)))
+                    labels.add(currentToken);
+
+                currentCol++;
+            }  // end while loop
+
+            // Make sure that the first column is labeled is for Time.
+            if (labels.size() == 0)
+                throw new InternalError("ERROR:  The first row must contain label " +
+                        "information, it is empty!");
+            else if (!isFirstColTime)
+                labels.add(0, "Time");
+            else if (isFirstColTime && !((String) labels.get(0)).equalsIgnoreCase("Time"))
+                throw new InternalError("ERROR:  The time column (1st col) in a time series must be labeled as 'Time', '" +
+                        labels.get(0) + "' was found instead");
+        }
+        else    // time series file is not labeled
+        {
+            if ((colToInclude == null) || (colToInclude.length == 0)) {
+                labels.add("Time");
+                if (isFirstColTime)
+                    st.nextToken();
+
+                int currentCol = 1;                                                 // TODO input fails gracefully
+                while (st.hasMoreTokens()) {
+                    st.nextToken();
+                    labels.add(new String("c" + currentCol++));                                // TODO add measurement with no time
+                }
+            } else {
+                java.util.Arrays.sort(colToInclude);
+                labels.add("Time");
+                for (int c = 0; c < colToInclude.length; c++)
+                    if (colToInclude[c] > 0)
+                        labels.add(new String("c" + c));                      // TODO change to letterNum
+            }  // end if
+        }  // end if
+
+
+        int curCount = 0;
+        int maxCount = timeseries.size();
+        // Read in all of the values in the data file.
+        while (curCount < maxCount)   // read lines until end of file
+        {
+            line = String.valueOf(timeseries.get(curCount++));
+            if (line.length() > 0)  // ignore empty lines
+            {
+                st = new StringTokenizer(line, ",");
+
+                // Make sure that the current line has the correct number of
+                //    currentLineValues in it.
+                //           if (st.countTokens() != (labels.size()+ignoredCol))
+                //              throw new InternalError("ERROR:  Line " + (tsArray.size()+1) +
+                //                                      "contains the wrong number of currentLineValues. " +
+                //                                      "expected:  " + (labels.size()+ignoredCol) + ", " +
+                //                                      "found: " + st.countTokens());
+
+                // Read all currentLineValues in the current line
+                final ArrayList currentLineValues = new ArrayList();
+                int currentCol = 0;
+                while (st.hasMoreTokens()) {
+                    final String currentToken = st.nextToken();
+                    if ((colToInclude.length == 0) || (Arrays.contains(colToInclude, currentCol))) {
+                        // Attempt to parse the next value to a Double value.
+                        final Double nextValue;
+                        try {
+                            nextValue = Double.valueOf(currentToken);
+                        } catch (NumberFormatException e) {
+                            throw new InternalError("ERROR:  '" + currentToken + "' is not a valid number");
+                        }
+
+                        currentLineValues.add(nextValue);
+                    }  // end if
+
+                    currentCol++;
+                }  // end while loop
+
+                // Update the private data with the current Row that has been
+                //    read.
+                if (isFirstColTime)
+                    timeReadings.add(currentLineValues.get(0));
+                else
+                    timeReadings.add(new Double(timeReadings.size()));
+                final int firstMeasurement;
+                if (isFirstColTime)
+                    firstMeasurement = 1;
+                else
+                    firstMeasurement = 0;
+                final TimeSeriesPoint readings = new TimeSeriesPoint(currentLineValues.subList(firstMeasurement,
+                        currentLineValues.size()));
+                tsArray.add(readings);
+//               timeValueMap.put(timeReadings.get(timeReadings.size()-1), readings);
+            }  // end if
+        }  // end while loop
+    }
 
     /**
      * Created for compatible to other data type

@@ -31,4 +31,20 @@ public interface IDTW {
      * @return the optimal warping path between two time series
      */
     public List<List<Integer>> computePath(double[] timeseries1, double[] timeseries2);
+
+    /**
+     * Compute the DTW-related distance between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the distance between two time series
+     */
+    public double computeDistance(List<Double> timeseries1, List<Double> timeseries2);
+
+    /**
+     * Compute the optimal warping path between two time series
+     * @param timeseries1 the first time series
+     * @param timeseries2 the second time series
+     * @return the optimal warping path between two time series
+     */
+    public List<List<Integer>> computePath(List<Double> timeseries1, List<Double> timeseries2);
 }

@@ -1,5 +1,7 @@
 package initializer.initializers;
 
+import java.util.List;
+
 /**
  * Project: DCDMC
  * Package: initializer
@@ -20,7 +22,8 @@ public class DDTWInitializer extends AbstractInitializer implements IInitializer
      * @param clusterNum the maximum number of clusters
      * @return initial cluster guesses
      */
-    public int[] initializer(double[][] instances, int clusterNum) {
+    @Override
+    public int[] initializer(List<List<Double>> instances, int clusterNum) {
         //TODO
         return new int[0];
     }

@@ -1,6 +1,5 @@
 package starter;
 
-import Utilities.Utilities;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
@@ -127,13 +126,12 @@ public class Starter {
         //------------------- Initialization --------------------//
         LOGGER.info("Initialization Begins");
         String[] strings = this.mConfigs[2].split(" ");
-        double[][] instances = this.mIdao.getDataSource(strings[1], strings[2]);
-        List<List<Double>> instancesList = Utilities.convertToTwoDimensionalDoubleList(instances);
+        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
         int[] previousClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
         LOGGER.info("Initialization Ends");
 
         //--------------- CDMC Iterative Process ----------------//
-        int instancesNum = instances.length;
+        int instancesNum = instances.size();
         int[] initialClusterLabels  = new int[instancesNum];
         double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
 
@@ -143,12 +141,12 @@ public class Starter {
             LOGGER.info("Train Models Starts");
             // build dynamic model
             String[] modelArgs = this.mConfigs[5].split(" ");
-            this.mIModels.trainDynamicModels(instancesList, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1]));
+            this.mIModels.trainDynamicModels(instances, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1]));
             LOGGER.info("Train Models Ends");
 
             LOGGER.info("Cluster Process Starts");
             // assign cluster labels
-            int[] currentClusterLabels = this.mIModels.assignClusterLabels(instancesList);
+            int[] currentClusterLabels = this.mIModels.assignClusterLabels(instances);
             LOGGER.info("Cluster Process Ends");
 
             LOGGER.info("Cluster Agreement Evaluation Starts");

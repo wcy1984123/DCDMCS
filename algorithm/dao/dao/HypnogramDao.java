@@ -55,9 +55,9 @@ public class HypnogramDao extends AbstractDaoInput {
      * @return two dimensional array including data
      */
     @Override
-    public double[][] getDataSource(String path, String args) {
+    public double[][] getDataSourceAsMatrix(String path, String args) {
 
-        double[][] data = readFile(path);
+        double[][] data = Utilities.convertToTwoDimensionDoubleArray(readFile(path));
 
         double[][] formatData = formatHypnogrmas(data, Integer.parseInt(args));
 
@@ -67,11 +67,28 @@ public class HypnogramDao extends AbstractDaoInput {
     }
 
     /**
+     * Generate list of list of doubles including data
+     * @param path source file path
+     * @args sparing parameters for other functionality
+     * @return list of list of doubles including data
+     */
+    @Override
+    public List<List<Double>> getDataSourceAsLists(String path, String args) {
+        List<List<Double>> data = readFile(path);
+
+        List<List<Double>> formatData = formatHypnogrmas(data, Integer.parseInt(args));
+
+        List<List<Double>> res = getHypnogramData(formatData);
+
+        return res;
+    }
+
+    /**
      * Load file data into memory
      * @param path external file path
      * @return two dimensional array
      */
-    private double[][] readFile(String path) {
+    private List<List<Double>> readFile(String path) {
 
         List<List<Double>> cache = new ArrayList<List<Double>>();
         try {
@@ -91,45 +108,7 @@ public class HypnogramDao extends AbstractDaoInput {
             e.printStackTrace();
         }
 
-        // convert list structures into primitive data
-        double[][] res = readFile(cache);
-        return res;
-    }
-
-    /**
-     * Convert list structures into primitive data
-     * @param datasource list of list data source
-     * @return two dimensional array
-     */
-    private double[][] readFile(List<List<Double>> datasource) {
-        double[][] res = null;
-        if (datasource == null) {
-            LOGGER.log(Level.INFO, "data source is null!");
-            return res;
-        }
-
-        if (datasource.size() == 0) {
-            LOGGER.log(Level.INFO, "data source is empty!");
-            return res;
-        }
-
-        List<Double> data = datasource.get(0);
-        int ROW = datasource.size();
-        int COLUMN = data.size();
-        res = new double[ROW][COLUMN];
-        for (int i = 0; i < ROW; i++) {
-           data = datasource.get(i);
-            if (data == null || data.size() == 0) {
-                LOGGER.log(Level.INFO, "data is null or empty!");
-                break;
-            }
-
-            for (int j = 0; j < COLUMN; j++) {
-                res[i][j] = data.get(j);
-            }
-        }
-
-        return res;
+        return cache;
     }
 
     /**
@@ -139,19 +118,22 @@ public class HypnogramDao extends AbstractDaoInput {
      * @return formatted data
      */
     private double[][] formatHypnogrmas(double[][] data, int format) {
+
+        double[][] res = null;
+
         if (data == null) {
             LOGGER.log(Level.INFO, "data is null!");
-            return data;
+            return res;
         }
 
         if (data.length == 0 || data[0].length == 0) {
             LOGGER.log(Level.INFO, "data is empty!");
-            return data;
+            return res;
         }
 
         int ROW = data.length;
         int COLUMN = data[0].length;
-        double[][] res = new double[ROW][COLUMN];
+        res = new double[ROW][COLUMN];
 
         // copy data
         // Delete '4','6' from hypnogram before translating 5 states into 3 states
@@ -211,6 +193,96 @@ public class HypnogramDao extends AbstractDaoInput {
     }
 
     /**
+     * Format data in terms of format type
+     * @param data hypnograms
+     * @param format 3 types of formats
+     * @return formatted data
+     */
+    private List<List<Double>> formatHypnogrmas(List<List<Double>> data, int format) {
+
+        List<List<Double>> res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "data is null!");
+            return res;
+        }
+
+        if (data.size() == 0) {
+            LOGGER.log(Level.INFO, "data is empty!");
+            return res;
+        }
+
+        int ROW = data.size();
+        res = new ArrayList<List<Double>>();
+
+        // copy data
+        // Delete '4','6' from hypnogram before translating 5 states into 3 states
+        for (int i = 0; i < ROW; i++) {
+            int COLUMN = data.get(i).size();
+            List<Double> eachRow = new ArrayList<Double>();
+            for (int j = 0; j < COLUMN; j++) {
+                double value = data.get(i).get(j);
+                if (value == 4) {
+                    eachRow.add(44.0);
+                } else if (value == 6) {
+                    eachRow.add(66.0);
+                } else {
+                    eachRow.add(value);
+                }
+            }
+            res.add(eachRow);
+        }
+
+        // format data
+        if (format == 2) {
+            // WS format
+            // Change 5 states hypnogram into 2 states hypnogram combining stage 1, 2, 3, and 5 into stage 6
+            for (int i = 0; i < ROW; i++) {
+                int COLUMN = res.get(i).size();
+                for (int j = 0; j < COLUMN; j++) {
+                    double value = res.get(i).get(j);
+                    if (value != 0 && value <= 6) {
+                        res.get(i).set(j, 6.0);
+                    }
+                }
+            }
+        } else if (format == 3) {
+            // WNR format
+            // Change 5 states hypnogram into 3 states hypnogram combining stage 1, 2, and 3  into stage 6
+            for (int i = 0; i < ROW; i++) {
+                int COLUMN = res.get(i).size();
+                for (int j = 0; j < COLUMN; j++) {
+                    double value = res.get(i).get(j);
+                    if (value != 0 && value != 5 && value <= 5) {
+                        res.get(i).set(j, 6.0);
+                    }
+                }
+            }
+
+        } else if (format == 4) {
+            // WDL format
+            // Change 5 states hypnogram into 3 states hypnogram combining stage 1, 2, and 5  into stage 6
+            for (int i = 0; i < ROW; i++) {
+                int COLUMN = res.get(i).size();
+                for (int j = 0; j < COLUMN; j++) {
+                    double value = res.get(i).get(j);
+                    if (value != 0 && value != 3 && value <= 5) {
+                        res.get(i).set(j, 6.0);
+                    }
+                }
+            }
+        } else if (format == 5) {
+            // W123R format
+            // keep the original dataset
+
+        } else {
+            // keep the original dataset
+        }
+
+        return res;
+    }
+
+    /**
      * Reformat data using numbers in ascending sort "1 2 3"
      * @param data processed hypnogram by function "formatHypngrams"
      * @return removed states dataset
@@ -240,6 +312,47 @@ public class HypnogramDao extends AbstractDaoInput {
             for (int j = 0; j < COLUMN; j++) {
                 if (data[i][j] <= 3) {
                     level.add(data[i][j]);
+                }
+            }
+            res.add(level);
+        }
+
+        return res;
+    }
+
+    /**
+     * Reformat data using numbers in ascending sort "1 2 3"
+     * @param data processed hypnogram by function "formatHypngrams"
+     * @return removed states dataset
+     */
+    private List<List<Double>> getHypnogramData(List<List<Double>> data) {
+        int ROW = data.size();
+        for (int i = 0; i < ROW; i++) {
+            int COLUMN = data.get(i).size();
+            for (int j = 0; j < COLUMN; j++) {
+                double value = data.get(i).get(j);
+                if (value == 0) {
+                    data.get(i).set(j, 1.0);
+                } else if (value == 6) {
+                    data.get(i).set(j, 2.0);
+                } else if (value == 5) {
+                    data.get(i).set(j, 3.0);
+                } else {
+                    // keep the same
+                }
+            }
+        }
+
+        // delete the unused values bigger than 3
+        List<List<Double>> res = new ArrayList<List<Double>>();
+        List<Double> level = null;
+        for (int i = 0; i < ROW; i++) {
+            int COLUMN = data.get(i).size();
+            level = new ArrayList<Double>();
+            for (int j = 0; j < COLUMN; j++) {
+                double value = data.get(i).get(j);
+                if (value <= 3) {
+                    level.add(value);
                 }
             }
             res.add(level);
