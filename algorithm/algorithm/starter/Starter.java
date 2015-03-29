@@ -48,9 +48,18 @@ public class Starter {
 
     /**
      * class constructor
+     * @param configFilePath configuration file path
      */
-    public Starter() {
-        init(); // initialize member variables
+    public Starter(String configFilePath) {
+        init(configFilePath); // initialize member variables
+    }
+
+    /**
+     * class constructor
+     * @param configurationList configuration string list
+     */
+    public Starter(List<String> configurationList) {
+        init(configurationList); // initialize member variables
     }
 
     /**
@@ -85,12 +94,49 @@ public class Starter {
 
     /**
      * Initialize member variables according to config file
+     * @param configFilePath configuration file path
      */
-    private void init() {
+    private void init(String configFilePath) {
 
         // read config file
-        String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
-        readConfigFile(configPath);
+        readConfigFile(configFilePath);
+
+        if (this.mConfigs == null) {
+            LOGGER.log(Level.INFO, "Config file is null!");
+            return;
+        }
+
+        //---------------------- Cluster Numbers ----------------------//
+        this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
+
+        //------------------------- Similarity ------------------------//
+        this.mSimilarity = Double.parseDouble(this.mConfigs[1]);
+
+        //-------------------------- Dataset --------------------------//
+        String[] strings = this.mConfigs[2].split(" ");
+        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
+
+        //----------------------- Initialization ----------------------//
+        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
+
+        //--------------------- Stopping Criteria ---------------------//
+        this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
+
+        //----------------------- Dynamic Models ----------------------//
+        String[] modelArgs = this.mConfigs[5].split(" ");
+        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(modelArgs[0].toUpperCase()));
+
+    }
+
+    /**
+     * Initialize member variables according to config file
+     * @param configurationList configuration string list
+     */
+    private void init(List<String> configurationList) {
+
+        // save to member variable
+        this.mConfigs = new String[configurationList.size()];
+        this.mConfigs = configurationList.toArray(this.mConfigs);
 
         if (this.mConfigs == null) {
             LOGGER.log(Level.INFO, "Config file is null!");
@@ -171,7 +217,8 @@ public class Starter {
      * @param args user input
      */
     public static void main(String[] args) {
-        Starter test = new Starter();
+        String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
+        Starter test = new Starter(configPath);
         test.runCDMC();
 
     }
