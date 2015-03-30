@@ -1,6 +1,7 @@
 package initializer.initializers;
 
 import Utilities.IOOperation;
+import gui.ConsoleProgressGUI;
 import initializer.dtws.IDTW;
 
 import java.util.List;
@@ -39,9 +40,51 @@ public class AbstractInitializer {
         }
 
         int ROW = instances.size();
-        double[][] distanceMatrix = new double[ROW][ROW];
+        double[][] distanceMatrix = null;
 
         LOGGER.info("Initializer: Compute Distance Matrix");
+
+        ConsoleProgressGUI cpg = new ConsoleProgressGUI("Compute Distance Matrix", ROW, instances, idtw);
+
+//        // wait until computation of distance matrix is finished.
+//        while(true) {
+//            //Sleep for one minute.
+//            try {
+//                Thread.currentThread().sleep(1000);
+//                Thread.currentThread().join();
+//            } catch (InterruptedException ignore) {}
+//            if (cpg.isFinished()) break;
+//        }
+
+        distanceMatrix = cpg.getDistanceMatrix();
+
+        // or we could call the subroutine function
+//        distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
+
+        // save distance matrix
+        IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
+
+//        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
+
+        LOGGER.info("Initializer: Compute Initial Cluster Labels");
+        //  compute the initial cluster guesses in terms of the given type of clustering algorithm
+        int[] clusterAssignments = ica.getClusterAssignment(clusterNum, distanceMatrix);
+
+        // save cluster assignment
+        IOOperation.writeFile(clusterAssignments, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
+
+        return clusterAssignments;
+    }
+
+    /**
+     * Compute the distance matrix in terms of the given type of dynamic time warping algorithm
+     * @param ROW the number of instances
+     * @param instances instance dataset
+     * @param idtw the dynamic time warping algorithm
+     * @return the distance matrix of the instances
+     */
+    private double[][] compuateDistanceMatrix(int ROW, List<List<Double>> instances, IDTW idtw) {
+        double[][] distanceMatrix = new double[ROW][ROW];
         // compute distance matrix in terms of the given type of dynamic time warping algorithm
         for (int i = 0; i < ROW; i++) {
             for (int j = i + 1; j < ROW; j++) {
@@ -57,23 +100,10 @@ public class AbstractInitializer {
 
             }
 
-
             System.out.println("The distances of instances [ " + i + " ] is finished.");
         }
 
-        // save distance matrix
-        IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
-
-//        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
-
-        LOGGER.info("Initializer: Compute Initial Cluster Labels");
-        //  compute the initial cluster guesses in terms of the given type of clustering algorithm
-        int[] clusterAssignments = ica.getClusterAssignment(clusterNum, distanceMatrix);
-
-        // save cluster assignment
-        IOOperation.writeFile(clusterAssignments, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
-
-        return clusterAssignments;
+        return distanceMatrix;
     }
 
 }
