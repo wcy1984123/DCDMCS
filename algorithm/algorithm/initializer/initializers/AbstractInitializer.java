@@ -44,27 +44,28 @@ public class AbstractInitializer {
 
         LOGGER.info("Initializer: Compute Distance Matrix");
 
-        ConsoleProgressGUI cpg = new ConsoleProgressGUI("Compute Distance Matrix", ROW, instances, idtw);
 
-//        // wait until computation of distance matrix is finished.
-//        while(true) {
-//            //Sleep for one minute.
+//        // -------------------------- GUI Distance Matrix Computation--------------------------- //
+//        ConsoleProgressGUI cpg = new ConsoleProgressGUI("Compute Distance Matrix", ROW, instances, idtw);
+//        synchronized (cpg) {
 //            try {
-//                Thread.currentThread().sleep(1000);
-//                Thread.currentThread().join();
-//            } catch (InterruptedException ignore) {}
-//            if (cpg.isFinished()) break;
+//                cpg.wait();
+//            } catch (InterruptedException e) {
+//
+//            }
 //        }
-
-        distanceMatrix = cpg.getDistanceMatrix();
+//
+//        distanceMatrix = cpg.getDistanceMatrix();
 
         // or we could call the subroutine function
-//        distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
+        distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
 
         // save distance matrix
         IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
 
+        // ---------------------- Directly Read Distance Matrix From File -------------------- //
 //        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
+
 
         LOGGER.info("Initializer: Compute Initial Cluster Labels");
         //  compute the initial cluster guesses in terms of the given type of clustering algorithm

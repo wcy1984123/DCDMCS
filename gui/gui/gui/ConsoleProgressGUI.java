@@ -81,6 +81,9 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             Toolkit.getDefaultToolkit().beep();
             setCursor(null); //turn off the wait cursor
             consoleTextArea.append("Done!\n");
+            synchronized (this) {
+                this.notifyAll();
+            }
         }
     }
 
@@ -137,9 +140,10 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true); // show gui
-        try {
-            Thread.currentThread().join();
-        }catch (InterruptedException ignore) {}
+
+        task = new Task();
+        task.addPropertyChangeListener(this);
+        task.execute();
     }
 
     /**
@@ -150,9 +154,6 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         taskComplettionProgressBar.setStringPainted(true);
         consoleTextArea.setMargin(new Insets(5,5,5,5));
         consoleTextArea.setEditable(false);
-        task = new Task();
-        task.addPropertyChangeListener(this);
-        task.execute();
     }
 
 
