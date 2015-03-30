@@ -58,13 +58,13 @@ public class AbstractInitializer {
 //        distanceMatrix = cpg.getDistanceMatrix();
 
         // or we could call the subroutine function
-        distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
+//        distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
 
         // save distance matrix
         IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
 
         // ---------------------- Directly Read Distance Matrix From File -------------------- //
-//        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
+        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
 
 
         LOGGER.info("Initializer: Compute Initial Cluster Labels");

@@ -2,8 +2,12 @@ package initializer.initializers;
 
 import Utilities.Utilities;
 import hierarchicalclustering.*;
+import visualization.DendrogramPanel;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -220,6 +224,9 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
         // do hierarchical clustering algorithm
         cluster = alg.performClustering(distances, names, linkageStrategy);
 
+        // visualize hierarchical clustering
+        visualizeHierarchicalClustering(cluster);
+
         return cluster;
 
     }
@@ -267,6 +274,34 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
      */
     public void setLinkageStrategy(LinkageStrategy linkageStrategy) {
         this.linkageStrategy = linkageStrategy;
+    }
+
+    /**
+     * Build a dendrogram panel to visualize hierarchical clustering
+     * @param cluster hierarchical clustering of instances
+     */
+    private void visualizeHierarchicalClustering(Cluster cluster) {
+        JFrame frame = new JFrame("Hierarchical Clustering Visualization - " + linkageStrategy.toString());
+        frame.setSize(500, 400);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        JPanel content = new JPanel();
+        DendrogramPanel dp = new DendrogramPanel();
+
+        frame.setContentPane(content);
+        content.setBackground(Color.red);
+        content.setLayout(new BorderLayout());
+        content.add(dp, BorderLayout.CENTER);
+        dp.setBackground(Color.WHITE);
+        dp.setLineColor(Color.BLACK);
+        dp.setScaleValueDecimals(0);
+        dp.setScaleValueInterval(1);
+        dp.setShowDistances(false);
+
+        // visualize the hierarchical clustering
+        dp.setModel(cluster);
+        frame.setVisible(true);
     }
 
     /**
