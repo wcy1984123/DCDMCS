@@ -1,0 +1,143 @@
+\defmodule {JohnsonSystemG}
+
+This class contains common parameters and methods for
+the random variate generators associated with
+the {\em Johnson} system of distributions \cite{tJOH49a,tJOH95a}.
+See the definitions of
+\externalclass{umontreal.iro.lecuyer.probdist}{JohnsonSLDist},
+\externalclass{umontreal.iro.lecuyer.probdist}{JohnsonSBDist}, and
+\externalclass{umontreal.iro.lecuyer.probdist}{JohnsonSUDist}
+in package \texttt{probdist}.
+
+
+
+\bigskip\hrule
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{code}
+\begin{hide}
+/*
+ * Class:        JohnsonSystemG
+ * Description:  Johnson system of distributions
+ * Environment:  Java
+ * Software:     SSJ
+ * Copyright (C) 2001  Pierre L'Ecuyer and Universite de Montreal
+ * Organization: DIRO, Universite de Montreal
+ * @author       Richard Simard
+ * @since        july 2012
+
+ * SSJ is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License (GPL) as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * any later version.
+
+ * SSJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * A copy of the GNU General Public License is available at
+   <a href="http://www.gnu.org/licenses">GPL licence site</a>.
+ */
+\end{hide}
+package umontreal.iro.lecuyer.randvar;\begin{hide}
+import umontreal.iro.lecuyer.rng.*;
+import umontreal.iro.lecuyer.probdist.*;
+\end{hide}
+
+
+abstract class JohnsonSystemG extends RandomVariateGen\begin{hide} {
+   protected double gamma;
+   protected double delta;
+   protected double xi;
+   protected double lambda;\end{hide}
+\end{code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection* {Constructor}
+
+\begin{code}
+
+   protected JohnsonSystemG (RandomStream s, double gamma, double delta,
+                             double xi, double lambda)\begin{hide} {
+      super (s, null);
+      setParams (gamma, delta, xi, lambda);
+   }\end{hide}
+\end{code}
+\begin{tabb} Constructs a \texttt{JohnsonSystemG} object
+   with shape parameters $\gamma = \texttt{gamma}$ and $\delta = \texttt{delta}$,
+   location parameter $\xi = \texttt{xi}$, and scale parameter
+   $\lambda = \texttt{lambda}$.
+\end{tabb}
+\begin{code}
+
+   protected JohnsonSystemG (RandomStream s, ContinuousDistribution dist)\begin{hide} {
+      super (s, dist);
+   }\end{hide}
+\end{code}
+\begin{tabb} Constructs a \texttt{JohnsonSystemG} object with parameters
+   obtained from distribution \texttt{dist}.
+\end{tabb}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection* {Methods}
+\begin{code}
+
+   public double getGamma()\begin{hide} {
+      return gamma;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\gamma$.
+ \end{tabb}
+\begin{code}
+
+   public double getDelta()\begin{hide} {
+      return delta;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\delta$.
+ \end{tabb}
+\begin{code}
+
+   public double getXi()\begin{hide} {
+      return xi;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\xi$.
+ \end{tabb}
+\begin{code}
+
+   public double getLambda()\begin{hide} {
+      return lambda;
+   }
+\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\lambda$.
+ \end{tabb}
+\begin{code}
+
+   protected void setParams (double gamma, double delta, double xi,
+                             double lambda)\begin{hide} {
+      if (lambda <= 0)
+         throw new IllegalArgumentException ("lambda <= 0");
+      if (delta <= 0)
+         throw new IllegalArgumentException ("delta <= 0");
+      this.gamma = gamma;
+      this.delta = delta;
+      this.xi = xi;
+      this.lambda = lambda;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Sets the value of the parameters $\gamma$, $\delta$, $\xi$ and
+  $\lambda$ for this object.
+ \end{tabb}
+
+\begin{code}\begin{hide}
+}\end{hide}
+\end{code}

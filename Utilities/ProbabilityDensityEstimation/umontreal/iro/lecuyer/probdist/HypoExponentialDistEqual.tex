@@ -1,0 +1,234 @@
+\defmodule {HypoExponentialDistEqual}
+
+This class implements  the \emph{hypoexponential} distribution for the case of equidistant $\lambda_{i} = (n+1-i)h$. We have $\lambda_{i+1} - \lambda_i =
+h$, with $h$  a constant, and $n \ge k$ are integers.
+
+\noindent The formula (\ref{eq:convolution-hypo}) becomes
+\begin{equation}
+\begin{latexonly}%
+\bar F(x) = \mathbb{P}\left[X_1 + \cdots + X_k > x \right]
+  = \sum_{i=1}^k e^{-(n+1-i)h x} \prod_{\substack{j=1\\ j\not=i}}^k
+  \frac{n+1-j}{i - j}.
+\label{eq:conv-hypo-equal}
+\end{latexonly}%
+\begin{htmlonly}%
+\bar F(x) = \mathcal{P}\left[X_1 + \cdots + X_k > x \right]
+  = \sum_{i=1}^k e^{-(n+1-i)h x} \prod_{\substack{j=1\\ j\not=i}}^k
+  {n+1-j}/{i - j}.
+\end{htmlonly}%
+\end{equation}
+%
+The formula (\ref{eq:fhypoexp2}) for the density becomes
+\begin{equation}
+\begin{latexonly}%
+  f(x) = \sum_{i=1}^k (n+1-i)h e^{-(n+1-i)h x} \prod_{\substack{j=1\\ j\not=i}}^k
+  \frac{n+1-j}{i - j}.
+\eqlabel{eq:fhypoexp3}
+\end{latexonly}%
+\begin{htmlonly}%
+ f(x) =\sum_{i=1}^k (n+1-i)h e^{-(n+1-i)h x}
+   \prod_{\substack{j=1\\ j\not=i}}^k {n+1-j}/{i - j}.
+\end{htmlonly}%
+\end{equation}
+
+\bigskip\hrule
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{code}\begin{hide}
+/*
+ * Class:        HypoExponentialDistEqual
+ * Description:  Hypo-exponential distribution
+ * Environment:  Java
+ * Software:     SSJ
+ * Copyright (C) 2001  Pierre L'Ecuyer and Universite de Montreal
+ * Organization: DIRO, Universite de Montreal
+ * @author       Richard Simard
+ * @since        February 2014
+
+ * SSJ is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License (GPL) as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * any later version.
+
+ * SSJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * A copy of the GNU General Public License is available at
+   <a href="http://www.gnu.org/licenses">GPL licence site</a>.
+ */
+\end{hide}
+package umontreal.iro.lecuyer.probdist;
+\begin{hide}
+import java.util.Formatter;
+import java.util.Locale;
+import umontreal.iro.lecuyer.util.*;
+import umontreal.iro.lecuyer.functions.MathFunction;\end{hide}
+
+public class HypoExponentialDistEqual extends HypoExponentialDist\begin{hide} {
+   private double m_h;
+   private int m_n;
+   private int m_k;
+\end{hide}
+\end{code}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection* {Constructor}
+
+\begin{code}
+
+   public HypoExponentialDistEqual (int n, int k, double h)\begin{hide} {
+      super (null);
+      setParams (n, k, h);
+   }\end{hide}
+\end{code}
+  \begin{tabb} Constructor for equidistant rates.
+  The rates are $\lambda_i = (n+1-i)h$, for $i = 1,\ldots,k$.
+  \end{tabb}
+\begin{htmlonly}
+   \param{n}{largest rate is $nh$}
+   \param{k}{number of rates}
+   \param{h}{difference between adjacent rates}
+\end{htmlonly}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection* {Methods}
+
+\begin{code}\begin{hide}
+   public double density (double x) {
+      return density (m_n, m_k, m_h, x);
+   }
+
+   public double cdf (double x) {
+      return cdf (m_n, m_k, m_h, x);
+   }
+
+   public double barF (double x) {
+      return barF (m_n, m_k, m_h, x);
+   }
+
+   public double inverseF (double u) {
+      return inverseF (m_n, m_k, m_h, u);
+   }\end{hide}
+
+   public static double density (int n, int k, double h, double x)\begin{hide} {
+      if (x < 0)
+         return 0;
+      double r = -Math.expm1(-h*x);
+      double v = BetaDist.density(k, n - k + 1, r);
+      return h*v*Math.exp(-h*x);
+   }\end{hide}
+\end{code}
+  \begin{tabb} Computes the density function $f(x)$, with the same arguments
+  as in the constructor.
+\end{tabb}
+\begin{htmlonly}
+   \param{n}{max possible number of $\lambda_i$}
+   \param{k}{effective number of $\lambda_i$}
+   \param{h}{step between two successive $\lambda_i$}
+   \param{x}{value at which the distribution is evaluated}
+   \return{density at $x$}
+\end{htmlonly}
+\begin{code}
+
+   public static double cdf (int n, int k, double h, double x)\begin{hide} {
+      if (x <= 0)
+         return 0;
+      double r = -Math.expm1(-h*x);
+      double u = BetaDist.cdf(k, n - k + 1, r);
+      return u;
+   }\end{hide}
+\end{code}
+\begin{tabb} Computes the distribution function $F(x)$, with arguments
+  as in the constructor.
+ \end{tabb}
+\begin{htmlonly}
+   \param{n}{max possible number of $\lambda_i$}
+   \param{k}{effective number of $\lambda_i$}
+   \param{h}{step between two successive $\lambda_i$}
+   \param{x}{value at which the distribution is evaluated}
+   \return{value of distribution at $x$}
+\end{htmlonly}
+\begin{code}
+
+   public static double barF (int n, int k, double h, double x)\begin{hide} {
+      if (x <= 0)
+         return 1.0;
+      double r = Math.exp(-h*x);
+      double v = BetaDist.cdf(n - k + 1, k, r);
+      return v;
+   }\end{hide}
+\end{code}
+\begin{tabb}
+  Computes the complementary distribution $\bar F(x)$,
+  as in formula (\ref{eq:conv-hypo-equal}).
+ \end{tabb}
+\begin{htmlonly}
+   \param{n}{max possible number of $\lambda_i$}
+   \param{k}{effective number of $\lambda_i$}
+   \param{h}{step between two successive $\lambda_i$}
+   \param{x}{value at which the complementary distribution is evaluated}
+   \return{value of complementary distribution at $x$}
+\end{htmlonly}
+\begin{code}
+
+   public static double inverseF (int n, int k, double h, double u)\begin{hide} {
+      if (u < 0.0 || u > 1.0)
+          throw new IllegalArgumentException ("u not in [0,1]");
+      if (u >= 1.0)
+          return Double.POSITIVE_INFINITY;
+      if (u <= 0.0)
+          return 0.0;
+
+      double z = BetaDist.inverseF(k, n - k + 1, u);
+      return -Math.log1p(-z) / h;
+   }\end{hide}
+\end{code}
+\begin{tabb} Computes the inverse distribution $x=F^{-1}(u)$,
+ with arguments as in the constructor.
+\end{tabb}
+\begin{htmlonly}
+   \param{n}{max possible number of $\lambda_i$}
+   \param{k}{effective number of $\lambda_i$}
+   \param{h}{step between two successive $\lambda_i$}
+   \param{u}{value at which the inverse distribution is evaluated}
+   \return{inverse distribution at $u$}
+\end{htmlonly}
+\begin{code}
+
+   public double[] getParams()\begin{hide} {
+      double[] par = new double[]{m_n, m_k, m_h};
+      return par;
+   }\end{hide}
+\end{code}
+\begin{tabb}  Returns the three parameters
+of this hypoexponential distribution as array $(n, k, h)$.
+\end{tabb}
+\begin{htmlonly}
+   \return{parameters of the hypoexponential distribution}
+\end{htmlonly}
+\begin{code}\begin{hide}
+
+   public void setParams (int n, int k, double h) {
+      m_n = n;
+      m_k = k;
+      m_h = h;
+      m_lambda = new double[k];
+      for(int i = 0; i < k; i++) {
+         m_lambda[i] = (n - i)*h;
+      }
+   }
+
+
+   public String toString() {
+      StringBuilder sb = new StringBuilder();
+      Formatter formatter = new Formatter(sb, Locale.US);
+      formatter.format(getClass().getSimpleName() + " : params = {" +
+           PrintfFormat.NEWLINE);
+      formatter.format("   %d, %d, %f", m_n, m_k, m_h);
+      formatter.format("}%n");
+      return sb.toString();
+   }
+}\end{hide}
+\end{code}

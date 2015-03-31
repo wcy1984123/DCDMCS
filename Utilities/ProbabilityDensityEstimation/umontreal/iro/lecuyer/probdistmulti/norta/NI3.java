@@ -1,0 +1,135 @@
+
+
+/*
+ * Class:        NI3
+ * Description:
+ * Environment:  Java
+ * Software:     SSJ
+ * Copyright (C) 2001  Pierre L'Ecuyer and Université de Montréal
+ * Organization: DIRO, Université de Montréal
+ * @author       Nabil Channouf
+ * @since
+
+ * SSJ is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License (GPL) as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * any later version.
+
+ * SSJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * A copy of the GNU General Public License is available at
+   <a href="http://www.gnu.org/licenses">GPL licence site</a>.
+ */
+
+package umontreal.iro.lecuyer.probdistmulti.norta;
+
+import umontreal.iro.lecuyer.probdist.*;
+
+
+/**
+ * This class implements the algorithm NI3 (protected Newton-Raphson method).
+ *   The root is found with accuracy tolerance.
+ * 
+ */
+public class NI3 extends NortaInitDisc 
+{
+   private double tolerance; /* Desired accuracy for the root-finder
+   			        algorithm (epsilon in paragraph
+   			        "Method NI3" of section 3 in paper).*/
+
+
+
+   /**
+    * Constructor of the class NI3 with the target rank correlation rX,
+    *        the two discrete marginals dist1 and dist2,
+    *      the parameter for truncation tr and the specific parameter
+    *       tolerance which corresponds to epsilon in the paper
+    *       (paragraph "Method NI3" of section 3).
+    * 
+    */
+   public NI3 (double rX, DiscreteDistributionInt dist1,
+               DiscreteDistributionInt dist2, double tr, double tolerance)
+   {
+      super(rX, dist1, dist2, tr);
+      this.tolerance = tolerance;
+      computeParams();
+   }
+
+
+   /**
+    * Computes and returns the correlation <SPAN CLASS="MATH"><I>&#961;</I><SUB>Z</SUB></SPAN> using the algorithm NI3.
+    * 
+    */
+   public double computeCorr() 
+   {
+      final double ITMAX = 100; // Maximum number of iterations.
+      double xl, xh;  /* Left and right endpoints of the root bracket at
+			 all iterations. */
+      double b = 0.0; // The returned solution.
+      double f, df;   // Function and its derivative evaluations.
+      double dx;      // Correction term.
+      /* * f, df, dx correspond to f(rho_k), f'(rho_k) and f(rho_k)/f'(rho_k),
+          respectively, in the paper (paragraph "Method NI3"of section 3). */
+      double dxold; // The root correction at one iteration before the last one.
+      double temp;// The root at one iteration before the last one.
+      double ccc = rX * sd1 * sd2 + mu1 * mu2; // Precompute constant.
+
+      if (rX == 0.0)
+         return 0.0;
+      if (rX > 0.0) {              // Orient the search
+         xl = 0.0;
+         xh = 1.0;
+      } else {
+         xl = -1.0;
+         xh = 0.0;
+      }
+
+      b = 2 * Math.sin (Math.PI * rX / 6); // Initial guess
+      dxold = xh - xl;
+      dx = dxold;
+      f = integ (b) - ccc;
+      df = deriv (b);
+
+      for (int i = 1; i <= ITMAX; i++) { // Begin the search
+         if ((((b - xh) * df - f) * ((b - xl) * df - f) > 0.0)
+               || (Math.abs (2.0 * f) > Math.abs (dxold * df))) {
+            // Do bisection if solution is out of range
+            // or not decreasing fast enough
+            dxold = dx;
+            dx = 0.5 * (xh - xl);
+            b = xl + dx;
+            if (xl == b)      // Change in root is negligible.
+               return b;      // Accept this root
+         } else {
+            dxold = dx;
+            dx = f / df;
+            temp = b;
+            b -= dx;
+            if (temp == b)
+               return b;
+         }
+         if (Math.abs (dx) < tolerance)
+            return b;          // Convergence check
+         f = integ (b) - ccc;
+         df = deriv (b);
+         if (f < 0.0)
+            xl = b;            // Maintain the brackets on the root
+         else
+            xh = b;
+      }
+      return b;
+   }
+
+
+   public String toString()
+   {
+    // To display the inputs.
+      String desc = super.toString();
+      desc += "tolerance : " + tolerance + "\n";
+      return desc;
+   }
+
+}

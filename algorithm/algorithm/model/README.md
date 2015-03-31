@@ -4,6 +4,8 @@
     
 2. Semi-Markov Chain Model
     * Semi-Markov chains, as a variant of Markov chains, are proposed to be more suitable for describing sequences with infrequent dynamic events, since they do not assume exponential distributions of state durations. The use of semi-Markov dynamical models in CDMC better describe the dynamical characteristics of human sleep as compared with Markov models.
+    References: http://www.iro.umontreal.ca/~simardr/ssj/indexe.html
+    JDK Documentation: http://www.iro.umontreal.ca/~simardr/ssj/doc/html/index.html
     
 3. Hidden Markov Model
     * Hidden Markov models introduce unobservable states to further describe internal complications of time signal processing. In contrast to the use of geometric state duration in HMMs, semi-Markov chain models explicitly parameterize the state duration to better capture the dynamic features in time series dataset.

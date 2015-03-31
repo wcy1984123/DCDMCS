@@ -1,0 +1,126 @@
+\defmodule{RQMCPointSet}
+
+This class is used for \emph{randomized quasi-Monte Carlo} (RQMC) simulations
+\cite{vLEC00b,vLEC02a,vOWE97a,vOWE97b}.
+ The idea is to randomize a point set so that:
+\begin{itemize}
+\item it retains its high uniformity when taken as a set and
+\item each individual point is a random vector with the uniform
+distribution over $(0, 1)^s$.
+\end{itemize}
+ A RQMC point set is one that satisfies these two conditions. One simple
+randomization that satisfies these conditions for an arbirary point set $P_n$
+  is a random shift modulo 1 \cite{vCRA76a,vLEC00b,vSLO94a}:
+Generate a single point $\mathbf{U}$ uniformly over $(0, 1)^s$ and add it
+ to each point of $P_n$, modulo 1, coordinate-wise.
+Another one is a random digital shift in base $b$
+ \cite{vLEC99a,vLEC02a,mMAT99a}: generate again $\mathbf{U}$ uniformly over
+ $(0, 1)^s$, expand each of its coordinates in base $b$, and add the
+digits, modulo $b$, to the corresponding digits of each point of $P_n$.
+\bigskip\hrule\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{code}
+\begin{hide}
+/*
+ * Class:        RQMCPointSet
+ * Description:  randomized quasi-Monte Carlo simulations
+ * Environment:  Java
+ * Software:     SSJ
+ * Copyright (C) 2001  Pierre L'Ecuyer and Universite de Montreal
+ * Organization: DIRO, Universite de Montreal
+ * @author
+ * @since
+
+ * SSJ is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License (GPL) as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * any later version.
+
+ * SSJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * A copy of the GNU General Public License is available at
+   <a href="http://www.gnu.org/licenses">GPL licence site</a>.
+ */
+\end{hide}
+package umontreal.iro.lecuyer.hups;
+
+public class RQMCPointSet \begin{hide} {
+   private PointSet set;
+   private PointSetRandomization rand;
+\end{hide}
+\end{code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Constructor}
+\begin{code}
+
+   public RQMCPointSet (PointSet set, PointSetRandomization rand) \begin{hide} {
+      this.rand = rand;
+      this.set = set;
+   }
+   \end{hide}
+\end{code}
+\begin{tabb}
+Constructor with the point set \texttt{set} and the randomization \texttt{rand}.
+\end{tabb}
+\begin{htmlonly}
+   \param{set}{the point set}
+   \param{rand}{the randomization}
+\end{htmlonly}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Methods}
+\begin{code}
+
+   public void randomize() \begin{hide} {
+       rand.randomize(set);
+   }
+   \end{hide}
+\end{code}
+\begin{tabb}
+Randomizes the point set. The randomization and the point set
+ are those of this object.
+\end{tabb}
+\begin{code}
+
+   public PointSetIterator iterator()\begin{hide} {
+      return set.iterator();
+   }\end{hide}
+\end{code}
+\begin{tabb}
+ Returns a new point set iterator for the point set associated to this object.
+\end{tabb}
+\begin{htmlonly}
+   \return{point set iterator for the point set}
+\end{htmlonly}
+\begin{code}
+
+   public PointSet getPointSet()\begin{hide} {
+      return set;
+   }\end{hide}
+\end{code}
+\begin{tabb}
+ Returns the point set associated to this object.
+\end{tabb}
+\begin{htmlonly}
+   \return{the point set associated to this object}
+\end{htmlonly}
+\begin{code}
+
+   public PointSetRandomization getRandomization()\begin{hide} {
+      return rand;
+   }\end{hide}
+\end{code}
+\begin{tabb}
+ Returns the randomization associated to this object.
+\end{tabb}
+\begin{htmlonly}
+   \return{the randomization associated to this object}
+\end{htmlonly}
+\begin{code}\begin{hide}
+}
+\end{hide}\end{code}

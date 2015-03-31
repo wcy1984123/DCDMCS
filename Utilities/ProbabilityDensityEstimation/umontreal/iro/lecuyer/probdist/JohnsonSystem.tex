@@ -1,0 +1,157 @@
+\defmodule {JohnsonSystem}
+
+This class contains common parameters and methods for
+the {\em Johnson} system of distributions \cite{tJOH49a,tJOH95a}
+with shape parameters $\gamma$ and $\delta > 0$, location parameter $\xi$,
+and scale parameter $\lambda>0$.
+Denoting $T=(X-\xi)/\lambda$, the variable $Z = \gamma + \delta f(T)$
+is a standard normal variable, where $f(t)$ is one of the following transformations:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ Family  &  $f(t)$  \\
+\hline
+$S_L$   &  $\ln(t)$ \\
+$S_B$   &  $\ln(t / (1-t))$ \\
+$S_U$   &  $\ln(t + \sqrt{1 + t^2})$ \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\bigskip\hrule
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{code}
+\begin{hide}
+/*
+ * Class:        JohnsonSystem
+ * Description:  Johnson system of distributions
+ * Environment:  Java
+ * Software:     SSJ
+ * Copyright (C) 2001  Pierre L'Ecuyer and Universite de Montreal
+ * Organization: DIRO, Universite de Montreal
+ * @author       Richard Simard
+ * @since        july 2012
+
+ * SSJ is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License (GPL) as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * any later version.
+
+ * SSJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * A copy of the GNU General Public License is available at
+   <a href="http://www.gnu.org/licenses">GPL licence site</a>.
+ */
+\end{hide}
+package umontreal.iro.lecuyer.probdist;
+
+
+abstract class JohnsonSystem extends ContinuousDistribution\begin{hide} {
+   protected double gamma;
+   protected double delta;
+   protected double xi;
+   protected double lambda;\end{hide}
+\end{code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection* {Constructor}
+
+\begin{code}
+
+   protected JohnsonSystem (double gamma, double delta, double xi,
+                            double lambda)\begin{hide} {
+      setParams0 (gamma, delta, xi, lambda);
+   }\end{hide}
+\end{code}
+  \begin{tabb} Constructs a \texttt{JohnsonSystem} object
+   with shape parameters $\gamma = \texttt{gamma}$ and $\delta = \texttt{delta}$,
+   location parameter $\xi = \texttt{xi}$, and scale parameter
+   $\lambda = \texttt{lambda}$.
+  \end{tabb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection* {Methods}
+\begin{code}
+
+   public double getGamma()\begin{hide} {
+      return gamma;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\gamma$.
+ \end{tabb}
+\begin{code}
+
+   public double getDelta()\begin{hide} {
+      return delta;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\delta$.
+ \end{tabb}
+\begin{code}
+
+   public double getXi()\begin{hide} {
+      return xi;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\xi$.
+ \end{tabb}
+\begin{code}
+
+   public double getLambda()\begin{hide} {
+      return lambda;
+   }
+\end{hide}
+\end{code}
+  \begin{tabb}
+  Returns the value of $\lambda$.
+ \end{tabb}
+\begin{code}
+
+   protected void setParams0(double gamma, double delta, double xi,
+                             double lambda)\begin{hide} {
+      if (lambda <= 0)
+         throw new IllegalArgumentException ("lambda <= 0");
+      if (delta <= 0)
+         throw new IllegalArgumentException ("delta <= 0");
+      this.gamma = gamma;
+      this.delta = delta;
+      this.xi = xi;
+      this.lambda = lambda;
+   }\end{hide}
+\end{code}
+  \begin{tabb}
+  Sets the value of the parameters $\gamma$, $\delta$, $\xi$ and
+  $\lambda$.
+ \end{tabb}
+ \begin{code}
+
+   public double[] getParams ()\begin{hide} {
+      double[] retour = {gamma, delta, xi, lambda};
+      return retour;
+   }\end{hide}
+\end{code}
+\begin{tabb}
+   Return an array containing the parameters of the current distribution.
+   This array is put in regular order: [$\gamma$, $\delta$, $\xi$, $\lambda$].
+\end{tabb}
+\begin{hide}\begin{code}
+
+   public String toString ()\begin{hide} {
+      return getClass().getSimpleName() + " : gamma = " + gamma + ", delta = " + delta + ", xi = " + xi + ", lambda = " + lambda;
+   }\end{hide}
+\end{code}
+\begin{tabb}
+   Returns a \texttt{String} containing information about the current distribution.
+\end{tabb}\end{hide}
+\begin{code}\begin{hide}
+}\end{hide}
+\end{code}
