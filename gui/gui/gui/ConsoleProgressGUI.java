@@ -49,6 +49,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             int progress = 0;
             //Initialize progress property.
             setProgress(0);
+            consoleTextArea.append("\n ||------- Distance Calculation Begins ------||\n");
 
             // Compute the distance matrix
             for (int i = 0; i < progressLength; i++) {
@@ -65,7 +66,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
 
                 }
 
-                System.out.println("The instance [ " + i + " ] is done.");
+                System.out.println("            The instance [ " + i + " ] is done.");
 
                 // approximately estimate the time complexity of mapping 244 instances into 100 instances.
                 if (i % 2 == 0) {
@@ -85,14 +86,14 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         public void done() {
             Toolkit.getDefaultToolkit().beep();
             setCursor(null); //turn off the wait cursor
-            consoleTextArea.append("Done!\n");
+            consoleTextArea.append("\n ||-------- Distance Calculation Ends -------||\n");
 
             // save distance matrix into file
             IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
             flag = true;
 
             LOGGER.info("Initialization Ends");
-            System.out.println("Initialization Ends");
+            System.out.println("\n||------------ Initialization Ends -----------||\n");
         }
     }
 
@@ -119,7 +120,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             int progress = (Integer) evt.getNewValue();
             taskComplettionProgressBar.setValue(progress);
             consoleTextArea.append(String.format(
-                    "Completed %d%% of task.\n", task.getProgress()));
+                    "       Completed %d%% of task.\n", task.getProgress()));
         }
     }
 
@@ -145,7 +146,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         // initialize components
         initComponents();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(350, 600);
         taskComplettionProgressBar.setForeground(Color.green);
         taskComplettionProgressBar.setBackground(Color.LIGHT_GRAY);

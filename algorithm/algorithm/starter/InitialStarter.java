@@ -142,8 +142,7 @@ public class InitialStarter {
 
         //------------------- Initialization --------------------//
         LOGGER.info("Initialization Begins");
-        System.out.println("Initialization Begins");
-
+        System.out.println("\n||----------- Initialization Begins ----------||\n");
         String[] strings = this.mConfigs[2].split(" ");
         List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
         this.mInitializer.initializer(instances, this.mClusterNum); // compute distance

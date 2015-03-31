@@ -284,7 +284,7 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
         JFrame frame = new JFrame("Hierarchical Clustering Visualization - " + linkageStrategy.toString());
         frame.setSize(500, 400);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel content = new JPanel();
         DendrogramPanel dp = new DendrogramPanel();

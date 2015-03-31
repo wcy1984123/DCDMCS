@@ -256,58 +256,59 @@ public class Starter {
      */
     public void runCDMC() {
 
-        //------------------- Initialization --------------------//
-        LOGGER.info("Initialization Begins");
-        System.out.println("Initialization Begins");
+        LOGGER.info("Cluster & Models Starts");
+        System.out.println("||************* Cluster & Models Starts ************||");
 
+        //------------------- Initialization --------------------//
         String[] strings = this.mConfigs[2].split(" ");
         List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
         int[] previousClusterLabels = this.initialClusterLalels;
-        LOGGER.info("Initialization Ends");
-        System.out.println("Initialization Ends");
 
         //--------------- CDMC Iterative Process ----------------//
         int instancesNum = instances.size();
         int[] initialClusterLabels  = new int[instancesNum];
         double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
         int[] currentClusterLabels = null;
+        int iterationCount = 1;
 
-        LOGGER.info("Cluster & Models Starts");
-        System.out.println("Cluster & Models Starts");
         while(similarity < this.mSimilarity) {
 
-            System.out.println("Previous Similarity = " + similarity + " [ " + this.mSimilarity + " ].");
+            System.out.println("\n   ============== " + iterationCount + " ==============");
+            String preSimilarity = String.format("%.4f", similarity);
+            System.out.println("        Previous Similarity = " + preSimilarity + " [ " + this.mSimilarity + " ].");
             LOGGER.info("Train Models Starts");
-            System.out.println("Train Models Starts");
+            System.out.println("        Train Models Starts.");
             // build dynamic model
             String[] modelArgs = this.mConfigs[5].split(" ");
             this.mIModels.trainDynamicModels(instances, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1].toUpperCase()));
-            LOGGER.info("Train Models Ends");
-            System.out.println("Train Models Ends");
+            LOGGER.info("       Train Models Ends");
+            System.out.println("        Train Models Ends.");
 
             LOGGER.info("Cluster Process Starts");
-            System.out.println("Cluster Process Starts");
+            System.out.println("        Cluster Process Starts.");
             // assign cluster labels
             currentClusterLabels = this.mIModels.assignClusterLabels(instances);
             LOGGER.info("Cluster Process Ends");
-            System.out.println("Cluster Process Ends");
+            System.out.println("        Cluster Process Ends.");
 
             LOGGER.info("Cluster Agreement Evaluation Starts");
-            System.out.println("Cluster Agreement Evaluation Starts");
             // compute similarity
             similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
             LOGGER.info("Cluster Agreement Evaluation Ends");
-            System.out.println("Cluster Agreement Evaluation Ends");
-            System.out.println("Current Similarity = " + similarity + " [ " + this.mSimilarity + " ].");
+            String curSimilarity = String.format("%.4f", similarity);
+            System.out.println("        Current Similarity  = " + curSimilarity + " [ " + this.mSimilarity + " ].");
             // update cluster labels
             previousClusterLabels = currentClusterLabels;
+            System.out.println("   ==============================\n");
+            iterationCount++;
         }
-        LOGGER.info("Cluster & Models Ends");
-        System.out.println("Cluster & Models Ends");
 
         // save results
         IOOperation.writeFile(this.initialClusterLalels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
         IOOperation.writeFile(currentClusterLabels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt");
+
+        LOGGER.info("Cluster & Models Ends");
+        System.out.println("||************** Cluster & Models Ends *************||");
     }
 
     /**
