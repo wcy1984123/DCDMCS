@@ -8,12 +8,10 @@ package Utilities;
  * System Time: 8:33 PM
  */
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.swing.*;
+import java.io.*;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 /**
@@ -203,6 +201,39 @@ public class IOOperation {
         }
 
         return res;
+    }
+
+    /**
+     * Redirect the standard output stream
+     * @param area swing testarea component
+     * @throws IOException
+     */
+    public static void console(final JTextArea area) throws IOException {
+        final PipedInputStream outPipe = new PipedInputStream();
+
+        // reassign the standard output stream
+        System.setOut(new PrintStream(new PipedOutputStream(outPipe), true));
+
+        // redirect the output stream into swing textarea
+        new SwingWorker<Void, String>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                Scanner s = new Scanner(outPipe);
+                while (s.hasNextLine()){
+                    String line = s.nextLine();
+                    publish(line + "\n");
+                }
+                s.close();
+                return null;
+            }
+
+            @Override
+            protected void process(List<String> chunks) {
+                for (String line : chunks){
+                    area.append(line);
+                }
+            }
+        }.execute();
     }
 
     /**

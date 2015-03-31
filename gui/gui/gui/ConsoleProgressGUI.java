@@ -22,6 +22,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
     private JTextArea consoleTextArea;
     private JPanel consolePanel;
     private JProgressBar taskComplettionProgressBar;
+    private JScrollPane consoleScroll;
     private Task task;
 
     //------------------- Data Variable -------------------//
@@ -81,9 +82,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             Toolkit.getDefaultToolkit().beep();
             setCursor(null); //turn off the wait cursor
             consoleTextArea.append("Done!\n");
-            synchronized (this) {
-                this.notifyAll();
-            }
+            flag = true;
         }
     }
 
@@ -133,14 +132,16 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         setContentPane(consolePanel);
         pack();
 
-
         // initialize components
         initComponents();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setSize(300, 600);
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(d.width, 0);
         setVisible(true); // show gui
 
+        // start computing distance matrix
         task = new Task();
         task.addPropertyChangeListener(this);
         task.execute();

@@ -172,10 +172,13 @@ public class Starter {
 
         //------------------- Initialization --------------------//
         LOGGER.info("Initialization Begins");
+        System.out.println("Initialization Begins");
+
         String[] strings = this.mConfigs[2].split(" ");
         List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
         int[] previousClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
         LOGGER.info("Initialization Ends");
+        System.out.println("Initialization Ends");
 
         //--------------- CDMC Iterative Process ----------------//
         int instancesNum = instances.size();
@@ -184,29 +187,37 @@ public class Starter {
         int[] currentClusterLabels = null;
 
         LOGGER.info("Cluster & Models Starts");
+        System.out.println("Cluster & Models Starts");
         while(similarity < this.mSimilarity) {
 
             System.out.println("Previous Similarity = " + similarity + " [ " + this.mSimilarity + " ].");
             LOGGER.info("Train Models Starts");
+            System.out.println("Train Models Starts");
             // build dynamic model
             String[] modelArgs = this.mConfigs[5].split(" ");
             this.mIModels.trainDynamicModels(instances, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1].toUpperCase()));
             LOGGER.info("Train Models Ends");
+            System.out.println("Train Models Ends");
 
             LOGGER.info("Cluster Process Starts");
+            System.out.println("Cluster Process Starts");
             // assign cluster labels
             currentClusterLabels = this.mIModels.assignClusterLabels(instances);
             LOGGER.info("Cluster Process Ends");
+            System.out.println("Cluster Process Ends");
 
             LOGGER.info("Cluster Agreement Evaluation Starts");
+            System.out.println("Cluster Agreement Evaluation Starts");
             // compute similarity
             similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
             LOGGER.info("Cluster Agreement Evaluation Ends");
+            System.out.println("Cluster Agreement Evaluation Ends");
             System.out.println("Current Similarity = " + similarity + " [ " + this.mSimilarity + " ].");
             // update cluster labels
             previousClusterLabels = currentClusterLabels;
         }
         LOGGER.info("Cluster & Models Ends");
+        System.out.println("Cluster & Models Ends");
 
         // save results
         IOOperation.writeFile(currentClusterLabels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt");

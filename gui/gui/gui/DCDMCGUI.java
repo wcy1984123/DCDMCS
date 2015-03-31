@@ -1,11 +1,13 @@
 package gui;
 
+import Utilities.IOOperation;
 import starter.Starter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -47,6 +49,7 @@ public class DCDMCGUI extends JFrame{
     private JRadioButton purityRadioButton;
     private JRadioButton hiddenSemiMarkovChainRadioButton;
     private JButton startButton;
+    private JButton runButton;
 
     /**
      * class constructor
@@ -316,6 +319,13 @@ public class DCDMCGUI extends JFrame{
      */
     public static void main(String[] args) {
         DCDMCGUI test = new DCDMCGUI();
+        // redirect standard output into text area
+        ConsoleGUI console = new ConsoleGUI();
+        try {
+            IOOperation.console(console.getConsoleTextArea());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

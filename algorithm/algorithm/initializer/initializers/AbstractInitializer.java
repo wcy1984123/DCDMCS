@@ -44,28 +44,21 @@ public class AbstractInitializer {
 
         LOGGER.info("Initializer: Compute Distance Matrix");
 
+        // -------------------------- GUI Distance Matrix Computation--------------------------- //
+        ConsoleProgressGUI cpg = new ConsoleProgressGUI("Compute Distance Matrix", ROW, instances, idtw);
 
-//        // -------------------------- GUI Distance Matrix Computation--------------------------- //
-//        ConsoleProgressGUI cpg = new ConsoleProgressGUI("Compute Distance Matrix", ROW, instances, idtw);
-//        synchronized (cpg) {
-//            try {
-//                cpg.wait();
-//            } catch (InterruptedException e) {
-//
-//            }
-//        }
-//
-//        distanceMatrix = cpg.getDistanceMatrix();
+
+
+        distanceMatrix = cpg.getDistanceMatrix();
 
         // or we could call the subroutine function
-//        distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
+//      distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
+
+        // ---------------------- Directly Read Distance Matrix From File -------------------- //
+//       distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
 
         // save distance matrix
         IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
-
-        // ---------------------- Directly Read Distance Matrix From File -------------------- //
-        distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
-
 
         LOGGER.info("Initializer: Compute Initial Cluster Labels");
         //  compute the initial cluster guesses in terms of the given type of clustering algorithm
@@ -86,6 +79,7 @@ public class AbstractInitializer {
      */
     private double[][] compuateDistanceMatrix(int ROW, List<List<Double>> instances, IDTW idtw) {
         double[][] distanceMatrix = new double[ROW][ROW];
+        System.out.println("Compute Distance Matrix [ " + ROW + " by " + ROW + " ].");
         // compute distance matrix in terms of the given type of dynamic time warping algorithm
         for (int i = 0; i < ROW; i++) {
             for (int j = i + 1; j < ROW; j++) {
@@ -101,7 +95,7 @@ public class AbstractInitializer {
 
             }
 
-            System.out.println("The distances of instances [ " + i + " ] is finished.");
+//            System.out.println("The distances of instances [ " + i + " ] is finished.");
         }
 
         return distanceMatrix;
