@@ -30,7 +30,7 @@ public class ConsoleGUI extends JFrame{
         initComponents();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 600);
+        setSize(350, 600);
         setVisible(true); // show gui
     }
 

@@ -4,7 +4,8 @@ import Utilities.IOOperation;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
-import initializer.initializers.IInitializer;
+import initializer.initializers.HierarchicalClusterAdapter;
+import initializer.initializers.IClusteringAlgorithm;
 import initializer.initializers.INITIALIZERTYPE;
 import initializer.initializers.InitializerFactory;
 import model.IModels;
@@ -40,26 +41,58 @@ public class Starter {
 
     private IDAO mIdao; // data
     private IStoppingCriteria mIsc; // stopping criteria
-    private IInitializer mInitializer; // initialization
     private String[] mConfigs; // configuation
     private int mClusterNum; // maximum number of clusters
     private double mSimilarity; // minimum similarity of clustering results
     private IModels mIModels; // dynamic model
+    private int[] initialClusterLalels; // initial cluster labels
 
     /**
      * class constructor
      * @param configFilePath configuration file path
+     * @param initialClusterFilePath initial cluster file path
      */
-    public Starter(String configFilePath) {
-        init(configFilePath); // initialize member variables
+    public Starter(String configFilePath, String initialClusterFilePath) {
+        init(configFilePath, initialClusterFilePath); // initialize member variables
     }
 
     /**
      * class constructor
      * @param configurationList configuration string list
+     * @param initialClusterFilePath initial cluster file path
      */
-    public Starter(List<String> configurationList) {
-        init(configurationList); // initialize member variables
+    public Starter(List<String> configurationList, String initialClusterFilePath) {
+        init(configurationList, initialClusterFilePath); // initialize member variables
+    }
+
+    /**
+     * Read initial cluster labels into memory
+     * @param path file path
+     * @return an array of integers
+     */
+    private void readInitialClusterLabels(String path) {
+        List<Integer> cache = new ArrayList<Integer>(); // cache configuration parameters
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line = null;
+
+            while((line = br.readLine()) != null) {
+                String[] strs = line.split(" ");
+                for (int i = 0; i < strs.length; i++) {
+                    cache.add(Integer.parseInt(strs[i]));
+                }
+            }
+            br.close();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+
+        // convert integer list into integer array
+        this.initialClusterLalels = new int[cache.size()];
+        for (int i = 0; i < cache.size(); i++) this.initialClusterLalels[i] = cache.get(i);
+
     }
 
     /**
@@ -95,11 +128,18 @@ public class Starter {
     /**
      * Initialize member variables according to config file
      * @param configFilePath configuration file path
+     * @param initialClusterFilePath initial cluster file path
      */
-    private void init(String configFilePath) {
+    private void init(String configFilePath, String initialClusterFilePath) {
 
         // read config file
         readConfigFile(configFilePath);
+
+        // do hierarchical cluster to provide initial cluster guesses
+        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+
+        // read initial cluster lable file
+        readInitialClusterLabels(initialClusterFilePath);
 
         if (this.mConfigs == null) {
             LOGGER.log(Level.INFO, "Config file is null!");
@@ -115,9 +155,6 @@ public class Starter {
         //-------------------------- Dataset --------------------------//
         String[] strings = this.mConfigs[2].split(" ");
         this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
-
-        //----------------------- Initialization ----------------------//
-        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
 
         //--------------------- Stopping Criteria ---------------------//
         this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
@@ -131,12 +168,16 @@ public class Starter {
     /**
      * Initialize member variables according to config file
      * @param configurationList configuration string list
+     * @param initialClusterFilePath initial cluster file path
      */
-    private void init(List<String> configurationList) {
+    private void init(List<String> configurationList, String initialClusterFilePath) {
 
         // save to member variable
         this.mConfigs = new String[configurationList.size()];
         this.mConfigs = configurationList.toArray(this.mConfigs);
+
+        // read the initial cluster labels
+        readInitialClusterLabels(initialClusterFilePath);
 
         if (this.mConfigs == null) {
             LOGGER.log(Level.INFO, "Config file is null!");
@@ -152,9 +193,6 @@ public class Starter {
         //-------------------------- Dataset --------------------------//
         String[] strings = this.mConfigs[2].split(" ");
         this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
-
-        //----------------------- Initialization ----------------------//
-        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
 
         //--------------------- Stopping Criteria ---------------------//
         this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
@@ -176,7 +214,7 @@ public class Starter {
 
         String[] strings = this.mConfigs[2].split(" ");
         List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
-        int[] previousClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
+        int[] previousClusterLabels = this.initialClusterLalels;
         LOGGER.info("Initialization Ends");
         System.out.println("Initialization Ends");
 
@@ -229,7 +267,8 @@ public class Starter {
      */
     public static void main(String[] args) {
         String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
-        Starter test = new Starter(configPath);
+        String initialClusterPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt";
+        Starter test = new Starter(configPath, initialClusterPath);
         test.runCDMC();
 
     }

@@ -61,7 +61,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
 
                 }
 
-                System.out.println("The distances of instances [ " + i + " ] is finished.");
+                System.out.println("The instance [ " + i + " ] is done.");
 
                 // approximately estimate the time complexity of mapping 244 instances into 100 instances.
                 if (i % 2 == 0) {
@@ -136,7 +136,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         initComponents();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 600);
+        setSize(350, 600);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width, 0);
         setVisible(true); // show gui

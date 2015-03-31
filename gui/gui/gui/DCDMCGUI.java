@@ -1,6 +1,7 @@
 package gui;
 
 import Utilities.IOOperation;
+import starter.InitialStarter;
 import starter.Starter;
 
 import javax.swing.*;
@@ -77,9 +78,23 @@ public class DCDMCGUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
                 setAllComponentsEnabled(false);
-                Starter starter = new Starter(parameters);
-//                ConsoleGUI consoleGUI = new ConsoleGUI();
+                Starter starter = new Starter(parameters, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusterLabels.txt");
                 starter.runCDMC();
+                setAllComponentsEnabled(true);
+            }
+        });
+
+        runButton.addActionListener(new ActionListener() {
+            /**
+             * Action performed
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<String> parameters = getParameters();
+                setAllComponentsEnabled(false);
+                InitialStarter initialStarter = new InitialStarter(parameters);
+                initialStarter.runInitialization();
                 setAllComponentsEnabled(true);
             }
         });
