@@ -3,8 +3,12 @@ package model;
 import Utilities.Utilities;
 import Utilities.Models;
 import cluster.ICluster;
+import umontreal.iro.lecuyer.charts.ContinuousDistChart;
+import umontreal.iro.lecuyer.probdist.WeibullDist;
 
+import javax.swing.*;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -21,6 +25,7 @@ public class SemiMarkovChainModel implements IModel, ICluster{
 
     double[][] mStateTransitionProbability;
     List<List<Integer>> mInstances;
+    double[][] mParameters;
 
     public SemiMarkovChainModel() {
         this.mStateTransitionProbability = null;
@@ -34,6 +39,7 @@ public class SemiMarkovChainModel implements IModel, ICluster{
     @Override
     public void trainModel(List<List<Double>> instances) {
 
+        // --------------------- Compute State Transition -------------------- //
         // convert from double list into integer list
         this.mInstances = Utilities.convertToListOfListOfIntegers(instances);
 
@@ -43,6 +49,36 @@ public class SemiMarkovChainModel implements IModel, ICluster{
         // compute state transition probablity
         this.mStateTransitionProbability = Utilities.normalizeMatrix(stateTransition);
 
+        // ---------------------- Compute State Duration --------------------- //
+
+        int StateNum = stateTransition.length;
+        this.mParameters = new double[StateNum][3];
+        Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
+
+        for (int i = 0; i < StateNum; i++) {
+            Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
+
+            int total = 0;
+
+            for (Integer key : oneStateDurationDistribution.keySet()) total += oneStateDurationDistribution.get(key);
+
+            double[] durations = new double[total];
+            int count = 0;
+            int min = Integer.MAX_VALUE;
+            int max = Integer.MIN_VALUE;
+            for (Integer key : oneStateDurationDistribution.keySet()) {
+                min = Math.min(min, key);
+                max = Math.max(max, key);
+                for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
+            }
+
+            this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
+            WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
+            ContinuousDistChart chart = new ContinuousDistChart(wd, min, max, max - min + 1);
+            JFrame jf = chart.viewDensity(300, 400);
+            jf.setVisible(true);
+        }
+
     }
 
     /**
@@ -51,6 +87,7 @@ public class SemiMarkovChainModel implements IModel, ICluster{
      */
     public void trainModel(double[][] instances) {
 
+        // --------------------- Compute State Transition -------------------- //
         // convert from double array into integer array
         this.mInstances = Utilities.convertToListOfListOfIntegers(instances);
 
@@ -59,6 +96,40 @@ public class SemiMarkovChainModel implements IModel, ICluster{
 
         // compute state transition probablity
         this.mStateTransitionProbability = Utilities.normalizeMatrix(stateTransition);
+
+        // ---------------------- Compute State Duration --------------------- //
+
+        int StateNum = stateTransition.length;
+        this.mParameters = new double[StateNum][3];
+        Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
+
+        for (int i = 0; i < StateNum; i++) {
+            Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
+
+            int total = 0;
+
+            for (Integer key : oneStateDurationDistribution.keySet()) total += oneStateDurationDistribution.get(key);
+
+            double[] durations = new double[total];
+            int count = 0;
+            int min = Integer.MAX_VALUE;
+            int max = Integer.MIN_VALUE;
+            for (Integer key : oneStateDurationDistribution.keySet()) {
+                min = Math.min(min, key);
+                max = Math.max(max, key);
+                while (count < total) {
+                    for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
+                }
+            }
+
+            this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
+            WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
+            ContinuousDistChart chart = new ContinuousDistChart(wd, min, max, max - min + 1);
+            JFrame jf = chart.viewDensity(300, 400);
+            jf.setVisible(true);
+
+        }
+
     }
 
     /**
