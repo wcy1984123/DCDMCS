@@ -1,6 +1,5 @@
 package starter;
 
-import Utilities.IOOperation;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
@@ -147,13 +146,8 @@ public class InitialStarter {
 
         String[] strings = this.mConfigs[2].split(" ");
         List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
-        int[] previousClusterLabels = this.mInitializer.initializer(instances, this.mClusterNum);
-        LOGGER.info("Initialization Ends");
-        System.out.println("Initialization Ends");
+        this.mInitializer.initializer(instances, this.mClusterNum); // compute distance
 
-
-        // save results
-        IOOperation.writeFile(previousClusterLabels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusterLabels.txt");
     }
 
     /**

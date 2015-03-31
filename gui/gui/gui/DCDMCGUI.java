@@ -78,7 +78,7 @@ public class DCDMCGUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
                 setAllComponentsEnabled(false);
-                Starter starter = new Starter(parameters, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusterLabels.txt");
+                Starter starter = new Starter(parameters, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
                 starter.runCDMC();
                 setAllComponentsEnabled(true);
             }

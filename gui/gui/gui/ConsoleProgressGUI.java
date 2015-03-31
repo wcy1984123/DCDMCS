@@ -1,5 +1,6 @@
 package gui;
 
+import Utilities.IOOperation;
 import initializer.dtws.IDTW;
 
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * Project: DCDMC
@@ -17,6 +19,8 @@ import java.util.Random;
  * System Time: 1:42 PM
  */
 public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener{
+
+    private static final Logger LOGGER = Logger.getLogger(ConsoleProgressGUI.class.getName());
 
     //------------------ GUI Variables --------------------//
     private JTextArea consoleTextArea;
@@ -82,7 +86,13 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             Toolkit.getDefaultToolkit().beep();
             setCursor(null); //turn off the wait cursor
             consoleTextArea.append("Done!\n");
+
+            // save distance matrix into file
+            IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
             flag = true;
+
+            LOGGER.info("Initialization Ends");
+            System.out.println("Initialization Ends");
         }
     }
 
@@ -137,6 +147,8 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(350, 600);
+        taskComplettionProgressBar.setForeground(Color.green);
+        taskComplettionProgressBar.setBackground(Color.LIGHT_GRAY);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width, 0);
         setVisible(true); // show gui

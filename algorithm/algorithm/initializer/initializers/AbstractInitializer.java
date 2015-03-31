@@ -47,27 +47,25 @@ public class AbstractInitializer {
         // -------------------------- GUI Distance Matrix Computation--------------------------- //
         ConsoleProgressGUI cpg = new ConsoleProgressGUI("Compute Distance Matrix", ROW, instances, idtw);
 
-
-
-        distanceMatrix = cpg.getDistanceMatrix();
-
-        // or we could call the subroutine function
-//      distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
+        // ---------------- Cally Routine Function To Compute Distance Matrix ---------------- //
+        // distanceMatrix = compuateDistanceMatrix(ROW, instances, idtw);
 
         // ---------------------- Directly Read Distance Matrix From File -------------------- //
-//       distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
+        // distanceMatrix = IOOperation.readMatrix("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/MatlabOriginalDTWDistanceMatrix.txt");
 
         // save distance matrix
-        IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
+        // IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
 
-        LOGGER.info("Initializer: Compute Initial Cluster Labels");
-        //  compute the initial cluster guesses in terms of the given type of clustering algorithm
-        int[] clusterAssignments = ica.getClusterAssignment(clusterNum, distanceMatrix);
+
+        // ---------------------- Compute Initializ Cluster Assignment ----------------------- //
+        // LOGGER.info("Initializer: Compute Initial Cluster Labels");
+        // compute the initial cluster guesses in terms of the given type of clustering algorithm
+        // int[] clusterAssignments = ica.getClusterAssignment(clusterNum, distanceMatrix);
 
         // save cluster assignment
-        IOOperation.writeFile(clusterAssignments, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
+        // IOOperation.writeFile(clusterAssignments, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
 
-        return clusterAssignments;
+        return new int[0];  // initial cluster assignment is computed in starter instead of this initialstarter
     }
 
     /**

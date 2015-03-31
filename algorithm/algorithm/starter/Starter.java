@@ -6,8 +6,6 @@ import dao.DaoFactory;
 import dao.IDAO;
 import initializer.initializers.HierarchicalClusterAdapter;
 import initializer.initializers.IClusteringAlgorithm;
-import initializer.initializers.INITIALIZERTYPE;
-import initializer.initializers.InitializerFactory;
 import model.IModels;
 import model.MODELSTYPE;
 import model.MODELTYPE;
@@ -46,23 +44,24 @@ public class Starter {
     private double mSimilarity; // minimum similarity of clustering results
     private IModels mIModels; // dynamic model
     private int[] initialClusterLalels; // initial cluster labels
+    private double[][] distanceMatrix; // distance matrix
 
     /**
      * class constructor
      * @param configFilePath configuration file path
-     * @param initialClusterFilePath initial cluster file path
+     * @param distanceMatrixFilePath distance matrix file path
      */
-    public Starter(String configFilePath, String initialClusterFilePath) {
-        init(configFilePath, initialClusterFilePath); // initialize member variables
+    public Starter(String configFilePath, String distanceMatrixFilePath) {
+        init(configFilePath, distanceMatrixFilePath); // initialize member variables
     }
 
     /**
      * class constructor
      * @param configurationList configuration string list
-     * @param initialClusterFilePath initial cluster file path
+     * @param distanceMatrixFilePath distance matrix file path
      */
-    public Starter(List<String> configurationList, String initialClusterFilePath) {
-        init(configurationList, initialClusterFilePath); // initialize member variables
+    public Starter(List<String> configurationList, String distanceMatrixFilePath) {
+        init(configurationList, distanceMatrixFilePath); // initialize member variables
     }
 
     /**
@@ -126,20 +125,57 @@ public class Starter {
     }
 
     /**
+     * Read the input two-dimensional distance matrix from the file
+     * @param path file path
+     */
+    public void readDistanceMatrix(String path) {
+
+        if (path == null || path.length() == 0) {
+            LOGGER.info("The input path is null!");
+            return;
+        }
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line = br.readLine();
+            String[] strs = line.split(" ");
+            int ROW = strs.length;
+            this.distanceMatrix = new double[ROW][ROW];
+
+            for (int i = 0; i < ROW; i++) {
+                this.distanceMatrix[0][i] = Double.parseDouble(strs[i]);
+            }
+
+            int count = 1;
+            while((line = br.readLine()) != null) {
+                String [] parts = line.split(" ");
+                for (int i = 0; i < ROW; i++) {
+                    this.distanceMatrix[count][i] = Double.parseDouble(parts[i]);
+                }
+                count++;
+            }
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Initialize member variables according to config file
      * @param configFilePath configuration file path
-     * @param initialClusterFilePath initial cluster file path
+     * @param distanceMatrixFilePath distance matrix
      */
-    private void init(String configFilePath, String initialClusterFilePath) {
+    private void init(String configFilePath, String distanceMatrixFilePath) {
 
+        //-------------- Read Configurations From File ---------------//
         // read config file
         readConfigFile(configFilePath);
 
-        // do hierarchical cluster to provide initial cluster guesses
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        // read distance matrix
+        readDistanceMatrix(distanceMatrixFilePath);
 
         // read initial cluster lable file
-        readInitialClusterLabels(initialClusterFilePath);
+        // readInitialClusterLabels(initialClusterFilePath);
 
         if (this.mConfigs == null) {
             LOGGER.log(Level.INFO, "Config file is null!");
@@ -148,6 +184,10 @@ public class Starter {
 
         //---------------------- Cluster Numbers ----------------------//
         this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
+
+        //----------------------- Initialization ----------------------//
+        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        this.initialClusterLalels = ica.getClusterAssignment(this.mClusterNum, this.distanceMatrix);
 
         //------------------------- Similarity ------------------------//
         this.mSimilarity = Double.parseDouble(this.mConfigs[1]);
@@ -168,16 +208,20 @@ public class Starter {
     /**
      * Initialize member variables according to config file
      * @param configurationList configuration string list
-     * @param initialClusterFilePath initial cluster file path
+     * @param distanceMatrixFilePath distance matrix file path
      */
-    private void init(List<String> configurationList, String initialClusterFilePath) {
+    private void init(List<String> configurationList, String distanceMatrixFilePath) {
 
         // save to member variable
         this.mConfigs = new String[configurationList.size()];
         this.mConfigs = configurationList.toArray(this.mConfigs);
 
+        //--------------- Read Configuration From File ---------------//
+        // read distance matrix
+        readDistanceMatrix(distanceMatrixFilePath);
+
         // read the initial cluster labels
-        readInitialClusterLabels(initialClusterFilePath);
+        // readInitialClusterLabels(initialClusterFilePath);
 
         if (this.mConfigs == null) {
             LOGGER.log(Level.INFO, "Config file is null!");
@@ -186,6 +230,10 @@ public class Starter {
 
         //---------------------- Cluster Numbers ----------------------//
         this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
+
+        //----------------------- Initialization ----------------------//
+        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        this.initialClusterLalels = ica.getClusterAssignment(this.mClusterNum, this.distanceMatrix);
 
         //------------------------- Similarity ------------------------//
         this.mSimilarity = Double.parseDouble(this.mConfigs[1]);
@@ -258,6 +306,7 @@ public class Starter {
         System.out.println("Cluster & Models Ends");
 
         // save results
+        IOOperation.writeFile(this.initialClusterLalels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
         IOOperation.writeFile(currentClusterLabels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt");
     }
 
