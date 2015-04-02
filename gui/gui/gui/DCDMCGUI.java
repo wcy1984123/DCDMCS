@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Time: 21:14
  * System Time: 9:14 PM
  */
-public class DCDMCGUI extends JFrame{
+public class DCDMCGUI extends JFrame {
 
     private static final Logger LOGGER = Logger.getLogger(DCDMCGUI.class.getName());
 
@@ -69,6 +69,7 @@ public class DCDMCGUI extends JFrame{
 
         setLocationRelativeTo(null); // center the current frame
         setVisible(true); // show gui
+
         startButton.addActionListener(new ActionListener() {
             /**
              * Action performed function
@@ -77,10 +78,8 @@ public class DCDMCGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
-                setAllComponentsEnabled(false);
                 Starter starter = new Starter(parameters, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
                 starter.runCDMC();
-                setAllComponentsEnabled(true);
             }
         });
 
@@ -92,10 +91,8 @@ public class DCDMCGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
-                setAllComponentsEnabled(false);
                 InitialStarter initialStarter = new InitialStarter(parameters);
                 initialStarter.runInitialization();
-                setAllComponentsEnabled(true);
             }
         });
     }

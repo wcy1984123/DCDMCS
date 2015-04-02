@@ -40,7 +40,7 @@ public class Starter {
     private IDAO mIdao; // data
     private IStoppingCriteria mIsc; // stopping criteria
     private String[] mConfigs; // configuation
-    private int mClusterNum; // maximum number of clusters
+    public static int mClusterNum; // maximum number of clusters
     private double mSimilarity; // minimum similarity of clustering results
     private IModels mIModels; // dynamic model
     private int[] initialClusterLalels; // initial cluster labels
@@ -257,7 +257,7 @@ public class Starter {
     public void runCDMC() {
 
         LOGGER.info("Cluster & Models Starts");
-        System.out.println("||************* Cluster & Models Starts ************||");
+        System.out.println("||************** Cluster & Models Starts ************||");
 
         //------------------- Initialization --------------------//
         String[] strings = this.mConfigs[2].split(" ");

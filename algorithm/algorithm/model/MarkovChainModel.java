@@ -11,8 +11,10 @@ package model;
 import Utilities.Utilities;
 import Utilities.Models;
 import cluster.ICluster;
+import umontreal.iro.lecuyer.probdist.WeibullDist;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -86,6 +88,8 @@ public class MarkovChainModel implements IModel, ICluster {
 
         int N = instances.size();
         instancesProbs = new double[N];
+
+        // compute state transition probability for each instance
         for (int i = 0; i < N; i++) {
             instancesProbs[i] = getLogProbabilityStateTransition(instances.get(i));
         }
@@ -94,9 +98,9 @@ public class MarkovChainModel implements IModel, ICluster {
     }
 
     /**
-     * Compute the log probability of a seq staring with index 1 given the model
+     * Compute the log probability of state transition in a seq staring with index 1 given the model
      * @param seq a sequence data
-     * @return the log probability of a seq given the model
+     * @return the log probability of state transition in a seq given the model
      */
     private double getLogProbabilityStateTransition(int[] seq) {
 
@@ -114,25 +118,15 @@ public class MarkovChainModel implements IModel, ICluster {
     }
 
     /**
-     * Compute the log probability of a seq staring with index 1 given the model
+     * Compute the log probability of state transition in a seq staring with index 1 given the model
      * @param instance a sequence data
-     * @return the log probability of a seq given the model
+     * @return the log probability of state transition in a seq given the model
      */
     private double getLogProbabilityStateTransition(List<Double> instance) {
-
-        // seq starts with index 1
-        double logProb = 0.0;
 
         // convert a list of doubles into an integer array
         int[] seq = Utilities.convertToOneDimensionalIntegerArray(instance);
 
-        int curState = seq[0];
-
-        for (int i = 1; i < seq.length; i++) {
-            logProb += Math.log(this.mStateTransitionProbability[curState - 1][seq[i] - 1]);
-            curState = seq[i];
-        }
-
-        return logProb;
+        return getLogProbabilityStateTransition(seq);
     }
 }
