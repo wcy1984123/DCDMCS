@@ -129,4 +129,12 @@ public class MarkovChainModel implements IModel, ICluster {
 
         return getLogProbabilityStateTransition(seq);
     }
+
+    /**
+     * Visualize output of the dynamic model
+     */
+    @Override
+    public void visualizeOutput() {
+
+    }
 }

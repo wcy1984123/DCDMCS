@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 /**
  * Abstract class of dynamic models
  */
-abstract public class AbstractDynamicModels implements IModels {
+abstract public class AbstractDynamicModels implements IModels{
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDynamicModels.class.getName());
 
@@ -123,5 +123,25 @@ abstract public class AbstractDynamicModels implements IModels {
         }
 
         return clusterLabels;
+    }
+
+    /**
+     * Visualize outputs of all dynamic models
+     */
+    @Override
+    public void visualizeOutputs() {
+        if (this.mModels == null) {
+            LOGGER.info("The outputs are null!");
+            return;
+        }
+
+        if (this.mModels.size() == 0) {
+            LOGGER.info("The outputs are empty!");
+            return;
+        }
+
+        for (int i = 0; i < this.mModels.size(); i++) {
+            this.mModels.get(i).visualizeOutput();
+        }
     }
 }

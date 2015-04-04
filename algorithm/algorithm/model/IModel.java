@@ -30,4 +30,9 @@ public interface IModel {
      */
     public double[] getInstancesProbs(List<List<Double>> instances);
 
+    /**
+     * Visualize output of the dynamic model
+     */
+    public void visualizeOutput();
+
 }

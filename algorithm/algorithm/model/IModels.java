@@ -29,4 +29,11 @@ public interface IModels {
      * @return cluster labels
      */
     public int[] assignClusterLabels(List<List<Double>> instances);
+
+
+    /**
+     * Visualize output of the dynamic model
+     */
+    public void visualizeOutputs();
+
 }

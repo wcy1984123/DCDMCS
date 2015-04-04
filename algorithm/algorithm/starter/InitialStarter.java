@@ -32,9 +32,7 @@ public class InitialStarter {
 
     private IDAO mIdao; // data
     private IInitializer mInitializer; // initialization
-    private String[] mConfigs; // configuation
-    private int mClusterNum; // maximum number of clusters
-
+    private Config mConfigs; // configuation
 
     /**
      * class constructor
@@ -73,13 +71,9 @@ public class InitialStarter {
         }
 
 
-        // convert string list into string array
-        this.mConfigs = null;
-        if (cache.size() > 0) {
-            this.mConfigs = new String[cache.size()];
-            this.mConfigs = cache.toArray(this.mConfigs);
-        }
-
+        // set up configurations
+        this.mConfigs = new Config(cache);
+        this.mConfigs.setCONFIGPATH(path);
     }
 
     /**
@@ -96,15 +90,11 @@ public class InitialStarter {
             return;
         }
 
-        //---------------------- Cluster Numbers ----------------------//
-        this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
-
         //-------------------------- Dataset --------------------------//
-        String[] strings = this.mConfigs[2].split(" ");
-        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
+        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(Config.getDATASETTYPE()));
 
         //----------------------- Initialization ----------------------//
-        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
+        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(Config.getDTWTYPE()));
 
     }
 
@@ -115,23 +105,18 @@ public class InitialStarter {
     private void init(List<String> configurationList) {
 
         // save to member variable
-        this.mConfigs = new String[configurationList.size()];
-        this.mConfigs = configurationList.toArray(this.mConfigs);
+        this.mConfigs = new Config(configurationList);
 
         if (this.mConfigs == null) {
             LOGGER.log(Level.INFO, "Config file is null!");
             return;
         }
 
-        //---------------------- Cluster Numbers ----------------------//
-        this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
-
         //-------------------------- Dataset --------------------------//
-        String[] strings = this.mConfigs[2].split(" ");
-        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
+        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(Config.getDATASETTYPE()));
 
         //----------------------- Initialization ----------------------//
-        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(this.mConfigs[3].toUpperCase()));
+        this.mInitializer = InitializerFactory.getInstance().createInitializer(INITIALIZERTYPE.valueOf(Config.getDTWTYPE()));
 
     }
 
@@ -143,9 +128,8 @@ public class InitialStarter {
         //------------------- Initialization --------------------//
         LOGGER.info("Initialization Begins");
         System.out.println("\n||----------- Initialization Begins ----------||\n");
-        String[] strings = this.mConfigs[2].split(" ");
-        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
-        this.mInitializer.initializer(instances, this.mClusterNum); // compute distance
+        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getSTATENUM()));
+        this.mInitializer.initializer(instances, Config.getCLUSTERNUM()); // compute distance
 
     }
 

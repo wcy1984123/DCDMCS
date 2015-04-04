@@ -6,10 +6,7 @@ import dao.DaoFactory;
 import dao.IDAO;
 import initializer.initializers.HierarchicalClusterAdapter;
 import initializer.initializers.IClusteringAlgorithm;
-import model.IModels;
-import model.MODELSTYPE;
-import model.MODELTYPE;
-import model.ModelsFactory;
+import model.*;
 import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
@@ -112,7 +109,7 @@ public class Starter {
             e.printStackTrace();
         }
 
-        // save configurations into memory
+        // set up configurations
         this.mConfigs = new Config(cache);
         this.mConfigs.setCONFIGPATH(path);
 
@@ -190,6 +187,8 @@ public class Starter {
         //----------------------- Dynamic Models ----------------------//
         this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(Config.getMODELINGMODE()));
 
+        //----------------------- Dynamic Models ----------------------//
+        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(Config.getMODELINGMODE()));
     }
 
     /**
@@ -256,6 +255,7 @@ public class Starter {
             LOGGER.info("Train Models Starts");
             System.out.println("        Train Models Starts.");
 
+
             // build dynamic model
             this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
             LOGGER.info("       Train Models Ends");
@@ -263,10 +263,13 @@ public class Starter {
 
             LOGGER.info("Cluster Process Starts");
             System.out.println("        Cluster Process Starts.");
+
+
             // assign cluster labels
             currentClusterLabels = this.mIModels.assignClusterLabels(instances);
             LOGGER.info("Cluster Process Ends");
             System.out.println("        Cluster Process Ends.");
+
 
             LOGGER.info("Cluster Agreement Evaluation Starts");
             // compute similarity
@@ -274,15 +277,22 @@ public class Starter {
             LOGGER.info("Cluster Agreement Evaluation Ends");
             String curSimilarity = String.format("%.4f", similarity);
             System.out.println("        Current Similarity  = " + curSimilarity + " [ " + Config.getSIMILARITY() + " ].");
+
+
             // update cluster labels
             previousClusterLabels = currentClusterLabels;
             System.out.println("   ==============================\n");
+
+
             iterationCount++;
         }
 
         // save results
         IOOperation.writeFile(this.initialClusterLalels, Config.getINITIALCLUSTERSFILEPATH());
         IOOperation.writeFile(currentClusterLabels, Config.getINITIALCLUSTERSFILEPATH());
+
+        // visualize results
+        this.mIModels.visualizeOutputs();
 
         LOGGER.info("Cluster & Models Ends");
         System.out.println("||************** Cluster & Models Ends *************||\n");

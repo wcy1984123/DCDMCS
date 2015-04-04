@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * Time: 09:33
  * System Time: 9:33 AM
  */
-public class HiddenMarkovModel implements IModel, ICluster{
+public class HiddenMarkovModel implements IModel, ICluster {
     private static final Logger LOGGER = Logger.getLogger(HiddenMarkovModel.class.getName());
 
     private int stateNum;
@@ -95,6 +95,14 @@ public class HiddenMarkovModel implements IModel, ICluster{
     public void testHMM() {
         // TODO
         // this functionality has been move to package "cluster" assigning instances into clusters
+    }
+
+    /**
+     * Visualize output of the dynamic model
+     */
+    @Override
+    public void visualizeOutput() {
+
     }
 
     /**

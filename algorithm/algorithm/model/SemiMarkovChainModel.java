@@ -4,10 +4,13 @@ import Utilities.Utilities;
 import Utilities.Models;
 import Utilities.IOOperation;
 import cluster.ICluster;
+import starter.Config;
 import umontreal.iro.lecuyer.charts.ContinuousDistChart;
 import umontreal.iro.lecuyer.probdist.WeibullDist;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -20,27 +23,29 @@ import java.util.logging.Logger;
  * System Time: 7:57 AM
  */
 
-public class SemiMarkovChainModel implements IModel, ICluster{
+public class SemiMarkovChainModel implements IModel, ICluster {
 
     private static final Logger LOGGER = Logger.getLogger(SemiMarkovChainModel.class.getName());
 
     private double[][] mStateTransitionProbability;
     private List<List<Integer>> mInstances;
-    public static double[][] mParameters; // trained parameters
+    public double[][] mParameters; // trained parameters
     private static int Seq = 0;
+    private List<List<Integer>> scopeForStateDurations; // min and max of state durations for each state
 
     public SemiMarkovChainModel() {
         this.mStateTransitionProbability = null;
         this.mInstances = null;
         this.Seq++;
+        this.scopeForStateDurations = new ArrayList<List<Integer>>();
     }
 
     /**
      * Get parameters from semi-Markov chain model
      * @return
      */
-    public static double[][] getmParametersFromSemiMarkovChainModels() {
-        return mParameters;
+    public double[][] getmParametersFromSemiMarkovChainModels() {
+        return this.mParameters;
     }
 
     /**
@@ -84,14 +89,12 @@ public class SemiMarkovChainModel implements IModel, ICluster{
                 for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
             }
 
+            this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(min, max)));
+
             // do probability density estimation
             this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
 
-            // create a plot of probability density estimation
-//            WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
-//            ContinuousDistChart chart = new ContinuousDistChart(wd, min, max, max - min + 1);
-//            JFrame jf = chart.viewDensity(300, 400);
-//            jf.setVisible(true);
+
         }
 
     }
@@ -137,13 +140,9 @@ public class SemiMarkovChainModel implements IModel, ICluster{
                 }
             }
 
-            this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
+            this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(min, max)));
 
-            // create a plot of probability density estimation
-//            WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
-//            ContinuousDistChart chart = new ContinuousDistChart(wd, min, max, max - min + 1);
-//            JFrame jf = chart.viewDensity(300, 400);
-//            jf.setVisible(true);
+            this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
 
         }
 
@@ -248,6 +247,24 @@ public class SemiMarkovChainModel implements IModel, ICluster{
         int[] seq = Utilities.convertToOneDimensionalIntegerArray(instance);
 
         return getLogProbabilityStateTransition(seq);
+    }
+
+    /**
+     * Visualize output of the dynamic model
+     */
+    @Override
+    public void visualizeOutput() {
+        int stateNum = Config.getSTATENUM();
+        for(int i = 0; i < stateNum; i++) {
+            // create a plot of probability density estimation
+            WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
+            int min = this.scopeForStateDurations.get(i).get(0);
+            int max = this.scopeForStateDurations.get(i).get(1);
+            ContinuousDistChart chart = new ContinuousDistChart(wd, min, max, max - min + 1);
+            JFrame jf = chart.viewDensity(300, 400);
+            jf.setVisible(true);
+        }
+
     }
 
     /**

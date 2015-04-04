@@ -43,4 +43,12 @@ public class StateBasedDynamicModels extends AbstractDynamicModels {
     public int[] assignClusterLabels(List<List<Double>> instances) {
         return super.assignClusterLabels(instances);
     }
+
+    /**
+     * Visualize outputs of all dynamic models
+     */
+    @Override
+    public void visualizeOutputs() {
+        super.visualizeOutputs();
+    }
 }
