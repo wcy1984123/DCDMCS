@@ -37,11 +37,9 @@ public class Starter {
 
     private static final Logger LOGGER = Logger.getLogger(Starter.class.getName());
 
+    private Config mConfigs; // configuation
     private IDAO mIdao; // data
     private IStoppingCriteria mIsc; // stopping criteria
-    private String[] mConfigs; // configuation
-    public static int mClusterNum; // maximum number of clusters
-    private double mSimilarity; // minimum similarity of clustering results
     private IModels mIModels; // dynamic model
     private int[] initialClusterLalels; // initial cluster labels
     private double[][] distanceMatrix; // distance matrix
@@ -114,13 +112,9 @@ public class Starter {
             e.printStackTrace();
         }
 
-
-        // convert string list into string array
-        this.mConfigs = null;
-        if (cache.size() > 0) {
-            this.mConfigs = new String[cache.size()];
-            this.mConfigs = cache.toArray(this.mConfigs);
-        }
+        // save configurations into memory
+        this.mConfigs = new Config(cache);
+        this.mConfigs.setCONFIGPATH(path);
 
     }
 
@@ -161,7 +155,7 @@ public class Starter {
     }
 
     /**
-     * Initialize member variables according to config file
+     * Initialize member variables according to config file (For Read Config File Call)
      * @param configFilePath configuration file path
      * @param distanceMatrixFilePath distance matrix
      */
@@ -173,6 +167,7 @@ public class Starter {
 
         // read distance matrix
         readDistanceMatrix(distanceMatrixFilePath);
+        Config.setDISTANCEMATRIXFILEPATH(distanceMatrixFilePath);
 
         // read initial cluster lable file
         // readInitialClusterLabels(initialClusterFilePath);
@@ -182,43 +177,34 @@ public class Starter {
             return;
         }
 
-        //---------------------- Cluster Numbers ----------------------//
-        this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
-
         //----------------------- Initialization ----------------------//
         IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
-        this.initialClusterLalels = ica.getClusterAssignment(this.mClusterNum, this.distanceMatrix);
-
-        //------------------------- Similarity ------------------------//
-        this.mSimilarity = Double.parseDouble(this.mConfigs[1]);
+        this.initialClusterLalels = ica.getClusterAssignment(Config.getCLUSTERNUM(), this.distanceMatrix);
 
         //-------------------------- Dataset --------------------------//
-        String[] strings = this.mConfigs[2].split(" ");
-        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
+        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(Config.getDATASETTYPE()));
 
         //--------------------- Stopping Criteria ---------------------//
-        this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
+        this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(Config.getSTOPPINGCRITERIATYPE()));
 
         //----------------------- Dynamic Models ----------------------//
-        String[] modelArgs = this.mConfigs[5].split(" ");
-        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(modelArgs[0].toUpperCase()));
+        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(Config.getMODELINGMODE()));
 
     }
 
     /**
-     * Initialize member variables according to config file
+     * Initialize member variables according to config file (For GUI Call)
      * @param configurationList configuration string list
      * @param distanceMatrixFilePath distance matrix file path
      */
     private void init(List<String> configurationList, String distanceMatrixFilePath) {
 
-        // save to member variable
-        this.mConfigs = new String[configurationList.size()];
-        this.mConfigs = configurationList.toArray(this.mConfigs);
-
         //--------------- Read Configuration From File ---------------//
+        this.mConfigs = new Config(configurationList);
+
         // read distance matrix
         readDistanceMatrix(distanceMatrixFilePath);
+        Config.setDISTANCEMATRIXFILEPATH(distanceMatrixFilePath);
 
         // read the initial cluster labels
         // readInitialClusterLabels(initialClusterFilePath);
@@ -228,26 +214,18 @@ public class Starter {
             return;
         }
 
-        //---------------------- Cluster Numbers ----------------------//
-        this.mClusterNum = Integer.parseInt(this.mConfigs[0]);
-
         //----------------------- Initialization ----------------------//
         IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
-        this.initialClusterLalels = ica.getClusterAssignment(this.mClusterNum, this.distanceMatrix);
-
-        //------------------------- Similarity ------------------------//
-        this.mSimilarity = Double.parseDouble(this.mConfigs[1]);
+        this.initialClusterLalels = ica.getClusterAssignment(Config.getCLUSTERNUM(), this.distanceMatrix);
 
         //-------------------------- Dataset --------------------------//
-        String[] strings = this.mConfigs[2].split(" ");
-        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(strings[0].toUpperCase()));
+        this.mIdao = DaoFactory.getInstance().createData(DATATYPE.valueOf(Config.getDATASETTYPE()));
 
         //--------------------- Stopping Criteria ---------------------//
-        this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(this.mConfigs[4].toUpperCase()));
+        this.mIsc = StoppingCriteriaFactory.getInstance().createStoppingCriteria(STOPPINGCRITERIA.valueOf(Config.getSTOPPINGCRITERIATYPE()));
 
         //----------------------- Dynamic Models ----------------------//
-        String[] modelArgs = this.mConfigs[5].split(" ");
-        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(modelArgs[0].toUpperCase()));
+        this.mIModels = ModelsFactory.getInstance().createModels(MODELSTYPE.valueOf(Config.getMODELINGMODE()));
 
     }
 
@@ -257,11 +235,10 @@ public class Starter {
     public void runCDMC() {
 
         LOGGER.info("Cluster & Models Starts");
-        System.out.println("||************** Cluster & Models Starts ************||");
+        System.out.println("\n||************** Cluster & Models Starts ************||");
 
         //------------------- Initialization --------------------//
-        String[] strings = this.mConfigs[2].split(" ");
-        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(strings[1], strings[2]);
+        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getSTATENUM()));
         int[] previousClusterLabels = this.initialClusterLalels;
 
         //--------------- CDMC Iterative Process ----------------//
@@ -271,16 +248,16 @@ public class Starter {
         int[] currentClusterLabels = null;
         int iterationCount = 1;
 
-        while(similarity < this.mSimilarity) {
+        while(similarity < Config.getSIMILARITY()) {
 
             System.out.println("\n   ============== " + iterationCount + " ==============");
             String preSimilarity = String.format("%.4f", similarity);
-            System.out.println("        Previous Similarity = " + preSimilarity + " [ " + this.mSimilarity + " ].");
+            System.out.println("        Previous Similarity = " + preSimilarity + " [ " + Config.getSIMILARITY() + " ].");
             LOGGER.info("Train Models Starts");
             System.out.println("        Train Models Starts.");
+
             // build dynamic model
-            String[] modelArgs = this.mConfigs[5].split(" ");
-            this.mIModels.trainDynamicModels(instances, this.mClusterNum, MODELTYPE.valueOf(modelArgs[1].toUpperCase()));
+            this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
             LOGGER.info("       Train Models Ends");
             System.out.println("        Train Models Ends.");
 
@@ -296,7 +273,7 @@ public class Starter {
             similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
             LOGGER.info("Cluster Agreement Evaluation Ends");
             String curSimilarity = String.format("%.4f", similarity);
-            System.out.println("        Current Similarity  = " + curSimilarity + " [ " + this.mSimilarity + " ].");
+            System.out.println("        Current Similarity  = " + curSimilarity + " [ " + Config.getSIMILARITY() + " ].");
             // update cluster labels
             previousClusterLabels = currentClusterLabels;
             System.out.println("   ==============================\n");
@@ -304,11 +281,11 @@ public class Starter {
         }
 
         // save results
-        IOOperation.writeFile(this.initialClusterLalels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt");
-        IOOperation.writeFile(currentClusterLabels, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt");
+        IOOperation.writeFile(this.initialClusterLalels, Config.getINITIALCLUSTERSFILEPATH());
+        IOOperation.writeFile(currentClusterLabels, Config.getINITIALCLUSTERSFILEPATH());
 
         LOGGER.info("Cluster & Models Ends");
-        System.out.println("||************** Cluster & Models Ends *************||");
+        System.out.println("||************** Cluster & Models Ends *************||\n");
     }
 
     /**
@@ -317,8 +294,9 @@ public class Starter {
      */
     public static void main(String[] args) {
         String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
-        String initialClusterPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt";
-        Starter test = new Starter(configPath, initialClusterPath);
+        String distanceMatrixPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/Results/DistanceMatrix.txt";
+        Starter test = new Starter(configPath, distanceMatrixPath);
+
         test.runCDMC();
 
     }
