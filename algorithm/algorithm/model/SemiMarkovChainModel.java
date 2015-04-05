@@ -2,13 +2,14 @@ package model;
 
 import Utilities.Utilities;
 import Utilities.Models;
-import Utilities.IOOperation;
 import cluster.ICluster;
+import gui.ContinuousDistChartAdapter;
 import starter.Config;
-import umontreal.iro.lecuyer.charts.ContinuousDistChart;
 import umontreal.iro.lecuyer.probdist.WeibullDist;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,12 +32,13 @@ public class SemiMarkovChainModel implements IModel, ICluster {
     private List<List<Integer>> mInstances;
     public double[][] mParameters; // trained parameters
     private static int Seq = 0;
+    private int curSeq;
     private List<List<Integer>> scopeForStateDurations; // min and max of state durations for each state
 
     public SemiMarkovChainModel() {
         this.mStateTransitionProbability = null;
         this.mInstances = null;
-        this.Seq++;
+        this.curSeq = this.Seq++;
         this.scopeForStateDurations = new ArrayList<List<Integer>>();
     }
 
@@ -55,6 +57,30 @@ public class SemiMarkovChainModel implements IModel, ICluster {
     @Override
     public void trainModel(List<List<Double>> instances) {
 
+        if (instances == null) {
+            LOGGER.info("The instances are null!");
+            // compute state transition probablity
+            this.mStateTransitionProbability = new double[Config.getSTATENUM()][Config.getSTATENUM()];
+            this.mParameters = new double[Config.getSTATENUM()][3];
+            for (int i = 0; i < Config.getSTATENUM(); i++) {
+                this.mParameters[i] = new double[]{0.0, 0.0, 0.0}; // set alpha, lambda, and delta to be 0
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(0, 0)));
+            }
+            return;
+        }
+
+        if (instances.size() == 0) {
+            LOGGER.info("The instances are empty!");
+            // compute state transition probablity
+            this.mStateTransitionProbability = new double[Config.getSTATENUM()][Config.getSTATENUM()];
+            this.mParameters = new double[Config.getSTATENUM()][3];
+            for (int i = 0; i < Config.getSTATENUM(); i++) {
+                this.mParameters[i] = new double[]{0.0, 0.0, 0.0}; // set alpha, lambda, and delta to be 0
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(0, 0)));
+            }
+            return;
+        }
+
         // --------------------- Compute State Transition -------------------- //
         // convert from double list into integer list
         this.mInstances = Utilities.convertToListOfListOfIntegers(instances);
@@ -66,34 +92,39 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         this.mStateTransitionProbability = Utilities.normalizeMatrix(stateTransition);
 
         // ---------------------- Compute State Duration --------------------- //
-
-        int StateNum = stateTransition.length;
+        int StateNum = Config.getCLUSTERNUM();
         this.mParameters = new double[StateNum][3];
         Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
 
         for (int i = 0; i < StateNum; i++) {
 
-            Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
+            // state duration distribution is not null
+            if (i < map.keySet().size()) {
+                Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
 
-            int total = 0;
+                int total = 0;
 
-            for (Integer key : oneStateDurationDistribution.keySet()) total += oneStateDurationDistribution.get(key);
+                for (Integer key : oneStateDurationDistribution.keySet())
+                    total += oneStateDurationDistribution.get(key);
 
-            double[] durations = new double[total];
-            int count = 0;
-            int min = Integer.MAX_VALUE;
-            int max = Integer.MIN_VALUE;
-            for (Integer key : oneStateDurationDistribution.keySet()) {
-                min = Math.min(min, key);
-                max = Math.max(max, key);
-                for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
+                double[] durations = new double[total];
+                int count = 0;
+                int min = Integer.MAX_VALUE;
+                int max = Integer.MIN_VALUE;
+                for (Integer key : oneStateDurationDistribution.keySet()) {
+                    min = Math.min(min, key);
+                    max = Math.max(max, key);
+                    for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
+                }
+
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(min, max)));
+
+                // do probability density estimation
+                this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
+            } else {
+                this.mParameters[i] = new double[]{0.0, 0.0, 0.0}; // set alpha, lambda, and delta to be 0
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(0, 0)));
             }
-
-            this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(min, max)));
-
-            // do probability density estimation
-            this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
-
 
         }
 
@@ -104,6 +135,30 @@ public class SemiMarkovChainModel implements IModel, ICluster {
      * @param instances input instances
      */
     public void trainModel(double[][] instances) {
+
+        if (instances == null) {
+            LOGGER.info("The instances are null!");
+            // compute state transition probablity
+            this.mStateTransitionProbability = new double[Config.getSTATENUM()][Config.getSTATENUM()];
+            this.mParameters = new double[Config.getSTATENUM()][3];
+            for (int i = 0; i < Config.getSTATENUM(); i++) {
+                this.mParameters[i] = new double[]{0.0, 0.0, 0.0}; // set alpha, lambda, and delta to be 0
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(0, 0)));
+            }
+            return;
+        }
+
+        if (instances.length == 0 || instances[0].length == 0) {
+            LOGGER.info("The instances are empty!");
+            // compute state transition probablity
+            this.mStateTransitionProbability = new double[Config.getSTATENUM()][Config.getSTATENUM()];
+            this.mParameters = new double[Config.getSTATENUM()][3];
+            for (int i = 0; i < Config.getSTATENUM(); i++) {
+                this.mParameters[i] = new double[]{0.0, 0.0, 0.0}; // set alpha, lambda, and delta to be 0
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(0, 0)));
+            }
+            return;
+        }
 
         // --------------------- Compute State Transition -------------------- //
         // convert from double array into integer array
@@ -122,27 +177,35 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
 
         for (int i = 0; i < StateNum; i++) {
-            Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
+            // state duration distribution is not null
+            if (i < map.keySet().size()) {
+                Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
 
-            int total = 0;
+                int total = 0;
 
-            for (Integer key : oneStateDurationDistribution.keySet()) total += oneStateDurationDistribution.get(key);
+                for (Integer key : oneStateDurationDistribution.keySet())
+                    total += oneStateDurationDistribution.get(key);
 
-            double[] durations = new double[total];
-            int count = 0;
-            int min = Integer.MAX_VALUE;
-            int max = Integer.MIN_VALUE;
-            for (Integer key : oneStateDurationDistribution.keySet()) {
-                min = Math.min(min, key);
-                max = Math.max(max, key);
-                while (count < total) {
-                    for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
+                double[] durations = new double[total];
+                int count = 0;
+                int min = Integer.MAX_VALUE;
+                int max = Integer.MIN_VALUE;
+                for (Integer key : oneStateDurationDistribution.keySet()) {
+                    min = Math.min(min, key);
+                    max = Math.max(max, key);
+                    while (count < total) {
+                        for (int j = 0; j < oneStateDurationDistribution.get(key); j++) durations[count++] = key;
+                    }
                 }
+
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(min, max)));
+
+                // do probability density estimation
+                this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
+            } else {
+                this.mParameters[i] = new double[]{0.0, 0.0, 0.0}; // set alpha, lambda, and delta to be 0
+                this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(0, 0)));
             }
-
-            this.scopeForStateDurations.add(new ArrayList<Integer>(Arrays.asList(min, max)));
-
-            this.mParameters[i] = WeibullDist.getMLE(durations, durations.length);
 
         }
 
@@ -192,19 +255,32 @@ public class SemiMarkovChainModel implements IModel, ICluster {
     private double getLogProbabilityStateDuration(List<Double> seq) {
 
         // seq starts with index 1
-        double logProb = 0.0;
+        double logProb = Double.NEGATIVE_INFINITY;
         int[] aSeq = Utilities.convertToOneDimensionalIntegerArray(seq);
         Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForOneSequence(aSeq);
         int stateNum = map.keySet().size();
+        boolean flag = true; // it indicates the first time that it is valid parameters set up
 
         for (int i = 0; i < stateNum; i++) {
-            Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1);
-            for (Integer oneStateDuration : oneStateDurationDistribution.keySet()) {
+            Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1); // state starts with 1
+            double alpha = this.mParameters[i][0];
+            double lambda = this.mParameters[i][1];
+            double delta = this.mParameters[i][2];
 
+            // Invalid weibull parameters
+            if (alpha <= 0 || lambda <= 0) {
+                logProb = Double.NEGATIVE_INFINITY;
+                break;
+            } else {
+                if (flag == true) {
+                    logProb = 0; // reset to 0 instead of -infinity
+                    flag = false;
+                }
                 // compute the state duration of the state in the sequence
-                WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
-
-                logProb += oneStateDurationDistribution.get(oneStateDuration) * Math.log(wd.cdf(oneStateDuration + 1) - wd.cdf(oneStateDuration));
+                WeibullDist wd = new WeibullDist(alpha, lambda, delta);
+                for (Integer oneStateDuration : oneStateDurationDistribution.keySet()) {
+                    logProb += oneStateDurationDistribution.get(oneStateDuration) * Math.log(wd.cdf(oneStateDuration + 1) - wd.cdf(oneStateDuration));
+                }
             }
         }
 
@@ -226,6 +302,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         for (int i = 1; i < seq.length; i++) {
             // compute the probability of state transition only when two consecutive states are not same
             if(curState != seq[i]) {
+                // if mStateTransitionProbability[curState - 1][seq[i] - 1] == 0, Math.log would take -infinity
                 logProb += Math.log(this.mStateTransitionProbability[curState - 1][seq[i] - 1]);
             }
             curState = seq[i];
@@ -255,13 +332,38 @@ public class SemiMarkovChainModel implements IModel, ICluster {
     @Override
     public void visualizeOutput() {
         int stateNum = Config.getSTATENUM();
+        int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
+        System.out.println("\n               -------- Model [ " + modelSeq + " ] -------- ");
+
         for(int i = 0; i < stateNum; i++) {
-            // create a plot of probability density estimation
-            WeibullDist wd = new WeibullDist(this.mParameters[i][0], this.mParameters[i][1], this.mParameters[i][2]);
+            double alpha = this.mParameters[i][0];
+            double lambda = this.mParameters[i][1];
+            double delta = this.mParameters[i][2];
+
+            WeibullDist wd = null;
+
+            // if invalid parameters set up
+            if (alpha <= 0 || lambda <= 0) {
+                // create a plot of probability density estimation
+                wd = new WeibullDist(Double.POSITIVE_INFINITY, 1, 0);
+
+            } else {
+                // create a plot of probability density estimation
+                wd = new WeibullDist(alpha, lambda, delta);
+
+            }
+
             int min = this.scopeForStateDurations.get(i).get(0);
             int max = this.scopeForStateDurations.get(i).get(1);
-            ContinuousDistChart chart = new ContinuousDistChart(wd, min, max, max - min + 1);
+
+
+            int stateSeq = i + 1; // modulo// current state sequence value under total states scope
+            ContinuousDistChartAdapter chart = new ContinuousDistChartAdapter(wd, min, max, max - min + 1);
+            chart.setDensityChartFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12));
             JFrame jf = chart.viewDensity(300, 400);
+
+            // set frame title
+            jf.setTitle("Model [ " + modelSeq + " ] --- State [ " + stateSeq + " ]");
             jf.setVisible(true);
         }
 

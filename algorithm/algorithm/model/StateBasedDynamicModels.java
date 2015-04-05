@@ -25,14 +25,16 @@ public class StateBasedDynamicModels extends AbstractDynamicModels {
      * Build models over instances
      * @param instances input instances
      * @param clusterNum cluster num
+     * @param initialClusterLables initial cluster labels
      * @param mt model type
      */
-    public void trainDynamicModels(List<List<Double>> instances, int clusterNum, MODELTYPE mt) {
+    @Override
+    public void trainDynamicModels(List<List<Double>> instances, int clusterNum, int[] initialClusterLables, MODELTYPE mt) {
 
 
 
         // train dynamic models
-        super.trainDynamicModels(instances, clusterNum, mt);
+        super.trainDynamicModels(instances, clusterNum, initialClusterLables, mt);
     }
 
     /**
@@ -40,6 +42,7 @@ public class StateBasedDynamicModels extends AbstractDynamicModels {
      * @param instances data matrix
      * @return cluster labels
      */
+    @Override
     public int[] assignClusterLabels(List<List<Double>> instances) {
         return super.assignClusterLabels(instances);
     }

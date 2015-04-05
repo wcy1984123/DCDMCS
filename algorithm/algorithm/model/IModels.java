@@ -19,9 +19,10 @@ public interface IModels {
      * Build models over instances
      * @param instances input instances
      * @param clusterNum cluster num
+     * @param initialClusterLables initial cluster labels
      * @param mt dynamic model type
      */
-    public void trainDynamicModels(List<List<Double>> instances, int clusterNum, MODELTYPE mt);
+    public void trainDynamicModels(List<List<Double>> instances, int clusterNum, int[] initialClusterLables, MODELTYPE mt);
 
     /**
      * Assign instances into clusters in terms of input, cluster label starts with index 0

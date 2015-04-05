@@ -9,7 +9,9 @@ package model;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -19,11 +21,9 @@ abstract public class AbstractDynamicModels implements IModels{
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDynamicModels.class.getName());
 
-    private int mClusterNum; // cluster num
     private List<IModel> mModels; // dynamic models
 
     public AbstractDynamicModels() {
-        this.mClusterNum = 0;
         this.mModels = null;
     }
 
@@ -31,10 +31,11 @@ abstract public class AbstractDynamicModels implements IModels{
      * Build models over instances
      * @param instances input instances
      * @param clusterNum cluster num
+     * @param initialClusterLables initial cluster labels
      * @param mt model type
      */
     @Override
-    public void trainDynamicModels(List<List<Double>> instances, int clusterNum, MODELTYPE mt) {
+    public void trainDynamicModels(List<List<Double>> instances, int clusterNum, int[] initialClusterLables, MODELTYPE mt) {
 
         if (instances == null) {
             LOGGER.info("The instances are null!");
@@ -57,13 +58,35 @@ abstract public class AbstractDynamicModels implements IModels{
             this.mModels.add(ModelFactory.getInstance().createModel(mt));
         }
 
+        // cluster each instance into corresponding clusters
+        Map<Integer, List<List<Double>>> clusterInstances = new HashMap<Integer, List<List<Double>>>();
+        for (int i = 0; i < instances.size(); i++) {
+            int clusterNo = initialClusterLables[i];
+            if (clusterInstances.containsKey(clusterNo)) {
+                clusterInstances.get(clusterNo).add(instances.get(i));
+
+            } else {
+                List<List<Double>> list = new ArrayList<List<Double>>();
+                list.add(instances.get(i));
+                clusterInstances.put(clusterNo, list);
+            }
+        }
+
         // build dynamic models
         for (int i = 0; i < clusterNum; i++) {
-            this.mModels.get(i).trainModel(instances);
+            this.mModels.get(i).trainModel(clusterInstances.get(i));
+
+            // output cluster instances distributions
+            if (clusterInstances.get(i) == null) {
+                System.out.println("        Model[" + (i + 1) + "]: 0 instances.");
+            } else {
+                System.out.println("        Model[" + (i + 1) + "]: " + clusterInstances.get(i).size() + " instances.");
+            }
         }
 
         return;
     }
+
 
     /**
      * Assign instances into clusters in terms of input, cluster label starts with index 0
@@ -107,6 +130,7 @@ abstract public class AbstractDynamicModels implements IModels{
 
         // cluster assignment
         clusterLabels = new int[InstancesNum];
+        int[] clusterLabelsDist = new int[ModelsNum];
 
         for (int i = 0; i < InstancesNum; i++) {
             double maxProb = instancesProbsOfModels[0][i];
@@ -120,6 +144,11 @@ abstract public class AbstractDynamicModels implements IModels{
             }
 
             clusterLabels[i] = index;
+            clusterLabelsDist[index]++;
+        }
+
+        for (int i = 0; i < ModelsNum; i++) {
+            System.out.println("        Mode[" + (i + 1) + "]: " + clusterLabelsDist[i] + " instances.");
         }
 
         return clusterLabels;

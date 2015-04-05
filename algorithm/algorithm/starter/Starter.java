@@ -257,7 +257,7 @@ public class Starter {
 
 
             // build dynamic model
-            this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
+            this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
             LOGGER.info("       Train Models Ends");
             System.out.println("        Train Models Ends.");
 
@@ -292,7 +292,9 @@ public class Starter {
         IOOperation.writeFile(currentClusterLabels, Config.getINITIALCLUSTERSFILEPATH());
 
         // visualize results
+        System.out.println("\n   ======= Final Models Parameters ======= ");
         this.mIModels.visualizeOutputs();
+        System.out.println("   ============================== \n");
 
         LOGGER.info("Cluster & Models Ends");
         System.out.println("||************** Cluster & Models Ends *************||\n");

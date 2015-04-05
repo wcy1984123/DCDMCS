@@ -8,6 +8,8 @@ package Utilities;
  * System Time: 8:03 AM
  */
 
+import starter.Config;
+
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,29 +29,11 @@ public class Models {
     public static int[][] countStateTransitionForOneSequence(int[] seq) {
 
         // a sequence of data whose index starts with 1
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seq == null || seq.length < 2) {
             LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
             return stateTransition;
         }
-
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
-        for (int i = 0; i < seq.length; i++) {
-            if (!set.contains(seq[i])) {
-                uniqueCount++;
-                set.add(seq[i]);
-            }
-        }
-
-        // check at least there are one unique elements and thus there is at least one state transition
-        if (uniqueCount < 1) {
-            LOGGER.log(Level.INFO, "No more than 1 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
 
         // count state transition
         for (int i = 0; i < seq.length - 1; i++) {
@@ -67,29 +51,11 @@ public class Models {
     public static int[][] countNoSelfStateTransitionForOneSequence(int[] seq) {
 
         // a sequence of data whose index starts with 1
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seq == null || seq.length < 2) {
             LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
             return stateTransition;
         }
-
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
-        for (int i = 0; i < seq.length; i++) {
-            if (!set.contains(seq[i])) {
-                uniqueCount++;
-                set.add(seq[i]);
-            }
-        }
-
-        // check at least there are two unique elements and thus there is at least one state transition
-        if (uniqueCount < 2) {
-            LOGGER.log(Level.INFO, "No more than 2 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
 
         // count state transition
         for (int i = 0; i < seq.length - 1; i++) {
@@ -110,34 +76,14 @@ public class Models {
     public static int[][] countStateTransitionForOneSequence(List<Integer> seq) {
 
         // a sequence of data whose index starts with 1
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seq == null || seq.size() < 1) {
             LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
             return stateTransition;
         }
 
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
-        int N = seq.size();
-        for (int i = 0; i < N; i++) {
-            int value = seq.get(i);
-            if (!set.contains(value)) {
-                uniqueCount++;
-                set.add(value);
-            }
-        }
-
-        // check at least there are one unique elements and thus there is at least one state transition
-        if (uniqueCount < 1) {
-            LOGGER.log(Level.INFO, "No more than 1 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
-
         // count state transition
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < seq.size() - 1; i++) {
             stateTransition[seq.get(i) - 1][seq.get(i + 1) - 1]++;
         }
 
@@ -152,34 +98,14 @@ public class Models {
     public static int[][] countNoSelfStateTransitionForOneSequence(List<Integer> seq) {
 
         // a sequence of data whose index starts with 1
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seq == null || seq.size() < 1) {
             LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
             return stateTransition;
         }
 
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
-        int N = seq.size();
-        for (int i = 0; i < N; i++) {
-            int value = seq.get(i);
-            if (!set.contains(value)) {
-                uniqueCount++;
-                set.add(value);
-            }
-        }
-
-        // check at least there are two unique elements and thus there is at least one state transition
-        if (uniqueCount < 2) {
-            LOGGER.log(Level.INFO, "No more than 2 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
-
         // count state transition
-        for (int i = 0; i < N - 1; i++) {
+        for (int i = 0; i < seq.size() - 1; i++) {
             int pre = seq.get(i) - 1;
             int cur = seq.get(i + 1) -1;
             // only count the state transition from one state to another different state
@@ -197,7 +123,7 @@ public class Models {
     public static int[][] countStateTransitionForSequences(int[][] seqs) {
 
         // a sequence of data whose index starts with 1
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seqs == null) {
             LOGGER.log(Level.INFO, "The sequence is null!");
             return stateTransition;
@@ -208,27 +134,8 @@ public class Models {
             return stateTransition;
         }
 
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
         int ROW = seqs.length;
         int COLUMN = seqs[0].length;
-        for (int i = 0; i < ROW; i++) {
-            for (int j= 0; j < COLUMN; j++) {
-                if (!set.contains(seqs[i][j])) {
-                    uniqueCount++;
-                    set.add(seqs[i][j]);
-                }
-            }
-        }
-
-        // check at least there are one unique elements and thus there is at least one state transition
-        if (uniqueCount < 1) {
-            LOGGER.log(Level.INFO, "No more than 1 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
 
         // count state transition
         for (int i = 0; i < ROW; i++) {
@@ -248,7 +155,7 @@ public class Models {
     public static int[][] countNoSelfStateTransitionForSequences(int[][] seqs) {
 
         // a sequence of data whose index starts with 1
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seqs == null) {
             LOGGER.log(Level.INFO, "The sequence is null!");
             return stateTransition;
@@ -259,27 +166,8 @@ public class Models {
             return stateTransition;
         }
 
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
         int ROW = seqs.length;
         int COLUMN = seqs[0].length;
-        for (int i = 0; i < ROW; i++) {
-            for (int j= 0; j < COLUMN; j++) {
-                if (!set.contains(seqs[i][j])) {
-                    uniqueCount++;
-                    set.add(seqs[i][j]);
-                }
-            }
-        }
-
-        // check at least there are one unique elements and thus there is at least one state transition
-        if (uniqueCount < 2) {
-            LOGGER.log(Level.INFO, "No more than 2 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
 
         // count state transition
         for (int i = 0; i < ROW; i++) {
@@ -301,7 +189,7 @@ public class Models {
     public static int[][] countStateTransitionForSequences(List<List<Integer>> seqs) {
 
         // a sequence of data whose index starts with 0
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seqs == null) {
             LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
             return stateTransition;
@@ -312,28 +200,7 @@ public class Models {
             return stateTransition;
         }
 
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
         int ROW = seqs.size();
-        for (int i = 0; i < ROW; i++) {
-            int COLUMN = seqs.get(i).size();
-            for (int j= 0; j < COLUMN; j++) {
-                int value = seqs.get(i).get(j);
-                if (!set.contains(value)) {
-                    uniqueCount++;
-                    set.add(value);
-                }
-            }
-        }
-
-        // check at least there are one unique elements and thus there is at least one state transition
-        if (uniqueCount < 1) {
-            LOGGER.log(Level.INFO, "No more than 1 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
 
         // count state transition
         for (int i = 0; i < ROW; i++) {
@@ -354,7 +221,7 @@ public class Models {
     public static int[][] countNoSelfStateTransitionForSequences(List<List<Integer>> seqs) {
 
         // a sequence of data whose index starts with 0
-        int[][] stateTransition = null;
+        int[][] stateTransition = new int[Config.getSTATENUM()][Config.getSTATENUM()];
         if (seqs == null) {
             LOGGER.log(Level.INFO, "The sequence is null or the length of the sequence is less than 2!");
             return stateTransition;
@@ -365,28 +232,7 @@ public class Models {
             return stateTransition;
         }
 
-        // count the number of unique elements in the sequence
-        int uniqueCount = 0;
-        Set<Integer> set = new HashSet<Integer>();
         int ROW = seqs.size();
-        for (int i = 0; i < ROW; i++) {
-            int COLUMN = seqs.get(i).size();
-            for (int j= 0; j < COLUMN; j++) {
-                int value = seqs.get(i).get(j);
-                if (!set.contains(value)) {
-                    uniqueCount++;
-                    set.add(value);
-                }
-            }
-        }
-
-        // check at least there are two unique elements and thus there is at least one state transition
-        if (uniqueCount < 2) {
-            LOGGER.log(Level.INFO, "No more than 2 unique elements and thus no state transition exists!");
-            return stateTransition;
-        }
-
-        stateTransition = new int[uniqueCount][uniqueCount];
 
         // count state transition
         for (int i = 0; i < ROW; i++) {
