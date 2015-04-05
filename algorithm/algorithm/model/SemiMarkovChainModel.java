@@ -38,7 +38,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
     public SemiMarkovChainModel() {
         this.mStateTransitionProbability = null;
         this.mInstances = null;
-        this.curSeq = this.Seq++;
+        this.curSeq = Seq++;
         this.scopeForStateDurations = new ArrayList<List<Integer>>();
     }
 
@@ -335,6 +335,16 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
         System.out.println("\n               -------- Model [ " + modelSeq + " ] -------- ");
 
+        // print out state transition matrix
+        for (int i = 0; i < stateNum; i++) {
+            for (int j = 0; j < stateNum; j++) {
+
+                System.out.print("            " + String.format("%.4f", this.mStateTransitionProbability[i][j]) + " ");
+            }
+            System.out.println();
+        }
+
+        // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
             double lambda = this.mParameters[i][1];

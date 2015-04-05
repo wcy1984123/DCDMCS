@@ -11,10 +11,9 @@ package model;
 import Utilities.Utilities;
 import Utilities.Models;
 import cluster.ICluster;
-import umontreal.iro.lecuyer.probdist.WeibullDist;
+import starter.Config;
 
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -26,10 +25,13 @@ public class MarkovChainModel implements IModel, ICluster {
 
     double[][] mStateTransitionProbability;
     List<List<Integer>> mInstances;
+    private static int Seq = 0;
+    private int curSeq;
 
     public MarkovChainModel() {
         this.mStateTransitionProbability = null;
         this.mInstances = null;
+        this.curSeq = Seq++;
     }
 
     /**
@@ -135,6 +137,18 @@ public class MarkovChainModel implements IModel, ICluster {
      */
     @Override
     public void visualizeOutput() {
+        int stateNum = Config.getSTATENUM();
+        int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
+        System.out.println("\n               -------- Model [ " + modelSeq + " ] -------- ");
+
+        // print out state transition matrix
+        for (int i = 0; i < stateNum; i++) {
+            for (int j = 0; j < stateNum; j++) {
+
+                System.out.print("            " + String.format("%.4f", this.mStateTransitionProbability[i][j]) + " ");
+            }
+            System.out.println();
+        }
 
     }
 }

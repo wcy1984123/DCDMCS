@@ -289,7 +289,7 @@ public class Starter {
 
         // save results
         IOOperation.writeFile(this.initialClusterLalels, Config.getINITIALCLUSTERSFILEPATH());
-        IOOperation.writeFile(currentClusterLabels, Config.getINITIALCLUSTERSFILEPATH());
+        IOOperation.writeFile(currentClusterLabels, Config.getFINALCLUSTERSFILEPATH());
 
         // visualize results
         System.out.println("\n   ======= Final Models Parameters ======= ");

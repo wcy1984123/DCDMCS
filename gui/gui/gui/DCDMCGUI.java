@@ -173,6 +173,11 @@ public class DCDMCGUI extends JFrame {
         submenu.add(menuItem);
         menu.add(submenu);
 
+        menu.addSeparator();
+
+        menuItem = new JMenuItem("Exit", KeyEvent.VK_0);
+        menu.add(menuItem);
+
         //Build second menu in the menu bar.
         menu = new JMenu("Help");
         menuBar.add(menu);
