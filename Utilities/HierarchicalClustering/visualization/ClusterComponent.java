@@ -18,11 +18,11 @@ package visualization;
 
 import hierarchicalclustering.Cluster;
 
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ClusterComponent implements Paintable {
 
@@ -105,6 +105,9 @@ public class ClusterComponent implements Paintable {
     public void paint(Graphics2D g, int xDisplayOffset, int yDisplayOffset, double xDisplayFactor, double yDisplayFactor, boolean decorated) {
         int x1, y1, x2, y2;
         FontMetrics fontMetrics =  g.getFontMetrics();
+        Random random = new Random();
+        g.setColor(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+
         x1 = (int)(initPoint.getX() * xDisplayFactor + xDisplayOffset);
         y1 = (int)(initPoint.getY() * yDisplayFactor + yDisplayOffset);
         x2 = (int)(linkPoint.getX() * xDisplayFactor + xDisplayOffset);

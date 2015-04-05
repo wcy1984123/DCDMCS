@@ -3,6 +3,7 @@ package gui;
 import Utilities.IOOperation;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -25,6 +26,8 @@ public class ConsoleGUI extends JFrame{
         setContentPane(consolePanel);
         pack();
 
+        consoleTextArea.setBackground(Color.BLACK); // set background black
+        consoleTextArea.setForeground(Color.WHITE); // set font while
 
         // initialize components
         initComponents();

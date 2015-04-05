@@ -28,6 +28,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -41,6 +42,7 @@ public class DendrogramPanel extends JPanel {
 
     private Cluster model;
     private ClusterComponent component;
+
     private Color lineColor = Color.BLACK;
     private boolean showDistanceValues = false;
     private boolean showScale = true;
@@ -211,7 +213,8 @@ public class DendrogramPanel extends JPanel {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(lineColor);
+        Random random = new Random();
+        g2.setColor(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
         g2.setStroke(solidStroke);
 
         int wDisplay = getWidth() - borderLeft - borderRight;

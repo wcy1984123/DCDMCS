@@ -2,6 +2,7 @@ package initializer.initializers;
 
 import Utilities.Utilities;
 import hierarchicalclustering.*;
+import starter.Config;
 import visualization.DendrogramPanel;
 
 import javax.swing.*;
@@ -282,12 +283,15 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
      */
     private void visualizeHierarchicalClustering(Cluster cluster) {
         JFrame frame = new JFrame("Hierarchical Clustering Visualization - " + linkageStrategy.toString());
-        frame.setSize(500, 400);
-        frame.setLocationRelativeTo(null);
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension componentDimension = new Dimension(screenDimension.height / Config.getCLUSTERNUM(), screenDimension.height / Config.getCLUSTERNUM());
+        frame.setSize(componentDimension);
+        frame.setLocation(0, screenDimension.height);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel content = new JPanel();
         DendrogramPanel dp = new DendrogramPanel();
+
 
         frame.setContentPane(content);
         content.setBackground(Color.red);
