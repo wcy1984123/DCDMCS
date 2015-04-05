@@ -350,6 +350,8 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
         c.weighty = 0.5;
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension componentDimension = new Dimension(screenDimension.width / (Config.getCLUSTERNUM() + 1), screenDimension.height / (Config.getCLUSTERNUM() + 1));
         Point original = new Point(0, 0);
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
@@ -382,15 +384,18 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             // put all individual frames into a frame
             Component component = jf.getComponent(0);
             component.setLocation(original);
+
             generalJframe.add(component, c);
             original = new Point(original.x + component.getBounds().width, original.y);
 
             // set frame title
             jf.setTitle("Model [ " + modelSeq + " ] --- State [ " + stateSeq + " ]");
-            jf.setVisible(false);
+            jf.setVisible(false); // hide individual frame figures
         }
 
         generalJframe.pack();
+        generalJframe.setLocation(screenDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM());
+        generalJframe.setSize(componentDimension);
         generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         generalJframe.setVisible(true);
 
