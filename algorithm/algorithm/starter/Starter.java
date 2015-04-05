@@ -294,7 +294,7 @@ public class Starter {
         // visualize results
         System.out.println("\n   ======= Final Models Parameters ======= ");
         this.mIModels.visualizeOutputs();
-        System.out.println("   ============================== \n");
+        System.out.println("\n   ============================== \n");
 
         LOGGER.info("Cluster & Models Ends");
         System.out.println("||************** Cluster & Models Ends *************||\n");

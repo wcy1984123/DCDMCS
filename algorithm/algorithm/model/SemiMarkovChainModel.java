@@ -344,6 +344,13 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             System.out.println();
         }
 
+        JFrame generalJframe = new JFrame("Model [ " + modelSeq + " ] - " + stateNum + " States");
+        generalJframe.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        Point original = new Point(0, 0);
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
@@ -372,10 +379,20 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             chart.setDensityChartFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12));
             JFrame jf = chart.viewDensity(300, 400);
 
+            // put all individual frames into a frame
+            Component component = jf.getComponent(0);
+            component.setLocation(original);
+            generalJframe.add(component, c);
+            original = new Point(original.x + component.getBounds().width, original.y);
+
             // set frame title
             jf.setTitle("Model [ " + modelSeq + " ] --- State [ " + stateSeq + " ]");
-            jf.setVisible(true);
+            jf.setVisible(false);
         }
+
+        generalJframe.pack();
+        generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        generalJframe.setVisible(true);
 
     }
 
