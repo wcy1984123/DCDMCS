@@ -176,6 +176,20 @@ public class DCDMCGUI extends JFrame {
         menu.addSeparator();
 
         menuItem = new JMenuItem("Exit", KeyEvent.VK_0);
+        menuItem.addActionListener(
+                new ActionListener() {
+                    /**
+                     * Action performed function
+                     * @param e event
+                     */
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        // exit the application when window's close button is clicked
+                        System.exit(0);
+                    }
+                }
+
+        );
         menu.add(menuItem);
 
         //Build second menu in the menu bar.

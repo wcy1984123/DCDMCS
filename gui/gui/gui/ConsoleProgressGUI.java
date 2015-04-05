@@ -93,7 +93,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             flag = true;
 
             LOGGER.info("Initialization Ends");
-            System.out.println("\n||------------ Initialization Ends -----------||\n");
+            System.out.println("\n||------------ Initialization Ends ------------||\n");
         }
     }
 
@@ -147,11 +147,11 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
         initComponents();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(350, 600);
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(screenDimension.width / 4, 2 * screenDimension.height / 3);
         taskComplettionProgressBar.setForeground(Color.green);
         taskComplettionProgressBar.setBackground(Color.LIGHT_GRAY);
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(d.width, 0);
+        setLocation(screenDimension.width, 0);
         setVisible(true); // show gui
 
         // start computing distance matrix

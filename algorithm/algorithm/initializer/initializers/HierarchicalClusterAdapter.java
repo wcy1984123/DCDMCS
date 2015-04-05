@@ -284,7 +284,7 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
     private void visualizeHierarchicalClustering(Cluster cluster) {
         JFrame frame = new JFrame("Hierarchical Clustering Visualization - " + linkageStrategy.toString());
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension componentDimension = new Dimension(screenDimension.height / Config.getCLUSTERNUM(), screenDimension.height / Config.getCLUSTERNUM());
+        Dimension componentDimension = new Dimension(screenDimension.width / 4, screenDimension.height / 3);
         frame.setSize(componentDimension);
         frame.setLocation(0, screenDimension.height);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

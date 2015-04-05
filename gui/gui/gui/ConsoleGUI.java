@@ -33,7 +33,8 @@ public class ConsoleGUI extends JFrame{
         initComponents();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(350, 600);
+        Dimension screenDimensioin = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(screenDimensioin.width / 4, 2 * screenDimensioin.height / 3);
         setVisible(true); // show gui
     }
 
