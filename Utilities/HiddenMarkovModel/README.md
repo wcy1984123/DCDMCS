@@ -4,6 +4,8 @@ See Link: https://weka.wikispaces.com/Unofficial+packages+for+WEKA+3.7
 
 See Link: http://doc.gold.ac.uk/~mas02mg/software/hmmweka/
 
+See Link: https://github.com/marcogillies/HMMWeka
+
 A Hidden Markov Model package for the Weka machine learning toolkit.
 
 This is a standard Weka classifier that can be used in all the standard weka tools (with the caveats listed below). See the [Weka documentation](http://www.cs.waikato.ac.nz/ml/weka/) for more details of how to run weka. Full documentation on the API for this package can be found in the [javadoc reference.](http://doc.gold.ac.uk/~mas02mg/software/hmmweka/HMM/doc/index.html)
