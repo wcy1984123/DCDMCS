@@ -16,4 +16,5 @@
 8. StepwiseDeviatedDTW
     * Stepwsie Deviated Dynamic Time Warpng
 
+###Class Diagram
 ![INITIALIZER](/classdiagrams/initializerclassdiagram.jpg)
