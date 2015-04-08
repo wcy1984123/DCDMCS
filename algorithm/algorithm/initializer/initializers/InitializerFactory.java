@@ -1,5 +1,8 @@
 package initializer.initializers;
 
+import initializer.dtws.GlobalWeightedDTW;
+import initializer.dtws.StepwiseDeviatedDTW;
+
 import java.util.logging.Logger;
 
 /**
@@ -53,8 +56,13 @@ public class InitializerFactory {
                 iInitializer = new MatlabOriginalDTWInitializer();
                 break;
             case DEVIATEDDTW:
-                iInitializer = new DDTWInitializer();
+                iInitializer = new DeviatedDTWInitializer();
                 break;
+            case GLOBALWEIGHTEDDTW:
+                iInitializer = new GlobalWeightedDTWInitializer();
+                break;
+            case STEPWISEDEVIATEDDTW:
+                iInitializer = new StepwiseDeviatedDTWInitializer();
             default:
                 LOGGER.info("No Matching Instance To Created!");
         }

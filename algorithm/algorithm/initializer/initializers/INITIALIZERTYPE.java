@@ -21,12 +21,19 @@ package initializer.initializers;
         * Original Dynamic Time Warping In Matlab
     6. DDTW
         * Deviated Dynamic Time Warping
+    7. GlobalWeightedDTW
+        * Global Weighted Dynamic Time Warping
+    8. StepwiseDeviatedDTW
+        * Stepwsie Deviated Dynamic Time Warpng
  */
+
 public enum INITIALIZERTYPE {
     ORIGINALDTW,
     SAKOECHIBADTW,
     ITAKURAPARALLELOGRAMDTW,
     FASTOPTIMALDTW,
     MATLABORIGINALDTW,
-    DEVIATEDDTW;
+    DEVIATEDDTW,
+    GLOBALWEIGHTEDDTW,
+    STEPWISEDEVIATEDDTW;
 }

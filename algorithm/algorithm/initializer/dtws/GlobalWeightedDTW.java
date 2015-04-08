@@ -1,5 +1,13 @@
 package initializer.dtws;
 
+/**
+ * Project: DCDMC
+ * Package: initializer.dtws
+ * Date: 08/Apr/2015
+ * Time: 09:27
+ * System Time: 9:27 AM
+ */
+
 import Utilities.Utilities;
 
 import java.util.ArrayList;
@@ -9,41 +17,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Project: DCDMC
- * Package: initializer.dtws
- * Date: 26/Mar/2015
- * Time: 15:37
- * System Time: 3:37 PM
+ * Global Weighted Dynamic Time Warping
  */
-
-/*
-    Dynamic time warping computation class by Alex Wong
-    It transfered from matlab program from: http://www.ee.columbia.edu/ln/rosa/matlab/dtw/ to java program
-
-    This funciton uses dynamic programming to find a min-cost path through cost matrix M.
-    Return index pair cosists of each element in p and each element in p
-    p: the index value of the first timeseries in the min-cost path
-    q: the index value of the second timeseries in the min-cost path
-    D: the distance DTW matrix where D(m, n) means the min-cost path from (1,1) to (m, n).
-       When m = the number of elements in p (Denoted by M) and n = the number of elements in q (Denoted by N), D(M, N) is the desired min-cost path.
- */
-
-public class MatlabOriginalDTW implements IDTW{
+public class GlobalWeightedDTW implements IDTW {
 
     private static final Logger LOGGER = Logger.getLogger(MatlabOriginalDTW.class.getName());
 
     private double[][] DPMatrix; // dynamic programming of time warping matrix
+    private double[][] DeviationMatrix; // deviations
     private List<Integer> p; // x coordinates in the optimal path
     private List<Integer> q; // y coordinates in the optimal path
+    private double weight; // weight between original DTW and deviation
 
 
     /**
      * class constructor
      */
-    public MatlabOriginalDTW() {
-        DPMatrix = null;
-        p = null;
-        q = null;
+    public GlobalWeightedDTW() {
+        this.DPMatrix = null;
+        this.DeviationMatrix = null;
+        this.p = null;
+        this.p = null;
+        this.weight = 0.89;
     }
 
     /**
@@ -140,6 +135,10 @@ public class MatlabOriginalDTW implements IDTW{
         int COLUMN = timeseries2.size();
         distance = this.DPMatrix[ROW - 1][COLUMN - 1];
 
+        double deviation = this.DeviationMatrix[ROW - 1][COLUMN - 1];
+
+        // compute the global weighted DTW distance
+        distance = this.weight * distance + (1 - this.weight) * Math.sqrt(deviation);
 
         return distance;
     }
@@ -208,26 +207,10 @@ public class MatlabOriginalDTW implements IDTW{
      * @return local cost matrix
      */
     private double[][] computeDTW(List<Double> seq1, List<Double> seq2) {
-        int length1 = seq1.size();
-        int length2 = seq2.size();
+        double[] sequence1 = Utilities.convertToOneDimensionalDoubleArray(seq1);
+        double[] sequence2 = Utilities.convertToOneDimensionalDoubleArray(seq2);
 
-        double[][] localCostMatrix = new double[length1][length2];
-
-        // compute the local cost matrix by two sequences
-        for (int i = 0; i < length1; i++) {
-            for (int j = 0; j < length2; j++) {
-                localCostMatrix[i][j] = getLocalCostMeasure(seq1.get(i), seq2.get(j));
-            }
-        }
-
-        // compute the dynamic time warping
-        int[][] traceback = dpDTW(localCostMatrix);
-
-        // add the starting point (0, 0) into the minimum cost optimal path
-        this.p.add(0, 0);
-        this.q.add(0, 0);
-
-        return localCostMatrix;
+        return computeDTW(sequence1, sequence2);
     }
 
     /**
@@ -276,11 +259,18 @@ public class MatlabOriginalDTW implements IDTW{
         }
 
         //--------- dynamic programming for calculating DP matrix ----------//
+        double diagonalSlope = COLUMN == 0 ? 0 : COLUMN * 1.0 / ROW; // diagonal line slope
+        double[][] deviations = new double[ROW + 1][COLUMN + 1];
+
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {
                 double min = DP[i][j];
                 int index = 0;
 
+                double y = diagonalSlope * (i + 1);
+                double difference = Math.abs((j + 1) - y);
+
+                //------------------ First Compute DTW -------------------//
                 // compare DP[i][j] with DP[i][j + 1]
                 min = Math.min(DP[i][j], DP[i][j + 1]);
                 index = min == DP[i][j] ? 0 : 1;
@@ -293,6 +283,16 @@ public class MatlabOriginalDTW implements IDTW{
                 // update DP[i + 1][j + 1]
                 DP[i + 1][j + 1] += min;
                 phi[i][j] = index;
+
+                //------------------ Second Compute Deviation ----------------//
+                deviations[i + 1][j + 1] = difference;
+                if (index == 0) {
+                    deviations[i + 1][j + 1] += deviations[i][j];
+                } else if (index == 1) {
+                    deviations[i + 1][j + 1] += deviations[i][j + 1];
+                } else {
+                    deviations[i + 1][j + 1] += deviations[i + 1][j];
+                }
             }
         }
 
@@ -329,8 +329,17 @@ public class MatlabOriginalDTW implements IDTW{
             }
         }
 
+        // strip off the edges of the Deviation matrix before returning
+        double[][] cacheDeviation = new double[ROW][COLUMN];
+        for (i = 1; i <= ROW; i++) {
+            for (j = 1; j <= COLUMN; j++) {
+                cacheDeviation[i-1][j-1] = deviations[i][j];
+            }
+        }
+
         // store the final results
         this.DPMatrix = cache;
+        this.DeviationMatrix = cacheDeviation;
 
         return phi; // trace back path
     }
@@ -364,6 +373,14 @@ public class MatlabOriginalDTW implements IDTW{
     }
 
     /**
+     * Getter function for Deviation Matrix
+     * @return member variable DeviationMatrix
+     */
+    public double[][] getDeviationMatrix() {
+        return this.DeviationMatrix;
+    }
+
+    /**
      * Getter function for p
      * @return memeber variable p
      */
@@ -384,7 +401,7 @@ public class MatlabOriginalDTW implements IDTW{
      * @param args user input
      */
     public static void main(String[] args) {
-        MatlabOriginalDTW test = new MatlabOriginalDTW();
+        GlobalWeightedDTW test = new GlobalWeightedDTW();
         double[] a = new double[]{1, 1, 0, 1};
         double[] b = new double[]{1, 0, 1, 0};
         double[][] localCostMatrix = test.computeDTW(a ,b);
@@ -394,6 +411,9 @@ public class MatlabOriginalDTW implements IDTW{
 
         // print out DP matrix
         Utilities.printMatrix(test.getDPMatrix());
+
+        // print out deviation matrix
+        Utilities.printMatrix(test.getDeviationMatrix());
 
         // print out p path
         Utilities.printArray(test.getXOptimalPath());

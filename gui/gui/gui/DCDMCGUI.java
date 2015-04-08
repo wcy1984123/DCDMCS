@@ -173,6 +173,13 @@ public class DCDMCGUI extends JFrame {
         submenu.add(menuItem);
         menu.add(submenu);
 
+        submenu = new JMenu("Settings...");
+        submenu.setMnemonic(KeyEvent.VK_1);
+
+        menuItem = new JMenuItem("Save Paths...");
+        submenu.add(menuItem);
+        menu.add(submenu);
+
         menu.addSeparator();
 
         menuItem = new JMenuItem("Exit", KeyEvent.VK_0);

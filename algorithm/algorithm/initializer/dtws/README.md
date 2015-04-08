@@ -11,6 +11,10 @@
     * Original Dynamic Time Warping In Matlab 
 6. DDTW
     * Deviated Dynamic Time Warping
+7. GlobalWeightedDTW
+    * Global Weighted Dynamic Time Warping
+8. StepwiseDeviatedDTW
+    * Stepwsie Deviated Dynamic Time Warpng
 
 ###Class Diagram
 ![DTWS](/classdiagrams/dtwsdiagram.jpg)

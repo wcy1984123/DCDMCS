@@ -472,6 +472,37 @@ public class Utilities {
     }
 
     /**
+     * Convert one dimensional double list into one dimensional double array
+     * @param data a two-dimensional double array
+     * @return one dimensional integer array
+     */
+    public static double[] convertToOneDimensionalDoubleArray(List<Double> data) {
+
+        double[] res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The one dimensional list is null!");
+            return res;
+        }
+
+        if (data.size() == 0) {
+            LOGGER.log(Level.INFO, "The one dimensional list is empty!");
+            return res;
+        }
+
+        int N = data.size();
+        res = new double[N];
+
+        for (int i = 0; i < N; i++) {
+            double temp = data.get(i);
+            res[i] = temp;
+        }
+
+        return res;
+
+    }
+
+    /**
      * Normalize the given two dimensional matrix
      * @param matrix two dimensional matrix
      * @return a normalized two dimensional matrix

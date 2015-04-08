@@ -12,23 +12,14 @@ import java.util.logging.Logger;
  * Project: DCDMC
  * Package: initializer.dtws
  * Date: 26/Mar/2015
- * Time: 15:37
- * System Time: 3:37 PM
+ * Time: 15:38
+ * System Time: 3:38 PM
  */
 
-/*
-    Dynamic time warping computation class by Alex Wong
-    It transfered from matlab program from: http://www.ee.columbia.edu/ln/rosa/matlab/dtw/ to java program
-
-    This funciton uses dynamic programming to find a min-cost path through cost matrix M.
-    Return index pair cosists of each element in p and each element in p
-    p: the index value of the first timeseries in the min-cost path
-    q: the index value of the second timeseries in the min-cost path
-    D: the distance DTW matrix where D(m, n) means the min-cost path from (1,1) to (m, n).
-       When m = the number of elements in p (Denoted by M) and n = the number of elements in q (Denoted by N), D(M, N) is the desired min-cost path.
+/**
+ * Deviated Dynamic Time Warping
  */
-
-public class MatlabOriginalDTW implements IDTW{
+public class DeviatedDTW implements IDTW {
 
     private static final Logger LOGGER = Logger.getLogger(MatlabOriginalDTW.class.getName());
 
@@ -40,10 +31,10 @@ public class MatlabOriginalDTW implements IDTW{
     /**
      * class constructor
      */
-    public MatlabOriginalDTW() {
+    public DeviatedDTW() {
         DPMatrix = null;
         p = null;
-        q = null;
+        p = null;
     }
 
     /**
@@ -384,7 +375,7 @@ public class MatlabOriginalDTW implements IDTW{
      * @param args user input
      */
     public static void main(String[] args) {
-        MatlabOriginalDTW test = new MatlabOriginalDTW();
+        DeviatedDTW test = new DeviatedDTW();
         double[] a = new double[]{1, 1, 0, 1};
         double[] b = new double[]{1, 0, 1, 0};
         double[][] localCostMatrix = test.computeDTW(a ,b);
