@@ -5,6 +5,7 @@ import starter.InitialStarter;
 import starter.Starter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,6 +25,7 @@ public class DCDMCGUI extends JFrame {
 
     private static final Logger LOGGER = Logger.getLogger(DCDMCGUI.class.getName());
 
+    //----------------------------- GUI Components ---------------------------------//
     private JPanel DCDMCPanel;
     private JTextField clusterNumberTextField;
     private JTextField similarityThresholdTextField;
@@ -51,6 +53,11 @@ public class DCDMCGUI extends JFrame {
     private JRadioButton hiddenSemiMarkovChainRadioButton;
     private JButton startButton;
     private JButton runButton;
+
+
+    // --------------------------- Model Parameter Options -------------------------- //
+    String deviatedDTWType; // Deviated Dynamic Time Warping Type Variable
+    String hierarchicalLinkageStrategy; // hierarchical clustering linkage strategy
 
     /**
      * class constructor
@@ -95,13 +102,40 @@ public class DCDMCGUI extends JFrame {
                 initialStarter.runInitialization();
             }
         });
+
+
+        deviatedDynamicTimeWarpingRadioButton.addActionListener(new ActionListener() {
+            /**
+             * Action performed
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DeviatedDTWGUI ddtw = new DeviatedDTWGUI();
+                ddtw.createAndShowGUI();
+            }
+        });
+
+        hierarchicalClusteringRadioButton.addActionListener(new ActionListener() {
+            /**
+             * Action performed
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HierarchicalClusteringGUI hcls = new HierarchicalClusteringGUI();
+                hcls.createAndShowGUI();
+            }
+        });
+
     }
 
     /**
      * Initialize components
      */
     private void initComponents() {
-
+        deviatedDTWType = "GLOBALWEIGHTEDDTW";
+        hierarchicalLinkageStrategy = "AVERAGELINKAGESTRATEGY";
     }
 
     /**
@@ -245,6 +279,11 @@ public class DCDMCGUI extends JFrame {
         String dynamicModel = getDynamicModel();
         configs.add(modelType + " " + dynamicModel);
 
+        // clustering model + strategy
+        String clusteringModel = getInitialClusteringModel();
+        String linkageStrategy = this.hierarchicalLinkageStrategy;
+        configs.add(clusteringModel + " " + linkageStrategy);
+
         return configs;
     }
 
@@ -283,7 +322,11 @@ public class DCDMCGUI extends JFrame {
         } else if (fastOptimalDynamicTimeRadioButton.isSelected()) {
             res = "FASTOPTIMALDTW";
         } else if (deviatedDynamicTimeWarpingRadioButton.isSelected()) {
-            res = "DEVIATEDDTW";
+            if (deviatedDTWType.equals("GlobalWeightedDTW")) {
+                res = "GlobalWeightedDTW";
+            } else {
+                res = "StepwiseDeviatedDTW";
+            }
         } else {
             LOGGER.warning("The dynamic time warping is null!");
         }
@@ -308,6 +351,24 @@ public class DCDMCGUI extends JFrame {
             res = "PURITY";
         } else {
             LOGGER.warning("The stopping criteria is null!");
+        }
+
+        return res;
+    }
+
+    /**
+     * Get initial clustering model
+     * @return a string name of initial clustering model
+     */
+    private String getInitialClusteringModel() {
+        String res = null;
+
+        if (hierarchicalClusteringRadioButton.isSelected()) {
+            res = "HIERARCHICALCLUSTERING";
+        } else if (KMeansClusteringRadioButton.isSelected()) {
+            res = "KMEANSCLUSTERING";
+        } else {
+            LOGGER.warning("The initial clustering model is null!");
         }
 
         return res;
@@ -366,4 +427,196 @@ public class DCDMCGUI extends JFrame {
         }
     }
 
+    /**
+     * Class for GUI of deviated dynamic time warping
+     */
+    private class DeviatedDTWGUI extends JPanel implements ActionListener{
+        private final String gwDTW = "GLOBALWEIGHTEDDTW";
+        private final String sdDTW = "STEPWISEDEVIATEDDTW";
+
+        JFrame jFrame = null;
+
+        public DeviatedDTWGUI() {
+            super(new BorderLayout());
+
+            //Create the radio buttons.
+            JRadioButton gwDTWButton = new JRadioButton("Global Weighted Dynamic Time Warping");
+            gwDTWButton.setMnemonic(KeyEvent.VK_G);
+            gwDTWButton.setActionCommand(gwDTW);
+
+            JRadioButton sdDTWButton = new JRadioButton("Stepwise Deviated Dynamic Time Warping");
+            sdDTWButton.setMnemonic(KeyEvent.VK_S);
+            sdDTWButton.setActionCommand(sdDTW);
+
+            //Group the radio buttons.
+            ButtonGroup group = new ButtonGroup();
+            group.add(gwDTWButton);
+            group.add(sdDTWButton);
+
+            //Register a listener for the radio buttons.
+            gwDTWButton.addActionListener(this);
+            sdDTWButton.addActionListener(this);
+
+
+            //Put the radio buttons in a column in a panel.
+            JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+            radioPanel.add(gwDTWButton);
+            radioPanel.add(sdDTWButton);
+
+            add(radioPanel, BorderLayout.LINE_START);
+            setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+
+            // set up selected radio button according to existing deviatedDTW type value
+            if (DCDMCGUI.this.deviatedDTWType.equals(gwDTW)) {
+                gwDTWButton.setSelected(true);
+            } else {
+                sdDTWButton.setSelected(true);
+            }
+        }
+
+        /** Listens to the radio buttons. */
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals(gwDTW)) {
+                DCDMCGUI.this.deviatedDTWType = gwDTW;
+            } else if (e.getActionCommand().equals(sdDTW)){
+                DCDMCGUI.this.deviatedDTWType = sdDTW;
+            } else if (e.getActionCommand().equals("setButton")) {
+                System.out.println("\n===================================");
+                System.out.println("        Deviated DTW: " + DCDMCGUI.this.deviatedDTWType);
+                System.out.println("===================================\n");
+                jFrame.dispose(); // close this frame
+            } else {
+                LOGGER.info("No corresponding action command!");
+            }
+        }
+
+        /**
+         * Create the GUI and show it.  For thread safety,
+         * this method should be invoked from the
+         * event-dispatching thread.
+         */
+        private void createAndShowGUI() {
+            //Create and set up the window.
+            jFrame = new JFrame("Deviated Dynamic Time Warping Settings");
+            jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            //Create and set up the content pane.
+            JComponent newContentPane = new DeviatedDTWGUI();
+
+            //Set button
+            JButton setButton = new JButton("Set");
+            setButton.setActionCommand("setButton");
+            setButton.addActionListener(this);
+            newContentPane.add(setButton);
+
+            newContentPane.setOpaque(true); //content panes must be opaque
+            jFrame.setContentPane(newContentPane);
+
+            //Display the window.
+            jFrame.pack();
+            jFrame.setPreferredSize(jFrame.getPreferredSize());
+            jFrame.setMaximumSize(jFrame.getPreferredSize());
+            jFrame.setMinimumSize(jFrame.getPreferredSize());
+            jFrame.setLocationRelativeTo(null);
+            jFrame.setVisible(true);
+        }
+    }
+
+
+    /**
+     * Class for GUI of hierarchical clustering
+     */
+    private class HierarchicalClusteringGUI extends JPanel implements ActionListener{
+        private final String averageLinkageStrategy = "AVERAGELINKAGESTRATEGY";
+        private final String completeLinkageStrategy = "COMPLETELINKAGESTRATEGY";
+
+        JFrame jFrame = null;
+
+        public HierarchicalClusteringGUI() {
+            super(new BorderLayout());
+
+            //Create the radio buttons.
+            JRadioButton averageStrategyButton = new JRadioButton("Average Linkage Strategy");
+            averageStrategyButton.setMnemonic(KeyEvent.VK_A);
+            averageStrategyButton.setActionCommand(averageLinkageStrategy);
+
+            JRadioButton completeStrategyButton = new JRadioButton("Complete Linkage Strategy");
+            completeStrategyButton.setMnemonic(KeyEvent.VK_C);
+            completeStrategyButton.setActionCommand(completeLinkageStrategy);
+
+            //Group the radio buttons.
+            ButtonGroup group = new ButtonGroup();
+            group.add(averageStrategyButton);
+            group.add(completeStrategyButton);
+
+            //Register a listener for the radio buttons.
+            averageStrategyButton.addActionListener(this);
+            completeStrategyButton.addActionListener(this);
+
+
+            //Put the radio buttons in a column in a panel.
+            JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+            radioPanel.add(averageStrategyButton);
+            radioPanel.add(completeStrategyButton);
+
+            add(radioPanel, BorderLayout.LINE_START);
+            setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+
+            // set up selected radio button according to existing deviatedDTW type value
+            if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(averageLinkageStrategy)) {
+                averageStrategyButton.setSelected(true);
+            } else {
+                completeStrategyButton.setSelected(true);
+            }
+        }
+
+        /** Listens to the radio buttons. */
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals(averageLinkageStrategy)) {
+                DCDMCGUI.this.hierarchicalLinkageStrategy = averageLinkageStrategy;
+            } else if (e.getActionCommand().equals(completeLinkageStrategy)){
+                DCDMCGUI.this.hierarchicalLinkageStrategy = completeLinkageStrategy;
+            } else if (e.getActionCommand().equals("setButton")) {
+                System.out.println("\n===================================");
+                System.out.println("        Linkage Strategy: " + DCDMCGUI.this.hierarchicalLinkageStrategy);
+                System.out.println("===================================\n");
+                jFrame.dispose(); // close this frame
+            } else {
+                LOGGER.info("No corresponding action command!");
+            }
+        }
+
+        /**
+         * Create the GUI and show it.  For thread safety,
+         * this method should be invoked from the
+         * event-dispatching thread.
+         */
+        private void createAndShowGUI() {
+            //Create and set up the window.
+            jFrame = new JFrame("Hierarchical Linkage Strategy Setting");
+            jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            //Create and set up the content pane.
+            JComponent newContentPane = new HierarchicalClusteringGUI();
+
+            //Set button
+            JButton setButton = new JButton("Set");
+            setButton.setActionCommand("setButton");
+            setButton.addActionListener(this);
+            newContentPane.add(setButton);
+
+            newContentPane.setOpaque(true); //content panes must be opaque
+            jFrame.setContentPane(newContentPane);
+
+            //Display the window.
+            jFrame.pack();
+            jFrame.setPreferredSize(jFrame.getPreferredSize());
+            jFrame.setMaximumSize(jFrame.getPreferredSize());
+            jFrame.setMinimumSize(jFrame.getPreferredSize());
+            jFrame.setLocationRelativeTo(null);
+            jFrame.setVisible(true);
+        }
+    }
+
 }
+

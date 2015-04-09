@@ -4,3 +4,4 @@ hypnogram /Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/hypnogra
 MATLABORIGINALDTW
 randindex
 statebaseddynamicmodels markovchainmodel
+hierarchicalclustering averagelinkage

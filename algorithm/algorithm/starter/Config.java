@@ -28,6 +28,8 @@ public final class Config {
     private static String STOPPINGCRITERIATYPE; // stopping criteria
     private static String MODELINGMODE; // modeling mode
     private static String DYNAMICMODELTYPE; // dynamic model type
+    private static String INITIALCLUSTERINGTYPE; // initial clustering type
+    private static String HIERARCHICALLINKAGETYPE; // hierarchical linkage type
 
     /*--------------------- File Paths --------------------*/
     private static String CONFIGPATH; // config file path
@@ -64,6 +66,10 @@ public final class Config {
         strs = args.get(5).split(" ");
         MODELINGMODE = strs[0];
         DYNAMICMODELTYPE = strs[1];
+        String[] params = args.get(6).split(" ");
+        INITIALCLUSTERINGTYPE = params[0];
+        HIERARCHICALLINKAGETYPE = params[1];
+
 
         // file path
         INITIALCLUSTERSFILEPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt";
@@ -188,6 +194,22 @@ public final class Config {
      */
     public static String getDYNAMICMODELTYPE() {
         return DYNAMICMODELTYPE.toUpperCase();
+    }
+
+    /**
+     * Getter
+     * @return initial clustering type
+     */
+    public static String getINITIALCLUSTERINGTYPE() {
+        return INITIALCLUSTERINGTYPE.toUpperCase();
+    }
+
+    /**
+     * Getter
+     * @return hierarchical linkage tyep
+     */
+    public static String getHIERARCHICALLINKAGETYPE() {
+        return HIERARCHICALLINKAGETYPE.toUpperCase();
     }
 
     /**

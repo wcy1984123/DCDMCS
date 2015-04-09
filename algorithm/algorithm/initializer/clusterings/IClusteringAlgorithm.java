@@ -1,4 +1,4 @@
-package initializer.initializers;
+package initializer.clusterings;
 
 /**
  * Project: DCDMC

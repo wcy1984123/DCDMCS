@@ -1,5 +1,7 @@
 package initializer.initializers;
 
+import initializer.clusterings.HierarchicalClusterAdapter;
+import initializer.clusterings.IClusteringAlgorithm;
 import initializer.dtws.MatlabOriginalDTW;
 import initializer.dtws.IDTW;
 
@@ -54,10 +56,10 @@ public class MatlabOriginalDTWInitializer extends AbstractInitializer implements
         IDTW idtw = new MatlabOriginalDTW();
 
         // do hierarchical cluster to provide initial cluster guesses
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        // IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
 
         // call super method to do initialize cluster guesses
-        return super.initializer(instances, clusterNum, idtw, ica);
+        return super.initializer(instances, clusterNum, idtw, null);
     }
 
     /**

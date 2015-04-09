@@ -1,5 +1,7 @@
 package initializer.initializers;
 
+import initializer.clusterings.HierarchicalClusterAdapter;
+import initializer.clusterings.IClusteringAlgorithm;
 import initializer.dtws.IDTW;
 import initializer.dtws.StepwiseDeviatedDTW;
 
@@ -53,10 +55,10 @@ public class StepwiseDeviatedDTWInitializer extends AbstractInitializer implemen
         IDTW idtw = new StepwiseDeviatedDTW();
 
         // do hierarchical cluster to provide initial cluster guesses
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        // IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
 
         // call super method to do initialize cluster guesses
-        return super.initializer(instances, clusterNum, idtw, ica);
+        return super.initializer(instances, clusterNum, idtw, null);
     }
 
     /**

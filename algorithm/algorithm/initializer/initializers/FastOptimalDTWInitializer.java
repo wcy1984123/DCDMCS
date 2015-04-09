@@ -1,5 +1,7 @@
 package initializer.initializers;
 
+import initializer.clusterings.HierarchicalClusterAdapter;
+import initializer.clusterings.IClusteringAlgorithm;
 import initializer.dtws.FastOptimalDTW;
 import initializer.dtws.IDTW;
 
@@ -52,10 +54,10 @@ public class FastOptimalDTWInitializer extends AbstractInitializer implements II
         IDTW idtw = new FastOptimalDTW("BinaryDistance");
 
         // do hierarchical cluster to provide initial cluster guesses
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        // IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
 
         // call super method to do initialize cluster guesses
-        return super.initializer(instances, clusterNum, idtw, ica);
+        return super.initializer(instances, clusterNum, idtw, null);
     }
 
     /**

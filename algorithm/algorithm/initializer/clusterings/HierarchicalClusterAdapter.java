@@ -1,4 +1,4 @@
-package initializer.initializers;
+package initializer.clusterings;
 
 import Utilities.Utilities;
 import hierarchicalclustering.*;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 /**
  * Hierarchical cluster adapter works for mapping hierarchical clustering into cluster assignment
  */
-public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
+public class HierarchicalClusterAdapter implements IClusteringAlgorithm {
 
     private static final Logger LOGGER = Logger.getLogger(HierarchicalClusterAdapter.class.getName());
     private LinkageStrategy linkageStrategy;
@@ -32,7 +32,16 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm{
      * class constructor
      */
     public HierarchicalClusterAdapter() {
-        this.linkageStrategy = new AverageLinkageStrategy(); // linkage strategy at default
+        String linkageType = Config.getHIERARCHICALLINKAGETYPE();
+        if (linkageType == null) {
+            LOGGER.warning("No Linkage Type Info!");
+        } else if (linkageType.equals("AVERAGELINKAGESTRATEGY")) {
+            this.linkageStrategy = new AverageLinkageStrategy(); // linkage strategy at default
+        } else if (linkageType.equals("COMPLETELINKAGESTRATEGY")) {
+            this.linkageStrategy = new CompleteLinkageStrategy();
+        } else {
+            LOGGER.info("No corresponding linkage type!");
+        }
     }
 
     /**

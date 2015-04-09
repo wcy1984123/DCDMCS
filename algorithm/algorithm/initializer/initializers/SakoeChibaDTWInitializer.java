@@ -1,7 +1,8 @@
 package initializer.initializers;
 
+import initializer.clusterings.HierarchicalClusterAdapter;
+import initializer.clusterings.IClusteringAlgorithm;
 import initializer.dtws.IDTW;
-import initializer.dtws.MatlabOriginalDTW;
 import initializer.dtws.SakoeChibaDTW;
 
 import java.util.List;
@@ -51,10 +52,10 @@ public class SakoeChibaDTWInitializer extends AbstractInitializer implements IIn
         IDTW idtw = new SakoeChibaDTW("BinaryDistance", searchRadius);
 
         // do hierarchical cluster to provide initial cluster guesses
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        // IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
 
         // call super method to do initialize cluster guesses
-        return super.initializer(instances, clusterNum, idtw, ica);
+        return super.initializer(instances, clusterNum, idtw, null);
     }
 
     /**

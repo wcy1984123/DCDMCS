@@ -1,7 +1,7 @@
 package initializer.initializers;
 
-import Utilities.IOOperation;
 import gui.ConsoleProgressGUI;
+import initializer.clusterings.IClusteringAlgorithm;
 import initializer.dtws.IDTW;
 
 import java.util.List;

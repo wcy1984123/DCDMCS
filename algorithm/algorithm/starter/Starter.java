@@ -4,8 +4,10 @@ import Utilities.IOOperation;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
-import initializer.initializers.HierarchicalClusterAdapter;
-import initializer.initializers.IClusteringAlgorithm;
+import initializer.clusterings.InitialClusteringFactory;
+import initializer.clusterings.HierarchicalClusterAdapter;
+import initializer.clusterings.IClusteringAlgorithm;
+import initializer.clusterings.INITIALCLUSTERINGTYPE;
 import model.*;
 import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
@@ -175,7 +177,7 @@ public class Starter {
         }
 
         //----------------------- Initialization ----------------------//
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        IClusteringAlgorithm ica = InitialClusteringFactory.getInstance().createInitialClusters(INITIALCLUSTERINGTYPE.valueOf(Config.getINITIALCLUSTERINGTYPE()));
         this.initialClusterLalels = ica.getClusterAssignment(Config.getCLUSTERNUM(), this.distanceMatrix);
 
         //-------------------------- Dataset --------------------------//
@@ -214,7 +216,7 @@ public class Starter {
         }
 
         //----------------------- Initialization ----------------------//
-        IClusteringAlgorithm ica = new HierarchicalClusterAdapter();
+        IClusteringAlgorithm ica = InitialClusteringFactory.getInstance().createInitialClusters(INITIALCLUSTERINGTYPE.valueOf(Config.getINITIALCLUSTERINGTYPE()));
         this.initialClusterLalels = ica.getClusterAssignment(Config.getCLUSTERNUM(), this.distanceMatrix);
 
         //-------------------------- Dataset --------------------------//
