@@ -25,7 +25,7 @@ public class DCDMCGUI extends JFrame {
 
     private static final Logger LOGGER = Logger.getLogger(DCDMCGUI.class.getName());
 
-    //----------------------------- GUI Components ---------------------------------//
+    // ----------------------------- GUI Components ------------------------------ //
     private JPanel DCDMCPanel;
     private JTextField clusterNumberTextField;
     private JTextField similarityThresholdTextField;
@@ -53,11 +53,15 @@ public class DCDMCGUI extends JFrame {
     private JRadioButton hiddenSemiMarkovChainRadioButton;
     private JButton startButton;
     private JButton runButton;
+    // ----------------------------------------------------------------------------//
 
 
-    // --------------------------- Model Parameter Options -------------------------- //
+    // ------------------------- Model Parameter Options ------------------------- //
     String deviatedDTWType; // Deviated Dynamic Time Warping Type Variable
     String hierarchicalLinkageStrategy; // hierarchical clustering linkage strategy
+    String hypnogramFormat; // hypnogram format
+    // ----------------------------------------------------------------------------//
+
 
     /**
      * class constructor
@@ -128,6 +132,17 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
+        hypnogramDatasetRadioButton.addActionListener(new ActionListener() {
+            /**
+             * Action performed
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HypnogramGUI hd = new HypnogramGUI();
+                hd.createAndShowGUI();
+            }
+        });
     }
 
     /**
@@ -136,6 +151,7 @@ public class DCDMCGUI extends JFrame {
     private void initComponents() {
         deviatedDTWType = "GLOBALWEIGHTEDDTW";
         hierarchicalLinkageStrategy = "AVERAGELINKAGESTRATEGY";
+        hypnogramFormat = "WAKENREMREMDATASET";
     }
 
     /**
@@ -622,12 +638,141 @@ public class DCDMCGUI extends JFrame {
          * event-dispatching thread.
          */
         private void createAndShowGUI() {
-            //Create and set up the window.
-            jFrame = new JFrame("Hierarchical Linkage Strategy Setting");
+            //Create and set up the window
+            jFrame = new JFrame("Hierarchical Linkage Strategy Settings");
             jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
             //Create and set up the content pane.
             JComponent newContentPane = new HierarchicalClusteringGUI();
+
+            //Set button
+            JButton setButton = new JButton("Set");
+            setButton.setActionCommand("setButton");
+            setButton.addActionListener(this);
+            newContentPane.add(setButton);
+
+            newContentPane.setOpaque(true); //content panes must be opaque
+            jFrame.setContentPane(newContentPane);
+
+            //Display the window.
+            jFrame.pack();
+            jFrame.setPreferredSize(jFrame.getPreferredSize());
+            jFrame.setMaximumSize(jFrame.getPreferredSize());
+            jFrame.setMinimumSize(jFrame.getPreferredSize());
+            jFrame.setLocationRelativeTo(null);
+            jFrame.setVisible(true);
+        }
+    }
+
+
+    /**
+     * Class for GUI of deviated dynamic time warping
+     */
+    private class HypnogramGUI extends JPanel implements ActionListener{
+        private final String originalDataset = "ORIGINALDATASET";
+        private final String wsDataset = "WAKESLEEPDATASET";
+        private final String wnrDataset = "WAKENREMREMDATASET";
+        private final String wdlDataset = "WAKEDEEPLIGHTDATASET";
+
+        JFrame jFrame = null;
+
+        public HypnogramGUI() {
+            super(new BorderLayout());
+
+            //Create the radio buttons.
+            JRadioButton originalButton = new JRadioButton("Original Dataset");
+            originalButton.setMnemonic(KeyEvent.VK_O);
+            originalButton.setActionCommand(originalDataset);
+            originalButton.setToolTipText("It consists of 5 sleep stages: stage 1, 2, 3, 5, and wake stages.");
+
+            JRadioButton wsButton = new JRadioButton("Wake-Sleep Dataset");
+            wsButton.setMnemonic(KeyEvent.VK_W);
+            wsButton.setActionCommand(wsDataset);
+            wsButton.setToolTipText("It consists of 2 sleep stages: wake and sleep stages.");
+
+            JRadioButton wnrButton = new JRadioButton("Wake-NREM-REM Dataset");
+            wnrButton.setMnemonic(KeyEvent.VK_N);
+            wnrButton.setActionCommand(wnrDataset);
+            wnrButton.setToolTipText("It consists of 3 sleep stages: wake, NREM, and REM stages.");
+
+            JRadioButton wdlButton = new JRadioButton("Wake-Deep-Light Dataset");
+            wdlButton.setMnemonic(KeyEvent.VK_R);
+            wdlButton.setActionCommand(wdlDataset);
+            wdlButton.setToolTipText("It consists of 3 sleep stages: wake, deep, and light stages.");
+
+            //Group the radio buttons.
+            ButtonGroup group = new ButtonGroup();
+            group.add(originalButton);
+            group.add(wsButton);
+            group.add(wnrButton);
+            group.add(wdlButton);
+
+            //Register a listener for the radio buttons.
+            originalButton.addActionListener(this);
+            wsButton.addActionListener(this);
+            wnrButton.addActionListener(this);
+            wdlButton.addActionListener(this);
+
+            //Put the radio buttons in a column in a panel.
+            JPanel radioPanel = new JPanel(new GridLayout(0, 1));
+            radioPanel.add(originalButton);
+            radioPanel.add(wsButton);
+            radioPanel.add(wnrButton);
+            radioPanel.add(wdlButton);
+
+            add(radioPanel, BorderLayout.LINE_START);
+            setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+
+            // set up selected radio button according to existing deviatedDTW type value
+            if (DCDMCGUI.this.hypnogramFormat.equals(originalDataset)) {
+                originalButton.setSelected(true);
+            } else if (DCDMCGUI.this.hypnogramFormat.equals(wsDataset)) {
+                wsButton.setSelected(true);
+            } else if (DCDMCGUI.this.hypnogramFormat.equals(wnrDataset)) {
+                wnrButton.setSelected(true);
+            } else if (DCDMCGUI.this.hypnogramFormat.equals(wdlDataset)) {
+                wdlButton.setSelected(true);
+            } else {
+
+            }
+        }
+
+        /** Listens to the radio buttons. */
+        public void actionPerformed(ActionEvent e) {
+            if (e.getActionCommand().equals(originalDataset)) {
+                DCDMCGUI.this.hypnogramFormat = originalDataset;
+                DCDMCGUI.this.stateNumberTextField.setText("5");
+            } else if (e.getActionCommand().equals(wsDataset)) {
+                DCDMCGUI.this.hypnogramFormat = wsDataset;
+                DCDMCGUI.this.stateNumberTextField.setText("2");
+            } else if (e.getActionCommand().equals(wnrDataset)) {
+                DCDMCGUI.this.hypnogramFormat = wnrDataset;
+                DCDMCGUI.this.stateNumberTextField.setText("3");
+            } else if (e.getActionCommand().equals(wdlDataset)) {
+                DCDMCGUI.this.hypnogramFormat = wdlDataset;
+                DCDMCGUI.this.stateNumberTextField.setText("3");
+            } else if (e.getActionCommand().equals("setButton")) {
+                System.out.println("\n===================================");
+                System.out.println("        Hypnogram Format: " + DCDMCGUI.this.hypnogramFormat);
+                System.out.println("===================================\n");
+                jFrame.dispose(); // close this frame
+            } else {
+                LOGGER.info("No corresponding action command!");
+            }
+        }
+
+        /**
+         * Create the GUI and show it.  For thread safety,
+         * this method should be invoked from the
+         * event-dispatching thread.
+         */
+        private void createAndShowGUI() {
+            //Create and set up the window.
+            jFrame = new JFrame("Hypnogram Dataset Settings");
+            jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            //Create and set up the content pane.
+            JComponent newContentPane = new HypnogramGUI();
 
             //Set button
             JButton setButton = new JButton("Set");
