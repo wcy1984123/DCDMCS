@@ -39,6 +39,10 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm {
             this.linkageStrategy = new AverageLinkageStrategy(); // linkage strategy at default
         } else if (linkageType.equals("COMPLETELINKAGESTRATEGY")) {
             this.linkageStrategy = new CompleteLinkageStrategy();
+        } else if (linkageType.equals("SINGLELINKAGESTRATEGY")) {
+            this.linkageStrategy = new SingleLinkageStrategy();
+        } else if (linkageType.equals("WEIGHTEDLINKAGESTRATEGY")) {
+            this.linkageStrategy = new WeightedLinkageStrategy();
         } else {
             LOGGER.info("No corresponding linkage type!");
         }

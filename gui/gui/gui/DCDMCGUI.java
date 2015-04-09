@@ -529,6 +529,8 @@ public class DCDMCGUI extends JFrame {
     private class HierarchicalClusteringGUI extends JPanel implements ActionListener{
         private final String averageLinkageStrategy = "AVERAGELINKAGESTRATEGY";
         private final String completeLinkageStrategy = "COMPLETELINKAGESTRATEGY";
+        private final String singleLinkageStrategy = "SINGLELINKAGESTRATEGY";
+        private final String weightedLinkageStrategy = "WEIGHTEDLINKAGESTRATEGY";
 
         JFrame jFrame = null;
 
@@ -539,25 +541,43 @@ public class DCDMCGUI extends JFrame {
             JRadioButton averageStrategyButton = new JRadioButton("Average Linkage Strategy");
             averageStrategyButton.setMnemonic(KeyEvent.VK_A);
             averageStrategyButton.setActionCommand(averageLinkageStrategy);
+            averageStrategyButton.setToolTipText("In Average Linkage Clustering, the distance between two items x and y is the mean of all pairwise distances between items contained in x and y.");
 
             JRadioButton completeStrategyButton = new JRadioButton("Complete Linkage Strategy");
             completeStrategyButton.setMnemonic(KeyEvent.VK_C);
             completeStrategyButton.setActionCommand(completeLinkageStrategy);
+            completeStrategyButton.setToolTipText("In Complete Linkage Clustering the distance between two items x and y is the maximum of all pairwise distances between items contained in x and y. As in single linkage clustering, no other distances need to be calculated once the distance matrix is known.");
+
+            JRadioButton singleStrategyButton = new JRadioButton("Single Linkage Strategy");
+            singleStrategyButton.setMnemonic(KeyEvent.VK_S);
+            singleStrategyButton.setActionCommand(singleLinkageStrategy);
+            singleStrategyButton.setToolTipText("In Single Linkage Clustering the distance between two items x and y is the minimum of all pairwise distances between items contained in x and y. Unlike centroid linkage clustering, in single linkage clustering no further distances need to be calculated once the distance matrix is known.");
+
+            JRadioButton weightedStrategyButton = new JRadioButton("Weighted Linkage Strategy");
+            weightedStrategyButton.setMnemonic(KeyEvent.VK_W);
+            weightedStrategyButton.setActionCommand(weightedLinkageStrategy);
+            weightedStrategyButton.setToolTipText("In Weighted Linkage Clustering, a weight is assigned to each pseudo-item, and this weight is used to compute the distances between this pseudo-item and all remaining items or pseudo-items using the same similarity metric as was used to calculate the initial similarity matrix.");
 
             //Group the radio buttons.
             ButtonGroup group = new ButtonGroup();
             group.add(averageStrategyButton);
             group.add(completeStrategyButton);
+            group.add(singleStrategyButton);
+            group.add(weightedStrategyButton);
 
             //Register a listener for the radio buttons.
             averageStrategyButton.addActionListener(this);
             completeStrategyButton.addActionListener(this);
+            singleStrategyButton.addActionListener(this);
+            weightedStrategyButton.addActionListener(this);
 
 
             //Put the radio buttons in a column in a panel.
             JPanel radioPanel = new JPanel(new GridLayout(0, 1));
             radioPanel.add(averageStrategyButton);
             radioPanel.add(completeStrategyButton);
+            radioPanel.add(singleStrategyButton);
+            radioPanel.add(weightedStrategyButton);
 
             add(radioPanel, BorderLayout.LINE_START);
             setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
@@ -565,8 +585,14 @@ public class DCDMCGUI extends JFrame {
             // set up selected radio button according to existing deviatedDTW type value
             if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(averageLinkageStrategy)) {
                 averageStrategyButton.setSelected(true);
-            } else {
+            } else if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(completeLinkageStrategy)) {
                 completeStrategyButton.setSelected(true);
+            } else if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(singleLinkageStrategy)) {
+                singleStrategyButton.setSelected(true);
+            } else if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(weightedLinkageStrategy)) {
+                weightedStrategyButton.setSelected(true);
+            } else {
+
             }
         }
 
@@ -574,8 +600,12 @@ public class DCDMCGUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals(averageLinkageStrategy)) {
                 DCDMCGUI.this.hierarchicalLinkageStrategy = averageLinkageStrategy;
-            } else if (e.getActionCommand().equals(completeLinkageStrategy)){
+            } else if (e.getActionCommand().equals(completeLinkageStrategy)) {
                 DCDMCGUI.this.hierarchicalLinkageStrategy = completeLinkageStrategy;
+            } else if (e.getActionCommand().equals(singleLinkageStrategy)) {
+                DCDMCGUI.this.hierarchicalLinkageStrategy = singleLinkageStrategy;
+            } else if (e.getActionCommand().equals(weightedLinkageStrategy)) {
+                DCDMCGUI.this.hierarchicalLinkageStrategy = weightedLinkageStrategy;
             } else if (e.getActionCommand().equals("setButton")) {
                 System.out.println("\n===================================");
                 System.out.println("        Linkage Strategy: " + DCDMCGUI.this.hierarchicalLinkageStrategy);
