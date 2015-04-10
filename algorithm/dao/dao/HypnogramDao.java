@@ -61,7 +61,7 @@ public class HypnogramDao extends AbstractDaoInput {
 
         double[][] formatData = formatHypnogrmas(data, Integer.parseInt(args));
 
-        double[][] res = Utilities.convertToTwoDimensionDoubleArray(getHypnogramData(formatData));
+        double[][] res = Utilities.convertToTwoDimensionDoubleArray(getHypnogramData(formatData, Integer.parseInt(args)));
 
         return res;
     }
@@ -78,7 +78,7 @@ public class HypnogramDao extends AbstractDaoInput {
 
         List<List<Double>> formatData = formatHypnogrmas(data, Integer.parseInt(args));
 
-        List<List<Double>> res = getHypnogramData(formatData);
+        List<List<Double>> res = getHypnogramData(formatData, Integer.parseInt(args));
 
         return res;
     }
@@ -114,7 +114,7 @@ public class HypnogramDao extends AbstractDaoInput {
     /**
      * Format data in terms of format type
      * @param data hypnograms
-     * @param format 3 types of formats
+     * @param format 4 types of formats
      * @return formatted data
      */
     private double[][] formatHypnogrmas(double[][] data, int format) {
@@ -183,7 +183,14 @@ public class HypnogramDao extends AbstractDaoInput {
             }
         } else if (format == 5) {
             // W123R format
-            // keep the original dataset
+            // keep the original dataset and make 0, 1, 2, 3, 5 to 1, 2, 3, 4, 5
+            for (int i = 0; i < ROW; i++) {
+                for (int j = 0; j < COLUMN; j++) {
+                    if (res[i][j] < 5) {
+                        res[i][j]++;
+                    }
+                }
+            }
 
         } else {
             // keep the original dataset
@@ -195,7 +202,7 @@ public class HypnogramDao extends AbstractDaoInput {
     /**
      * Format data in terms of format type
      * @param data hypnograms
-     * @param format 3 types of formats
+     * @param format 4 types of formats
      * @return formatted data
      */
     private List<List<Double>> formatHypnogrmas(List<List<Double>> data, int format) {
@@ -273,7 +280,16 @@ public class HypnogramDao extends AbstractDaoInput {
             }
         } else if (format == 5) {
             // W123R format
-            // keep the original dataset
+            // keep the original dataset and make 0, 1, 2, 3, 5 to 1, 2, 3, 4, 5
+            for (int i = 0; i < ROW; i++) {
+                int COLUMN = res.get(i).size();
+                for (int j = 0; j < COLUMN; j++) {
+                    double value = res.get(i).get(j);
+                    if (value < 5) {
+                        res.get(i).set(j, value + 1);
+                    }
+                }
+            }
 
         } else {
             // keep the original dataset
@@ -285,32 +301,35 @@ public class HypnogramDao extends AbstractDaoInput {
     /**
      * Reformat data using numbers in ascending sort "1 2 3"
      * @param data processed hypnogram by function "formatHypngrams"
+     * @param format data format
      * @return removed states dataset
      */
-    private List<List<Double>> getHypnogramData(double[][] data) {
+    private List<List<Double>> getHypnogramData(double[][] data, int format) {
         int ROW = data.length;
         int COLUMN = data[0].length;
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COLUMN; j++) {
-                if (data[i][j] == 0) {
-                    data[i][j] = 1;
-                } else if (data[i][j] == 6) {
-                    data[i][j] = 2;
-                } else if (data[i][j] == 5) {
-                    data[i][j] = 3;
-                } else {
-                    // keep the same
+        if (format < 5) {
+            for (int i = 0; i < ROW; i++) {
+                for (int j = 0; j < COLUMN; j++) {
+                    if (data[i][j] == 0) {
+                        data[i][j] = 1;
+                    } else if (data[i][j] == 6) {
+                        data[i][j] = 2;
+                    } else if (data[i][j] == 5) {
+                        data[i][j] = 3;
+                    } else {
+                        // keep the same
+                    }
                 }
             }
         }
 
-        // delete the unused values bigger than 3
+        // delete the unused values bigger than 5
         List<List<Double>> res = new ArrayList<List<Double>>();
         List<Double> level = null;
         for (int i = 0; i < ROW; i++) {
             level = new ArrayList<Double>();
             for (int j = 0; j < COLUMN; j++) {
-                if (data[i][j] <= 3) {
+                if (data[i][j] <= 5) {
                     level.add(data[i][j]);
                 }
             }
@@ -323,27 +342,30 @@ public class HypnogramDao extends AbstractDaoInput {
     /**
      * Reformat data using numbers in ascending sort "1 2 3"
      * @param data processed hypnogram by function "formatHypngrams"
+     * @param format data format
      * @return removed states dataset
      */
-    private List<List<Double>> getHypnogramData(List<List<Double>> data) {
+    private List<List<Double>> getHypnogramData(List<List<Double>> data, int format) {
         int ROW = data.size();
-        for (int i = 0; i < ROW; i++) {
-            int COLUMN = data.get(i).size();
-            for (int j = 0; j < COLUMN; j++) {
-                double value = data.get(i).get(j);
-                if (value == 0) {
-                    data.get(i).set(j, 1.0);
-                } else if (value == 6) {
-                    data.get(i).set(j, 2.0);
-                } else if (value == 5) {
-                    data.get(i).set(j, 3.0);
-                } else {
-                    // keep the same
+        if (format < 5) {
+            for (int i = 0; i < ROW; i++) {
+                int COLUMN = data.get(i).size();
+                for (int j = 0; j < COLUMN; j++) {
+                    double value = data.get(i).get(j);
+                    if (value == 0) {
+                        data.get(i).set(j, 1.0);
+                    } else if (value == 6) {
+                        data.get(i).set(j, 2.0);
+                    } else if (value == 5) {
+                        data.get(i).set(j, 3.0);
+                    } else {
+                        // keep the same
+                    }
                 }
             }
         }
 
-        // delete the unused values bigger than 3
+        // delete the unused values bigger than 5
         List<List<Double>> res = new ArrayList<List<Double>>();
         List<Double> level = null;
         for (int i = 0; i < ROW; i++) {
@@ -351,7 +373,7 @@ public class HypnogramDao extends AbstractDaoInput {
             level = new ArrayList<Double>();
             for (int j = 0; j < COLUMN; j++) {
                 double value = data.get(i).get(j);
-                if (value <= 3) {
+                if (value <= 5) {
                     level.add(value);
                 }
             }

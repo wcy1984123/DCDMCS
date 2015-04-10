@@ -1,6 +1,6 @@
 3
 0.99
-hypnogram /Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/hypnogram.csv 3
+hypnogram /Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/hypnogram.csv 3 3
 MATLABORIGINALDTW
 randindex
 statebaseddynamicmodels markovchainmodel

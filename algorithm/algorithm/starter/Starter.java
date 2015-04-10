@@ -239,7 +239,7 @@ public class Starter {
         System.out.println("\n||************** Cluster & Models Starts ************||");
 
         //------------------- Initialization --------------------//
-        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getSTATENUM()));
+        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getDATAFORMAT()));
         int[] previousClusterLabels = this.initialClusterLalels;
 
         //--------------- CDMC Iterative Process ----------------//

@@ -81,6 +81,7 @@ public class DCDMCGUI extends JFrame {
         setLocationRelativeTo(null); // center the current frame
         setVisible(true); // show gui
 
+        // start CDMC algorithm
         startButton.addActionListener(new ActionListener() {
             /**
              * Action performed function
@@ -94,6 +95,7 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
+        // start initialization
         runButton.addActionListener(new ActionListener() {
             /**
              * Action performed
@@ -107,7 +109,7 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
-
+        // config deviated dynamic time warping
         deviatedDynamicTimeWarpingRadioButton.addActionListener(new ActionListener() {
             /**
              * Action performed
@@ -116,10 +118,12 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DeviatedDTWGUI ddtw = new DeviatedDTWGUI();
+                DCDMCGUI.this.setAllComponentsEnabled(false);
                 ddtw.createAndShowGUI();
             }
         });
 
+        // config hierarchical clustering
         hierarchicalClusteringRadioButton.addActionListener(new ActionListener() {
             /**
              * Action performed
@@ -128,10 +132,12 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HierarchicalClusteringGUI hcls = new HierarchicalClusteringGUI();
+                DCDMCGUI.this.setAllComponentsEnabled(false);
                 hcls.createAndShowGUI();
             }
         });
 
+        // config hypnogram dataset
         hypnogramDatasetRadioButton.addActionListener(new ActionListener() {
             /**
              * Action performed
@@ -140,6 +146,7 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HypnogramGUI hd = new HypnogramGUI();
+                DCDMCGUI.this.setAllComponentsEnabled(false);
                 hd.createAndShowGUI();
             }
         });
@@ -151,7 +158,7 @@ public class DCDMCGUI extends JFrame {
     private void initComponents() {
         deviatedDTWType = "GLOBALWEIGHTEDDTW";
         hierarchicalLinkageStrategy = "AVERAGELINKAGESTRATEGY";
-        hypnogramFormat = "WAKENREMREMDATASET";
+        hypnogramFormat = "3";
     }
 
     /**
@@ -277,10 +284,10 @@ public class DCDMCGUI extends JFrame {
         String similarityThreshold = this.similarityThresholdTextField.getText();
         configs.add(similarityThreshold);
 
-        // data source + state number
+        // data source + state number + dataset format
         String dataSource = getDataSource();
-        String stateNumber = stateNumberTextField.getText();
-        configs.add(dataSource + " " + stateNumber);
+        String stateNumber = this.stateNumberTextField.getText();
+        configs.add(dataSource + " " + stateNumber + " " + this.hypnogramFormat);
 
         // dynamic time warping
         String dynamicTimeWarping = getDynamicTimeWarping();
@@ -479,8 +486,8 @@ public class DCDMCGUI extends JFrame {
             radioPanel.add(gwDTWButton);
             radioPanel.add(sdDTWButton);
 
-            add(radioPanel, BorderLayout.LINE_START);
-            setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+            add(radioPanel, BorderLayout.CENTER);
+            setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
             // set up selected radio button according to existing deviatedDTW type value
             if (DCDMCGUI.this.deviatedDTWType.equals(gwDTW)) {
@@ -500,6 +507,7 @@ public class DCDMCGUI extends JFrame {
                 System.out.println("\n===================================");
                 System.out.println("        Deviated DTW: " + DCDMCGUI.this.deviatedDTWType);
                 System.out.println("===================================\n");
+                DCDMCGUI.this.setAllComponentsEnabled(true);
                 jFrame.dispose(); // close this frame
             } else {
                 LOGGER.info("No corresponding action command!");
@@ -523,7 +531,7 @@ public class DCDMCGUI extends JFrame {
             JButton setButton = new JButton("Set");
             setButton.setActionCommand("setButton");
             setButton.addActionListener(this);
-            newContentPane.add(setButton);
+            newContentPane.add(setButton, BorderLayout.PAGE_END);
 
             newContentPane.setOpaque(true); //content panes must be opaque
             jFrame.setContentPane(newContentPane);
@@ -562,12 +570,12 @@ public class DCDMCGUI extends JFrame {
             JRadioButton completeStrategyButton = new JRadioButton("Complete Linkage Strategy");
             completeStrategyButton.setMnemonic(KeyEvent.VK_C);
             completeStrategyButton.setActionCommand(completeLinkageStrategy);
-            completeStrategyButton.setToolTipText("In Complete Linkage Clustering the distance between two items x and y is the maximum of all pairwise distances between items contained in x and y. As in single linkage clustering, no other distances need to be calculated once the distance matrix is known.");
+            completeStrategyButton.setToolTipText("In Complete Linkage Clustering the distance between two items x and y is the maximum of all pairwise distances between items contained in x and y. \nAs in single linkage clustering, no other distances need to be calculated once the distance matrix is known.");
 
             JRadioButton singleStrategyButton = new JRadioButton("Single Linkage Strategy");
             singleStrategyButton.setMnemonic(KeyEvent.VK_S);
             singleStrategyButton.setActionCommand(singleLinkageStrategy);
-            singleStrategyButton.setToolTipText("In Single Linkage Clustering the distance between two items x and y is the minimum of all pairwise distances between items contained in x and y. Unlike centroid linkage clustering, in single linkage clustering no further distances need to be calculated once the distance matrix is known.");
+            singleStrategyButton.setToolTipText("In Single Linkage Clustering the distance between two items x and y is the minimum of all pairwise distances between items contained in x and y. \nUnlike centroid linkage clustering, in single linkage clustering no further distances need to be calculated once the distance matrix is known.");
 
             JRadioButton weightedStrategyButton = new JRadioButton("Weighted Linkage Strategy");
             weightedStrategyButton.setMnemonic(KeyEvent.VK_W);
@@ -595,8 +603,8 @@ public class DCDMCGUI extends JFrame {
             radioPanel.add(singleStrategyButton);
             radioPanel.add(weightedStrategyButton);
 
-            add(radioPanel, BorderLayout.LINE_START);
-            setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+            add(radioPanel, BorderLayout.CENTER);
+            setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
             // set up selected radio button according to existing deviatedDTW type value
             if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(averageLinkageStrategy)) {
@@ -626,6 +634,7 @@ public class DCDMCGUI extends JFrame {
                 System.out.println("\n===================================");
                 System.out.println("        Linkage Strategy: " + DCDMCGUI.this.hierarchicalLinkageStrategy);
                 System.out.println("===================================\n");
+                DCDMCGUI.this.setAllComponentsEnabled(true);
                 jFrame.dispose(); // close this frame
             } else {
                 LOGGER.info("No corresponding action command!");
@@ -649,7 +658,7 @@ public class DCDMCGUI extends JFrame {
             JButton setButton = new JButton("Set");
             setButton.setActionCommand("setButton");
             setButton.addActionListener(this);
-            newContentPane.add(setButton);
+            newContentPane.add(setButton, BorderLayout.PAGE_END);
 
             newContentPane.setOpaque(true); //content panes must be opaque
             jFrame.setContentPane(newContentPane);
@@ -720,17 +729,17 @@ public class DCDMCGUI extends JFrame {
             radioPanel.add(wnrButton);
             radioPanel.add(wdlButton);
 
-            add(radioPanel, BorderLayout.LINE_START);
-            setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+            add(radioPanel, BorderLayout.CENTER);
+            setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
             // set up selected radio button according to existing deviatedDTW type value
-            if (DCDMCGUI.this.hypnogramFormat.equals(originalDataset)) {
+            if (DCDMCGUI.this.hypnogramFormat.equals("5")) {
                 originalButton.setSelected(true);
-            } else if (DCDMCGUI.this.hypnogramFormat.equals(wsDataset)) {
+            } else if (DCDMCGUI.this.hypnogramFormat.equals("2")) {
                 wsButton.setSelected(true);
-            } else if (DCDMCGUI.this.hypnogramFormat.equals(wnrDataset)) {
+            } else if (DCDMCGUI.this.hypnogramFormat.equals("3")) {
                 wnrButton.setSelected(true);
-            } else if (DCDMCGUI.this.hypnogramFormat.equals(wdlDataset)) {
+            } else if (DCDMCGUI.this.hypnogramFormat.equals("4")) {
                 wdlButton.setSelected(true);
             } else {
 
@@ -740,21 +749,22 @@ public class DCDMCGUI extends JFrame {
         /** Listens to the radio buttons. */
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals(originalDataset)) {
-                DCDMCGUI.this.hypnogramFormat = originalDataset;
+                DCDMCGUI.this.hypnogramFormat = "5";
                 DCDMCGUI.this.stateNumberTextField.setText("5");
             } else if (e.getActionCommand().equals(wsDataset)) {
-                DCDMCGUI.this.hypnogramFormat = wsDataset;
+                DCDMCGUI.this.hypnogramFormat = "2";
                 DCDMCGUI.this.stateNumberTextField.setText("2");
             } else if (e.getActionCommand().equals(wnrDataset)) {
-                DCDMCGUI.this.hypnogramFormat = wnrDataset;
+                DCDMCGUI.this.hypnogramFormat = "3";
                 DCDMCGUI.this.stateNumberTextField.setText("3");
             } else if (e.getActionCommand().equals(wdlDataset)) {
-                DCDMCGUI.this.hypnogramFormat = wdlDataset;
+                DCDMCGUI.this.hypnogramFormat = "4";
                 DCDMCGUI.this.stateNumberTextField.setText("3");
             } else if (e.getActionCommand().equals("setButton")) {
                 System.out.println("\n===================================");
                 System.out.println("        Hypnogram Format: " + DCDMCGUI.this.hypnogramFormat);
                 System.out.println("===================================\n");
+                DCDMCGUI.this.setAllComponentsEnabled(true);
                 jFrame.dispose(); // close this frame
             } else {
                 LOGGER.info("No corresponding action command!");
@@ -769,6 +779,7 @@ public class DCDMCGUI extends JFrame {
         private void createAndShowGUI() {
             //Create and set up the window.
             jFrame = new JFrame("Hypnogram Dataset Settings");
+            jFrame.setLayout(new GridBagLayout());
             jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
             //Create and set up the content pane.
@@ -778,7 +789,7 @@ public class DCDMCGUI extends JFrame {
             JButton setButton = new JButton("Set");
             setButton.setActionCommand("setButton");
             setButton.addActionListener(this);
-            newContentPane.add(setButton);
+            newContentPane.add(setButton, BorderLayout.PAGE_END);
 
             newContentPane.setOpaque(true); //content panes must be opaque
             jFrame.setContentPane(newContentPane);

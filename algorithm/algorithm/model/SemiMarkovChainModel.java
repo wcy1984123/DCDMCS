@@ -10,6 +10,7 @@ import umontreal.iro.lecuyer.probdist.WeibullDist;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +93,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         this.mStateTransitionProbability = Utilities.normalizeMatrix(stateTransition);
 
         // ---------------------- Compute State Duration --------------------- //
-        int StateNum = Config.getCLUSTERNUM();
+        int StateNum = Config.getSTATENUM();
         this.mParameters = new double[StateNum][3];
         Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
 
@@ -263,23 +264,30 @@ public class SemiMarkovChainModel implements IModel, ICluster {
 
         for (int i = 0; i < stateNum; i++) {
             Map<Integer, Integer> oneStateDurationDistribution = map.get(i + 1); // state starts with 1
-            double alpha = this.mParameters[i][0];
-            double lambda = this.mParameters[i][1];
-            double delta = this.mParameters[i][2];
 
-            // Invalid weibull parameters
-            if (alpha <= 0 || lambda <= 0) {
-                logProb = Double.NEGATIVE_INFINITY;
-                break;
+             // If some sequence has no corresponding state duration information
+            if (oneStateDurationDistribution == null) {
+                continue;
             } else {
-                if (flag == true) {
-                    logProb = 0; // reset to 0 instead of -infinity
-                    flag = false;
-                }
-                // compute the state duration of the state in the sequence
-                WeibullDist wd = new WeibullDist(alpha, lambda, delta);
-                for (Integer oneStateDuration : oneStateDurationDistribution.keySet()) {
-                    logProb += oneStateDurationDistribution.get(oneStateDuration) * Math.log(wd.cdf(oneStateDuration + 1) - wd.cdf(oneStateDuration));
+                double alpha = this.mParameters[i][0];
+                double lambda = this.mParameters[i][1];
+                double delta = this.mParameters[i][2];
+
+                // Invalid weibull parameters
+                if (alpha <= 0 || lambda <= 0) {
+                    logProb = Double.NEGATIVE_INFINITY;
+                    break;
+                } else {
+                    if (flag == true) {
+                        logProb = 0; // reset to 0 instead of -infinity
+                        flag = false;
+                    }
+                    // compute the state duration of the state in the sequence
+                    WeibullDist wd = new WeibullDist(alpha, lambda, delta);
+
+                    for (Integer oneStateDuration : oneStateDurationDistribution.keySet()) {
+                        logProb += oneStateDurationDistribution.get(oneStateDuration) * Math.log(wd.cdf(oneStateDuration + 1) - wd.cdf(oneStateDuration));
+                    }
                 }
             }
         }

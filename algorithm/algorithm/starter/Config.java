@@ -30,6 +30,7 @@ public final class Config {
     private static String DYNAMICMODELTYPE; // dynamic model type
     private static String INITIALCLUSTERINGTYPE; // initial clustering type
     private static String HIERARCHICALLINKAGETYPE; // hierarchical linkage type
+    private static int DATAFORMAT; // source data format
 
     /*--------------------- File Paths --------------------*/
     private static String CONFIGPATH; // config file path
@@ -61,6 +62,7 @@ public final class Config {
         DATASETTYPE = strs[0];
         DATASETPATH = strs[1];
         STATENUM = Integer.parseInt(strs[2]);
+        DATAFORMAT = Integer.parseInt(strs[3]);
         DTWTYPE = args.get(3);
         STOPPINGCRITERIATYPE = args.get(4);
         strs = args.get(5).split(" ");
@@ -206,10 +208,18 @@ public final class Config {
 
     /**
      * Getter
-     * @return hierarchical linkage tyep
+     * @return hierarchical linkage type
      */
     public static String getHIERARCHICALLINKAGETYPE() {
         return HIERARCHICALLINKAGETYPE.toUpperCase();
+    }
+
+    /**
+     * Getter
+     * @return data format
+     */
+    public static int getDATAFORMAT() {
+        return DATAFORMAT;
     }
 
     /**
