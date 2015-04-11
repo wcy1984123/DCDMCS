@@ -52,8 +52,6 @@ public class ConsoleGUI extends JFrame{
                 jPopupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         });
-
-//        consoleTextArea.addKeyListener(new Key);
     }
 
     /**
