@@ -5,7 +5,6 @@ import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
 import initializer.clusterings.InitialClusteringFactory;
-import initializer.clusterings.HierarchicalClusterAdapter;
 import initializer.clusterings.IClusteringAlgorithm;
 import initializer.clusterings.INITIALCLUSTERINGTYPE;
 import model.*;

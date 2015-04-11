@@ -1,6 +1,7 @@
 package gui;
 
 import Utilities.IOOperation;
+import starter.Config;
 import starter.InitialStarter;
 import starter.Starter;
 
@@ -9,7 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
+import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -53,13 +55,25 @@ public class DCDMCGUI extends JFrame {
     private JRadioButton hiddenSemiMarkovChainRadioButton;
     private JButton startButton;
     private JButton runButton;
+    private JPanel BasicSettingsPanel;
+    private JPanel InitializationPanel;
+    private JPanel DynamicModelsPanel;
+    private JPanel DataSourcePanel;
+    private JPanel OthersSettingsPanel;
+    private JPanel StoppingCriteriaPanel;
+    private JButton exitButton;
     // ----------------------------------------------------------------------------//
 
+    // -------------------------- Config File Variables -------------------------- //
+    private String distanceMatrixFilePath;
+    private String hypnogramDatasetFilePath;
+    private String webUserNavigationBehaviorDatasetFilePath;
+    // --------------------------------------------------------------------------- //
 
     // ------------------------- Model Parameter Options ------------------------- //
-    String deviatedDTWType; // Deviated Dynamic Time Warping Type Variable
-    String hierarchicalLinkageStrategy; // hierarchical clustering linkage strategy
-    String hypnogramFormat; // hypnogram format
+    private String deviatedDTWType; // Deviated Dynamic Time Warping Type Variable
+    private String hierarchicalLinkageStrategy; // hierarchical clustering linkage strategy
+    private String hypnogramFormat; // hypnogram format
     // ----------------------------------------------------------------------------//
 
 
@@ -90,7 +104,7 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
-                Starter starter = new Starter(parameters, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
+                Starter starter = new Starter(parameters, DCDMCGUI.this.distanceMatrixFilePath);
                 starter.runCDMC();
             }
         });
@@ -150,22 +164,36 @@ public class DCDMCGUI extends JFrame {
                 hd.createAndShowGUI();
             }
         });
+
+        // exit button
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
     }
 
     /**
      * Initialize components
      */
     private void initComponents() {
-        deviatedDTWType = "GLOBALWEIGHTEDDTW";
-        hierarchicalLinkageStrategy = "AVERAGELINKAGESTRATEGY";
-        hypnogramFormat = "3";
+
+        // default configuration
+        deviatedDTWType = Config.getDEVIATEDDTWTYPE();
+        hierarchicalLinkageStrategy = Config.getHIERARCHICALLINKAGETYPE();
+        hypnogramFormat = String.valueOf(Config.getDATAFORMAT());
+
+        distanceMatrixFilePath = Config.getDISTANCEMATRIXFILEPATH();
+        hypnogramDatasetFilePath = Config.getHYPNOGRAMDATASETFILEPATH();
+        webUserNavigationBehaviorDatasetFilePath = Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH();
     }
 
     /**
      * set all components enabled
      * @param enabled true if it is enabled; otherwise not enabled
      */
-    private void setAllComponentsEnabled(boolean enabled) {
+    public void setAllComponentsEnabled(boolean enabled) {
 
         clusterNumberTextField.setEnabled(enabled);
         similarityThresholdTextField.setEnabled(enabled);
@@ -193,6 +221,37 @@ public class DCDMCGUI extends JFrame {
         hiddenSemiMarkovChainRadioButton.setEnabled(enabled);
         startButton.setEnabled(enabled);
         DCDMCPanel.setEnabled(enabled);
+        BasicSettingsPanel.setEnabled(enabled);
+        InitializationPanel.setEnabled(enabled);
+        DynamicModelsPanel.setEnabled(enabled);
+        DataSourcePanel.setEnabled(enabled);
+        OthersSettingsPanel.setEnabled(enabled);
+        StoppingCriteriaPanel.setEnabled(enabled);
+    }
+
+    /**
+     * Reset all components to default setting according to CONSTANTS configuration
+     */
+    private void resetAllComponents() {
+
+        // reset basic settings
+        clusterNumberTextField.setText(String.valueOf(Config.getCLUSTERNUM()));
+        similarityThresholdTextField.setText(String.valueOf(Config.getSIMILARITY()));
+        stateNumberTextField.setText(String.valueOf(Config.getSTATENUM()));
+
+        // initialization
+        setInitialClusteringModel(Config.getINITIALCLUSTERINGTYPE() + " " + Config.getHIERARCHICALLINKAGETYPE());
+        setDynamicTimeWarping(Config.getDTWTYPE());
+
+        // data source
+        setDataSource(Config.getDATASETTYPE() + " " + Config.getDATASETPATH() + " " + Config.getSTATENUM() + " " + Config.getDATAFORMAT());
+
+        // dynamic models
+        setModelType(Config.getMODELINGMODE());
+        setDynamicModel(Config.getDYNAMICMODELTYPE());
+
+        // stopping criteria
+        setStoppingCriteria(Config.getSTOPPINGCRITERIATYPE());
     }
 
     /**
@@ -205,37 +264,78 @@ public class DCDMCGUI extends JFrame {
         JMenuBar menuBar;
         JMenu menu, submenu;
         JMenuItem menuItem;
-        JRadioButtonMenuItem rbMenuItem;
-        JCheckBoxMenuItem cbMenuItem;
 
         //Create the menu bar.
         menuBar = new JMenuBar();
 
-        //Build the first menu.
+        //---------------------------------------- File Menu ---------------------------------------//
         menu = new JMenu("File");
         menu.setMnemonic(KeyEvent.VK_A);
         menuBar.add(menu);
 
-        //a group of JMenuItems
-        menuItem = new JMenuItem("Import Config File ...", KeyEvent.VK_T);
+        //Import Config File
+        menuItem = new JMenuItem("Import Config File ...", KeyEvent.VK_I);
         menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a file chooser
+
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(DCDMCGUI.this);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    System.out.println("        Open File: [" + file.getAbsolutePath() + "] successfully.");
+                    importConfigFile(file);
+
+
+                } else {
+                    System.out.println("        Cancel to open file.");
+                }
+            }
+        });
+
+        // Export Config File
+        menuItem = new JMenuItem("Export Config File ...", KeyEvent.VK_E);
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create a file chooser
+
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showSaveDialog(DCDMCGUI.this);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+                    File file = fc.getSelectedFile();
+                    exportConfigFile(file);
+                    System.out.println("        Save File: [" + file.getAbsolutePath() + "] successfully.");
+
+                } else {
+                    System.out.println("        Cancel to save file.");
+                }
+            }
+        });
 
         menu.addSeparator();
 
         //a submenu
-        submenu = new JMenu("Data Preprocess");
-        submenu.setMnemonic(KeyEvent.VK_S);
-
-        menuItem = new JMenuItem("Calculate Distance Matrix");
-        submenu.add(menuItem);
-        menu.add(submenu);
 
         submenu = new JMenu("Settings...");
-        submenu.setMnemonic(KeyEvent.VK_1);
+        submenu.setMnemonic(KeyEvent.VK_S);
 
-        menuItem = new JMenuItem("Save Paths...");
+        menuItem = new JMenuItem("Paths...");
         submenu.add(menuItem);
         menu.add(submenu);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DCDMCGUI.this.setAllComponentsEnabled(false);
+                PathSettingsGUI pathSettingsGUI = new PathSettingsGUI(DCDMCGUI.this);
+            }
+        });
 
         menu.addSeparator();
 
@@ -256,15 +356,195 @@ public class DCDMCGUI extends JFrame {
         );
         menu.add(menuItem);
 
-        //Build second menu in the menu bar.
+        //-------------------------------------- Settings Menu --------------------------------------//
+        menu = new JMenu("Edit");
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Reset Configurations");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DCDMCGUI.this.setAllComponentsEnabled(false);
+                Object[] options = {"Yes, please",
+                        "No, thanks"};
+                int n = JOptionPane.showOptionDialog(DCDMCGUI.this,
+                        "Would you like to reset all configurations?",
+                        "Caution",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        options[1]);
+
+                // press yes button
+                if (n == 0) {
+                    Config.resetConfig(); // reset all parameters
+                    DCDMCGUI.this.resetAllComponents(); // reset all gui configuration
+                    System.out.println("            Reset configurations in all components successfully.");
+                } else {
+                    System.out.println("            Cancel to reset configurations in all components.");
+                }
+
+                DCDMCGUI.this.setAllComponentsEnabled(true);
+            }
+        });
+
+        menuItem = new JMenuItem("Show All Configurations");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final JFrame frame = new JFrame("Distributed Collective Dynamical Modeling & Clustering Configurations");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                //Create the content-pane-to-be.
+                JPanel contentPane = new JPanel(new BorderLayout());
+                contentPane.setOpaque(true);
+
+                //Create a scrolled text area.
+                JTextArea output = new JTextArea(28, 75);
+                output.setEditable(false);
+                output.append("\n");
+                Config config = new Config(DCDMCGUI.this.getParameters());
+                output.append(Config.toFormatAsString());
+                output.setCaretPosition(output.getDocument().getLength());
+                JScrollPane scrollPane = new JScrollPane(output);
+
+                //Add the text area to the content pane.
+                contentPane.add(scrollPane, BorderLayout.CENTER);
+
+                // Add the button to the content pane.
+                JButton jButton = new JButton("Close");
+                jButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frame.dispose();
+                    }
+                });
+                contentPane.add(jButton, BorderLayout.PAGE_END);
+
+                //Create and set up the content pane.
+                frame.setContentPane(contentPane);
+
+                //Display the window.
+                Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+                frame.setSize((int)screenDimension.getWidth() / 2, (int)screenDimension.getWidth() / 2);
+                frame.setLocationRelativeTo(null);
+                frame.pack();
+                frame.setVisible(true);
+            }
+        });
+
+        //---------------------------------------- Help Menu ----------------------------------------//
         menu = new JMenu("Help");
         menuBar.add(menu);
-        menuItem = new JMenuItem("Version");
+
+        menuItem = new JMenuItem("Software website");
         menu.add(menuItem);
-        menuItem = new JMenuItem("About Us");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                        desktop.browse(new URI("https://github.com/wcy1984123/DCDMCS"));
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        menuItem = new JMenuItem("Software Version & Copyright");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(DCDMCGUI.this, Config.getVERSIONINFO(), "Software Version & Copyright Information", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+
+        menuItem = new JMenuItem("About us");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(DCDMCGUI.this, "KNOWLEDGE DISCOVERY AND DATA MINING \n" +
+                        "RESEARCH GROUP", "About us", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
         menu.add(menuItem);
 
         return menuBar;
+    }
+
+    /**
+     * Import config file and set it up in DCDMC GUI
+     * @param file file pointer
+     */
+    private void importConfigFile(File file) {
+
+        List<String> configs = new ArrayList<String>();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = null;
+
+            while((line = br.readLine()) != null) {
+                    configs.add(line);
+            }
+
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // cluster number
+        this.clusterNumberTextField.setText(configs.get(0));
+        this.similarityThresholdTextField.setText(configs.get(1));
+
+        // set dataset type
+        setDataSource(configs.get(2));
+
+
+        // set dynamic time warping
+        setDynamicTimeWarping(configs.get(3));
+
+        // set stopping criteria
+        setStoppingCriteria(configs.get(4));
+
+        // set model type + dynamic model
+        setModelType(configs.get(5).split(" ")[0]);
+        setDynamicModel(configs.get(5).split(" ")[1]);
+
+        // set clustering model + strategy
+        setInitialClusteringModel(configs.get(6));
+    }
+
+    /**
+     * Export config file and set it up in DCDMC GUI
+     * @param file file pointer
+     */
+    private void exportConfigFile(File file) {
+
+        List<String> configs = new ArrayList<String>();
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            List<String> parameters = getParameters();
+
+            for (String line : parameters) {
+                bw.write(line + "\n");
+            }
+
+            bw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -317,9 +597,9 @@ public class DCDMCGUI extends JFrame {
     private String getDataSource() {
         String res = null;
         if (hypnogramDatasetRadioButton.isSelected()) {
-            res = "hypnogram" + " " + "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/hypnogram.csv";
+            res = "hypnogram" + " " + hypnogramDatasetFilePath;
         } else if (webUserNavigationBehaviorRadioButton.isSelected()) {
-            res = "msnbc" + " " + "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/msnbcData.csv";
+            res = "msnbc" + " " + webUserNavigationBehaviorDatasetFilePath;
         } else {
             LOGGER.warning("The input data source is null!");
         }
@@ -436,17 +716,165 @@ public class DCDMCGUI extends JFrame {
     }
 
     /**
-     * test
-     * @param args user input
+     * Set data soruce
+     * @param datatype dataset type
      */
-    public static void main(String[] args) {
-        DCDMCGUI test = new DCDMCGUI();
-        // redirect standard output into text area
-        ConsoleGUI console = new ConsoleGUI();
-        try {
-            IOOperation.console(console.getConsoleTextArea());
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void setDataSource(String datatype) {
+
+        if (datatype == null || datatype.length() == 0) {
+            System.out.println("        Error: data type is null!");
+            return;
+        }
+
+        String[] params = datatype.split(" ");
+
+        String param = params[0].toUpperCase();
+        if (param.equals("HYPNOGRAM")) {
+            hypnogramDatasetRadioButton.setSelected(true);
+            this.hypnogramDatasetFilePath = params[1];
+            this.stateNumberTextField.setText(params[2]);
+            this.hypnogramFormat = params[3];
+        } else if (param.equals("MSNBC")) {
+            webUserNavigationBehaviorRadioButton.setSelected(true);
+            this.hypnogramDatasetFilePath = params[1];
+            this.stateNumberTextField.setText(params[2]);
+            this.hypnogramFormat = null;
+        } else {
+            LOGGER.warning("The input data source is invalid!");
+        }
+    }
+
+    /**
+     * Set dynamic time warping
+     * @param dtwType dynamic time warping type
+     */
+    private void setDynamicTimeWarping(String dtwType) {
+
+        if (dtwType == null || dtwType.length() == 0) {
+            System.out.println("        Error: DTW type is null!");
+            return;
+        }
+
+        String dtw = dtwType.toUpperCase();
+        if (dtw.equals("ORIGINALDTW")) {
+            originalDynamicTimeWarpingRadioButton.setSelected(true);
+        } else if (dtw.equals("MATLABORIGINALDTW")) {
+            matlabDynamicTimeWarpingRadioButton.setSelected(true);
+        } else if (dtw.equals("SAKOECHIBADTW")) {
+            sakoeChibaDynamicTimeRadioButton.setSelected(true);
+        } else if (dtw.equals("ITAKURAPARALLELOGRAMDTW")) {
+            itakuraParallelogramDynamicTimeRadioButton.setSelected(true);
+        } else if (dtw.equals("FASTOPTIMALDTW")) {
+            fastOptimalDynamicTimeRadioButton.setSelected(true);
+        } else if (dtw.equals("GlobalWeightedDTW")) {
+            deviatedDynamicTimeWarpingRadioButton.setSelected(true);
+            this.deviatedDTWType = "GlobalWeightedDTW";
+        } else if (dtw.equals("StepwiseDeviatedDTW")) {
+            deviatedDynamicTimeWarpingRadioButton.setSelected(true);
+            this.deviatedDTWType = "StepwiseDeviatedDTW";
+        } else {
+            LOGGER.warning("The dynamic time warping is invalid!");
+        }
+
+    }
+
+    /**
+     * Set stopping criteria
+     * @param stoppingCriteriaType stopping criteria type
+     */
+    private void setStoppingCriteria(String stoppingCriteriaType) {
+
+        if (stoppingCriteriaType == null || stoppingCriteriaType.length() == 0) {
+            System.out.println("        Stopping Criteria Type is null!");
+            return;
+        }
+
+        String scType = stoppingCriteriaType.toUpperCase();
+
+        if (scType.equals("RANDINDEX")) {
+            randIndexRadioButton.setSelected(true);
+        } else if (scType.equals("ADJUSTEDRANDINDEX")) {
+            adjustedRandIndexRadioButton.setSelected(true);
+        } else if (scType.equals("NORMALIZEDMUTUALINFORMATION")) {
+            normalMutualInformationRadioButton.setSelected(true);
+        } else if (scType.equals("PURITY")) {
+            purityRadioButton.setSelected(true);
+        } else {
+            LOGGER.warning("The stopping criteria is invalid!");
+        }
+
+    }
+
+    /**
+     * Set initial clustering model
+     * @param initialClusterType  a string name of initial clustering model
+     */
+    private void setInitialClusteringModel(String initialClusterType) {
+
+        if (initialClusterType == null || initialClusterType.length() == 0) {
+            System.out.println("        The initial cluster type is null!");
+            return;
+        }
+
+        String[] params = initialClusterType.split(" ");
+        String icType = params[0].toUpperCase();
+
+        if (icType.equals("HIERARCHICALCLUSTERING")) {
+            hierarchicalClusteringRadioButton.setSelected(true);
+            this.hierarchicalLinkageStrategy = params[1];
+        } else if (icType.equals("KMEANSCLUSTERING")) {
+            KMeansClusteringRadioButton.setSelected(true);
+            this.hierarchicalLinkageStrategy = null;
+        } else {
+            LOGGER.warning("The initial clustering model is invalid!");
+        }
+
+    }
+
+    /**
+     * Set model type
+     * @param modelType  a string name of model type
+     */
+    private void setModelType(String modelType){
+
+        if (modelType == null || modelType.length() == 0) {
+            System.out.println("        The model type is null!");
+            return;
+        }
+
+        String mt = modelType.toUpperCase();
+        if (mt.equals("STATEBASEDDYNAMICMODELS")) {
+            stateBasedDynamicModelRadioButton.setSelected(true);
+        } else {
+            LOGGER.warning("The model type is invalid!");
+        }
+
+    }
+
+    /**
+     * Set dynamic model
+     * @param dynamicModelType  a string name of dynamic model
+     */
+    private void setDynamicModel(String dynamicModelType){
+
+        if (dynamicModelType == null || dynamicModelType.length() == 0) {
+            System.out.println("        The dynamic model type is null!");
+            return;
+        }
+
+        String dmType = dynamicModelType.toUpperCase();
+        if (dmType.equals("MARKOVCHAINMODEL")) {
+            markovChainModelRadioButton.setSelected(true);
+        } else if (dmType.equals("SEMIMARKOVCHAINMODEL")) {
+            semiMarkovChainModelRadioButton.setSelected(true);
+        } else if (dmType.equals("HIDDENMARKOVMODEL")) {
+            hiddenMarkovModelRadioButton.setSelected(true);
+        } else if (dmType.equals("HIDDENSEMIMARKOVCHAINMODEL")) {
+            hiddenSemiMarkovChainRadioButton.setSelected(true);
+        } else if (dmType.equals("HIDDENSTATEDURATIONMARKOVMODEL")) {
+            hiddenStateDurationMarkovRadioButton.setSelected(true);
+        } else {
+            LOGGER.warning("The dynamic model is invalid!");
         }
     }
 
@@ -501,8 +929,12 @@ public class DCDMCGUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if (e.getActionCommand().equals(gwDTW)) {
                 DCDMCGUI.this.deviatedDTWType = gwDTW;
+                Config.setDEVIATEDDTWTYPE(gwDTW);
+                Config.setDTWTYPE(gwDTW);
             } else if (e.getActionCommand().equals(sdDTW)){
                 DCDMCGUI.this.deviatedDTWType = sdDTW;
+                Config.setDEVIATEDDTWTYPE(sdDTW);
+                Config.setDTWTYPE(sdDTW);
             } else if (e.getActionCommand().equals("setButton")) {
                 System.out.println("\n===================================");
                 System.out.println("        Deviated DTW: " + DCDMCGUI.this.deviatedDTWType);
@@ -801,6 +1233,21 @@ public class DCDMCGUI extends JFrame {
             jFrame.setMinimumSize(jFrame.getPreferredSize());
             jFrame.setLocationRelativeTo(null);
             jFrame.setVisible(true);
+        }
+    }
+
+    /**
+     * test
+     * @param args user input
+     */
+    public static void main(String[] args) {
+        DCDMCGUI test = new DCDMCGUI();
+        // redirect standard output into text area
+        ConsoleGUI console = new ConsoleGUI();
+        try {
+            IOOperation.console(console.getConsoleTextArea());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
