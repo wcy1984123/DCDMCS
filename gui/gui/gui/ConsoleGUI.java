@@ -4,6 +4,7 @@ import Utilities.IOOperation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 
 /**
@@ -33,9 +34,26 @@ public class ConsoleGUI extends JFrame{
         initComponents();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension screenDimensioin = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(screenDimensioin.width / 4, 2 * screenDimensioin.height / 3);
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(screenDimension.width / 4, 2 * screenDimension.height / 3);
         setVisible(true); // show gui
+        consoleTextArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPopupMenu jPopupMenu = new JPopupMenu();
+                JMenuItem jMenuItem = new JMenuItem("Clear");
+                jPopupMenu.add(jMenuItem);
+                jMenuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ConsoleGUI.this.consoleTextArea.setText(""); // clear text field
+                    }
+                });
+                jPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
+
+//        consoleTextArea.addKeyListener(new Key);
     }
 
     /**
