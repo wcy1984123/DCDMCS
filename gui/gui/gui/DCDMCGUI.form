@@ -107,7 +107,7 @@
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
-                      <text value="Sakoe Chiba Dynamic Time Warping"/>
+                      <text value="Sakoe Chiba Dynamic Time Warping          "/>
                       <toolTipText value="Sakoe-Chiba band dynamic time warping utilizes a rectangle area restrciting search space of optimal warping path."/>
                     </properties>
                   </component>
@@ -295,7 +295,7 @@
                     <properties>
                       <font name="Helvetica Neue"/>
                       <selected value="true"/>
-                      <text value="State-Based Dynamic Model            "/>
+                      <text value="State-Based Dynamic Model                      "/>
                       <toolTipText value="State-based dynamic model is dynamic model based on states."/>
                     </properties>
                   </component>

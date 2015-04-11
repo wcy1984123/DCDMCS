@@ -7,9 +7,7 @@ import starter.Starter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
@@ -135,6 +133,23 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
+        deviatedDynamicTimeWarpingRadioButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                deviatedDynamicTimeWarpingRadioButton.setForeground(Color.BLUE);
+                deviatedDynamicTimeWarpingRadioButton.setBackground(Color.WHITE);
+                deviatedDynamicTimeWarpingRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                deviatedDynamicTimeWarpingRadioButton.setForeground(Color.BLACK);
+                deviatedDynamicTimeWarpingRadioButton.setBackground(Color.WHITE);
+                deviatedDynamicTimeWarpingRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
+            }
+        });
+
+
         // config hierarchical clustering
         hierarchicalClusteringRadioButton.addActionListener(new ActionListener() {
             /**
@@ -146,6 +161,22 @@ public class DCDMCGUI extends JFrame {
                 HierarchicalClusteringGUI hcls = new HierarchicalClusteringGUI();
                 DCDMCGUI.this.setAllComponentsEnabled(false);
                 hcls.createAndShowGUI();
+            }
+        });
+
+        hierarchicalClusteringRadioButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hierarchicalClusteringRadioButton.setForeground(Color.ORANGE);
+                hierarchicalClusteringRadioButton.setBackground(Color.WHITE);
+                hierarchicalClusteringRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hierarchicalClusteringRadioButton.setForeground(Color.BLACK);
+                hierarchicalClusteringRadioButton.setBackground(Color.WHITE);
+                hierarchicalClusteringRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
 
@@ -163,12 +194,30 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
+        hypnogramDatasetRadioButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                hypnogramDatasetRadioButton.setForeground(Color.RED);
+                hypnogramDatasetRadioButton.setBackground(Color.WHITE);
+                hypnogramDatasetRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                hypnogramDatasetRadioButton.setForeground(Color.BLACK);
+                hypnogramDatasetRadioButton.setBackground(Color.WHITE);
+                hypnogramDatasetRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
+            }
+        });
+
         // exit button
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
+        });
+        hierarchicalClusteringRadioButton.addMouseListener(new MouseAdapter() {
         });
     }
 
@@ -215,6 +264,7 @@ public class DCDMCGUI extends JFrame {
         stateBasedDynamicModelRadioButton.setEnabled(enabled);
         purityRadioButton.setEnabled(enabled);
         startButton.setEnabled(enabled);
+        runButton.setEnabled(enabled);
         DCDMCPanel.setEnabled(enabled);
         BasicSettingsPanel.setEnabled(enabled);
         InitializationPanel.setEnabled(enabled);
