@@ -41,27 +41,25 @@ public class DCDMCGUI extends JFrame {
     private JRadioButton fastOptimalDynamicTimeRadioButton;
     private JRadioButton webUserNavigationBehaviorRadioButton;
     private JRadioButton hypnogramDatasetRadioButton;
-    private JTextField otherDataSourceTextField;
     private JTextField stateNumberTextField;
     private JRadioButton markovChainModelRadioButton;
     private JRadioButton semiMarkovChainModelRadioButton;
     private JRadioButton hiddenMarkovModelRadioButton;
-    private JRadioButton hiddenStateDurationMarkovRadioButton;
     private JRadioButton normalMutualInformationRadioButton;
     private JRadioButton adjustedRandIndexRadioButton;
     private JRadioButton randIndexRadioButton;
     private JRadioButton stateBasedDynamicModelRadioButton;
     private JRadioButton purityRadioButton;
-    private JRadioButton hiddenSemiMarkovChainRadioButton;
     private JButton startButton;
     private JButton runButton;
     private JPanel BasicSettingsPanel;
     private JPanel InitializationPanel;
     private JPanel DynamicModelsPanel;
     private JPanel DataSourcePanel;
-    private JPanel OthersSettingsPanel;
     private JPanel StoppingCriteriaPanel;
     private JButton exitButton;
+    private JPanel cdmcPanel;
+    private JPanel initializerPanel;
     // ----------------------------------------------------------------------------//
 
     // -------------------------- Config File Variables -------------------------- //
@@ -207,26 +205,24 @@ public class DCDMCGUI extends JFrame {
         fastOptimalDynamicTimeRadioButton.setEnabled(enabled);
         webUserNavigationBehaviorRadioButton.setEnabled(enabled);
         hypnogramDatasetRadioButton.setEnabled(enabled);
-        otherDataSourceTextField.setEnabled(enabled);
         stateNumberTextField.setEnabled(enabled);
         markovChainModelRadioButton.setEnabled(enabled);
         semiMarkovChainModelRadioButton.setEnabled(enabled);
         hiddenMarkovModelRadioButton.setEnabled(enabled);
-        hiddenStateDurationMarkovRadioButton.setEnabled(enabled);
         normalMutualInformationRadioButton.setEnabled(enabled);
         adjustedRandIndexRadioButton.setEnabled(enabled);
         randIndexRadioButton.setEnabled(enabled);
         stateBasedDynamicModelRadioButton.setEnabled(enabled);
         purityRadioButton.setEnabled(enabled);
-        hiddenSemiMarkovChainRadioButton.setEnabled(enabled);
         startButton.setEnabled(enabled);
         DCDMCPanel.setEnabled(enabled);
         BasicSettingsPanel.setEnabled(enabled);
         InitializationPanel.setEnabled(enabled);
         DynamicModelsPanel.setEnabled(enabled);
         DataSourcePanel.setEnabled(enabled);
-        OthersSettingsPanel.setEnabled(enabled);
         StoppingCriteriaPanel.setEnabled(enabled);
+        cdmcPanel.setEnabled(enabled);
+        initializerPanel.setEnabled(enabled);
     }
 
     /**
@@ -704,10 +700,6 @@ public class DCDMCGUI extends JFrame {
             res = "SEMIMARKOVCHAINMODEL";
         } else if (hiddenMarkovModelRadioButton.isSelected()) {
             res = "HIDDENMARKOVMODEL";
-        } else if (hiddenSemiMarkovChainRadioButton.isSelected()) {
-            res = "";
-        } else if (hiddenStateDurationMarkovRadioButton.isSelected()){
-            res = "";
         } else {
             LOGGER.warning("The dynamic model is null!");
         }
@@ -869,10 +861,6 @@ public class DCDMCGUI extends JFrame {
             semiMarkovChainModelRadioButton.setSelected(true);
         } else if (dmType.equals("HIDDENMARKOVMODEL")) {
             hiddenMarkovModelRadioButton.setSelected(true);
-        } else if (dmType.equals("HIDDENSEMIMARKOVCHAINMODEL")) {
-            hiddenSemiMarkovChainRadioButton.setSelected(true);
-        } else if (dmType.equals("HIDDENSTATEDURATIONMARKOVMODEL")) {
-            hiddenStateDurationMarkovRadioButton.setSelected(true);
         } else {
             LOGGER.warning("The dynamic model is invalid!");
         }

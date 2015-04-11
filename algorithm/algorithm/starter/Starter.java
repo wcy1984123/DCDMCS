@@ -294,6 +294,12 @@ public class Starter {
 
         // visualize results
         System.out.println("\n   ======= Final Models Parameters ======= ");
+        // if initial clusters have provided a good enough clustering
+        if(currentClusterLabels == null) {
+            // build dynamic model over initial clusters
+            System.out.println("        Never Enter Into CDMC Algorithm!");
+            this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
+        }
         this.mIModels.visualizeOutputs();
         System.out.println("\n   ============================== \n");
 
