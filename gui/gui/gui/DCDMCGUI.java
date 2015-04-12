@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -78,7 +77,10 @@ public class DCDMCGUI extends JFrame {
      */
     public DCDMCGUI() {
         super("Distributed Collective Dynamic Modeling & Clustering");
-        setJMenuBar(createMenuBar());
+
+        // add menu
+        DCDMCMenuGUI dcdmcMenuGUI = new DCDMCMenuGUI(DCDMCGUI.this);
+        setJMenuBar(dcdmcMenuGUI.createMenuBar());
         setContentPane(DCDMCPanel);
         pack();
 
@@ -127,7 +129,7 @@ public class DCDMCGUI extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeviatedDTWGUI ddtw = new DeviatedDTWGUI();
+                DeviatedDTWGUI ddtw = new DeviatedDTWGUI(DCDMCGUI.this);
                 DCDMCGUI.this.setAllComponentsEnabled(false);
                 ddtw.createAndShowGUI();
             }
@@ -158,7 +160,7 @@ public class DCDMCGUI extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                HierarchicalClusteringGUI hcls = new HierarchicalClusteringGUI();
+                HierarchicalClusteringGUI hcls = new HierarchicalClusteringGUI(DCDMCGUI.this);
                 DCDMCGUI.this.setAllComponentsEnabled(false);
                 hcls.createAndShowGUI();
             }
@@ -188,7 +190,7 @@ public class DCDMCGUI extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                HypnogramGUI hd = new HypnogramGUI();
+                HypnogramGUI hd = new HypnogramGUI(DCDMCGUI.this);
                 DCDMCGUI.this.setAllComponentsEnabled(false);
                 hd.createAndShowGUI();
             }
@@ -278,7 +280,7 @@ public class DCDMCGUI extends JFrame {
     /**
      * Reset all components to default setting according to CONSTANTS configuration
      */
-    private void resetAllComponents() {
+    public void resetAllComponents() {
 
         // reset basic settings
         clusterNumberTextField.setText(String.valueOf(Config.getCLUSTERNUM()));
@@ -301,234 +303,10 @@ public class DCDMCGUI extends JFrame {
     }
 
     /**
-     * Create menu bar
-     * @return a object of JMenuBar
-     * https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/MenuDemoProject/src/components/MenuDemo.java
-     */
-    public JMenuBar createMenuBar() {
-
-        JMenuBar menuBar;
-        JMenu menu, submenu;
-        JMenuItem menuItem;
-
-        //Create the menu bar.
-        menuBar = new JMenuBar();
-
-        //---------------------------------------- File Menu ---------------------------------------//
-        menu = new JMenu("File");
-        menu.setMnemonic(KeyEvent.VK_A);
-        menuBar.add(menu);
-
-        //Import Config File
-        menuItem = new JMenuItem("Import Config File ...", KeyEvent.VK_I);
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Create a file chooser
-
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showOpenDialog(DCDMCGUI.this);
-
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    System.out.println("        Open File: [" + file.getAbsolutePath() + "] successfully.");
-                    importConfigFile(file);
-
-
-                } else {
-                    System.out.println("        Cancel to open file.");
-                }
-            }
-        });
-
-        // Export Config File
-        menuItem = new JMenuItem("Export Config File ...", KeyEvent.VK_E);
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Create a file chooser
-
-                JFileChooser fc = new JFileChooser();
-                int returnVal = fc.showSaveDialog(DCDMCGUI.this);
-
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-                    File file = fc.getSelectedFile();
-                    exportConfigFile(file);
-                    System.out.println("        Save File: [" + file.getAbsolutePath() + "] successfully.");
-
-                } else {
-                    System.out.println("        Cancel to save file.");
-                }
-            }
-        });
-
-        menu.addSeparator();
-
-        //a submenu
-
-        submenu = new JMenu("Settings...");
-        submenu.setMnemonic(KeyEvent.VK_S);
-
-        menuItem = new JMenuItem("Paths...");
-        submenu.add(menuItem);
-        menu.add(submenu);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DCDMCGUI.this.setAllComponentsEnabled(false);
-                PathSettingsGUI pathSettingsGUI = new PathSettingsGUI(DCDMCGUI.this);
-            }
-        });
-
-        menu.addSeparator();
-
-        menuItem = new JMenuItem("Exit", KeyEvent.VK_0);
-        menuItem.addActionListener(
-                new ActionListener() {
-                    /**
-                     * Action performed function
-                     * @param e event
-                     */
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // exit the application when window's close button is clicked
-                        System.exit(0);
-                    }
-                }
-
-        );
-        menu.add(menuItem);
-
-        //-------------------------------------- Settings Menu --------------------------------------//
-        menu = new JMenu("Edit");
-        menuBar.add(menu);
-        menuItem = new JMenuItem("Reset Configurations");
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DCDMCGUI.this.setAllComponentsEnabled(false);
-                Object[] options = {"Yes, please",
-                        "No, thanks"};
-                int n = JOptionPane.showOptionDialog(DCDMCGUI.this,
-                        "Would you like to reset all configurations?",
-                        "Caution",
-                        JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
-                        null,
-                        options,
-                        options[1]);
-
-                // press yes button
-                if (n == 0) {
-                    Config.resetConfig(); // reset all parameters
-                    DCDMCGUI.this.resetAllComponents(); // reset all gui configuration
-                    System.out.println("            Reset configurations in all components successfully.");
-                } else {
-                    System.out.println("            Cancel to reset configurations in all components.");
-                }
-
-                DCDMCGUI.this.setAllComponentsEnabled(true);
-            }
-        });
-
-        menuItem = new JMenuItem("Show All Configurations");
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final JFrame frame = new JFrame("Distributed Collective Dynamical Modeling & Clustering Configurations");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-                //Create the content-pane-to-be.
-                JPanel contentPane = new JPanel(new BorderLayout());
-                contentPane.setOpaque(true);
-
-                //Create a scrolled text area.
-                JTextArea output = new JTextArea(28, 75);
-                output.setEditable(false);
-                output.append("\n");
-                Config config = new Config(DCDMCGUI.this.getParameters());
-                output.append(Config.toFormatAsString());
-                output.setCaretPosition(output.getDocument().getLength());
-                JScrollPane scrollPane = new JScrollPane(output);
-
-                //Add the text area to the content pane.
-                contentPane.add(scrollPane, BorderLayout.CENTER);
-
-                // Add the button to the content pane.
-                JButton jButton = new JButton("Close");
-                jButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        frame.dispose();
-                    }
-                });
-                contentPane.add(jButton, BorderLayout.PAGE_END);
-
-                //Create and set up the content pane.
-                frame.setContentPane(contentPane);
-
-                //Display the window.
-                Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-                frame.setSize((int)screenDimension.getWidth() / 2, (int)screenDimension.getWidth() / 2);
-                frame.setLocationRelativeTo(null);
-                frame.pack();
-                frame.setVisible(true);
-            }
-        });
-
-        //---------------------------------------- Help Menu ----------------------------------------//
-        menu = new JMenu("Help");
-        menuBar.add(menu);
-
-        menuItem = new JMenuItem("Software website");
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                    try {
-                        desktop.browse(new URI("https://github.com/wcy1984123/DCDMCS"));
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        menuItem = new JMenuItem("Software Version & Copyright");
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(DCDMCGUI.this, Config.getVERSIONINFO(), "Software Version & Copyright Information", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-
-
-        menuItem = new JMenuItem("About us");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(DCDMCGUI.this, "KNOWLEDGE DISCOVERY AND DATA MINING \n" +
-                        "RESEARCH GROUP", "About us", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-        menu.add(menuItem);
-
-        return menuBar;
-    }
-
-    /**
      * Import config file and set it up in DCDMC GUI
      * @param file file pointer
      */
-    private void importConfigFile(File file) {
+    public void importConfigFile(File file) {
 
         List<String> configs = new ArrayList<String>();
 
@@ -573,7 +351,7 @@ public class DCDMCGUI extends JFrame {
      * Export config file and set it up in DCDMC GUI
      * @param file file pointer
      */
-    private void exportConfigFile(File file) {
+    public void exportConfigFile(File file) {
 
         List<String> configs = new ArrayList<String>();
 
@@ -598,7 +376,7 @@ public class DCDMCGUI extends JFrame {
      * Get all parameter settings given the GUI
      * @return a list of parameters
      */
-    private List<String> getParameters() {
+    public List<String> getParameters() {
 
         List<String> configs = new ArrayList<String>();
 
@@ -643,9 +421,9 @@ public class DCDMCGUI extends JFrame {
     private String getDataSource() {
         String res = null;
         if (hypnogramDatasetRadioButton.isSelected()) {
-            res = "hypnogram" + " " + hypnogramDatasetFilePath;
+            res = "HYPNOGRAM" + " " + hypnogramDatasetFilePath;
         } else if (webUserNavigationBehaviorRadioButton.isSelected()) {
-            res = "msnbc" + " " + webUserNavigationBehaviorDatasetFilePath;
+            res = "MSNBC" + " " + webUserNavigationBehaviorDatasetFilePath;
         } else {
             LOGGER.warning("The input data source is null!");
         }
@@ -671,10 +449,11 @@ public class DCDMCGUI extends JFrame {
         } else if (fastOptimalDynamicTimeRadioButton.isSelected()) {
             res = "FASTOPTIMALDTW";
         } else if (deviatedDynamicTimeWarpingRadioButton.isSelected()) {
-            if (deviatedDTWType.equals("GlobalWeightedDTW")) {
-                res = "GlobalWeightedDTW";
+            if (deviatedDTWType.equals("GLOBALWEIGHTEDDTW")) {
+                res = "GLOBALWEIGHTEDDTW";
             } else {
-                res = "StepwiseDeviatedDTW";
+                res = "STEPWISEDEVIATEDDTW";
+
             }
         } else {
             LOGGER.warning("The dynamic time warping is null!");
@@ -808,12 +587,12 @@ public class DCDMCGUI extends JFrame {
             itakuraParallelogramDynamicTimeRadioButton.setSelected(true);
         } else if (dtw.equals("FASTOPTIMALDTW")) {
             fastOptimalDynamicTimeRadioButton.setSelected(true);
-        } else if (dtw.equals("GlobalWeightedDTW")) {
+        } else if (dtw.equals("GLOBALWEIGHTEDDTW")) {
             deviatedDynamicTimeWarpingRadioButton.setSelected(true);
-            this.deviatedDTWType = "GlobalWeightedDTW";
-        } else if (dtw.equals("StepwiseDeviatedDTW")) {
+            this.deviatedDTWType = "GLOBALWEIGHTEDDTW";
+        } else if (dtw.equals("STEPWISEDEVIATEDDTW")) {
             deviatedDynamicTimeWarpingRadioButton.setSelected(true);
-            this.deviatedDTWType = "StepwiseDeviatedDTW";
+            this.deviatedDTWType = "STEPWISEDEVIATEDDTW";
         } else {
             LOGGER.warning("The dynamic time warping is invalid!");
         }
@@ -917,361 +696,67 @@ public class DCDMCGUI extends JFrame {
     }
 
     /**
-     * Class for GUI of deviated dynamic time warping
+     * Getter
+     * @return hypnogram format
      */
-    private class DeviatedDTWGUI extends JPanel implements ActionListener{
-        private final String gwDTW = "GLOBALWEIGHTEDDTW";
-        private final String sdDTW = "STEPWISEDEVIATEDDTW";
-
-        JFrame jFrame = null;
-
-        public DeviatedDTWGUI() {
-            super(new BorderLayout());
-
-            //Create the radio buttons.
-            JRadioButton gwDTWButton = new JRadioButton("Global Weighted Dynamic Time Warping");
-            gwDTWButton.setMnemonic(KeyEvent.VK_G);
-            gwDTWButton.setActionCommand(gwDTW);
-
-            JRadioButton sdDTWButton = new JRadioButton("Stepwise Deviated Dynamic Time Warping");
-            sdDTWButton.setMnemonic(KeyEvent.VK_S);
-            sdDTWButton.setActionCommand(sdDTW);
-
-            //Group the radio buttons.
-            ButtonGroup group = new ButtonGroup();
-            group.add(gwDTWButton);
-            group.add(sdDTWButton);
-
-            //Register a listener for the radio buttons.
-            gwDTWButton.addActionListener(this);
-            sdDTWButton.addActionListener(this);
-
-
-            //Put the radio buttons in a column in a panel.
-            JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-            radioPanel.add(gwDTWButton);
-            radioPanel.add(sdDTWButton);
-
-            add(radioPanel, BorderLayout.CENTER);
-            setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
-            // set up selected radio button according to existing deviatedDTW type value
-            if (DCDMCGUI.this.deviatedDTWType.equals(gwDTW)) {
-                gwDTWButton.setSelected(true);
-            } else {
-                sdDTWButton.setSelected(true);
-            }
-        }
-
-        /** Listens to the radio buttons. */
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals(gwDTW)) {
-                DCDMCGUI.this.deviatedDTWType = gwDTW;
-                Config.setDEVIATEDDTWTYPE(gwDTW);
-                Config.setDTWTYPE(gwDTW);
-            } else if (e.getActionCommand().equals(sdDTW)){
-                DCDMCGUI.this.deviatedDTWType = sdDTW;
-                Config.setDEVIATEDDTWTYPE(sdDTW);
-                Config.setDTWTYPE(sdDTW);
-            } else if (e.getActionCommand().equals("setButton")) {
-                System.out.println("\n===================================");
-                System.out.println("        Deviated DTW: " + DCDMCGUI.this.deviatedDTWType);
-                System.out.println("===================================\n");
-                DCDMCGUI.this.setAllComponentsEnabled(true);
-                jFrame.dispose(); // close this frame
-            } else {
-                LOGGER.info("No corresponding action command!");
-            }
-        }
-
-        /**
-         * Create the GUI and show it.  For thread safety,
-         * this method should be invoked from the
-         * event-dispatching thread.
-         */
-        private void createAndShowGUI() {
-            //Create and set up the window.
-            jFrame = new JFrame("Deviated Dynamic Time Warping Settings");
-            jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            //Create and set up the content pane.
-            JComponent newContentPane = new DeviatedDTWGUI();
-
-            //Set button
-            JButton setButton = new JButton("Set");
-            setButton.setActionCommand("setButton");
-            setButton.addActionListener(this);
-            newContentPane.add(setButton, BorderLayout.PAGE_END);
-
-            newContentPane.setOpaque(true); //content panes must be opaque
-            jFrame.setContentPane(newContentPane);
-
-            //Display the window.
-            jFrame.pack();
-            jFrame.setPreferredSize(jFrame.getPreferredSize());
-            jFrame.setMaximumSize(jFrame.getPreferredSize());
-            jFrame.setMinimumSize(jFrame.getPreferredSize());
-            jFrame.setLocationRelativeTo(null);
-            jFrame.setVisible(true);
-        }
+    public String getHypnogramFormat() {
+        return hypnogramFormat;
     }
 
-
     /**
-     * Class for GUI of hierarchical clustering
+     * Setter
+     * @param hypnogramFormat  hypnogram format
      */
-    private class HierarchicalClusteringGUI extends JPanel implements ActionListener{
-        private final String averageLinkageStrategy = "AVERAGELINKAGESTRATEGY";
-        private final String completeLinkageStrategy = "COMPLETELINKAGESTRATEGY";
-        private final String singleLinkageStrategy = "SINGLELINKAGESTRATEGY";
-        private final String weightedLinkageStrategy = "WEIGHTEDLINKAGESTRATEGY";
-
-        JFrame jFrame = null;
-
-        public HierarchicalClusteringGUI() {
-            super(new BorderLayout());
-
-            //Create the radio buttons.
-            JRadioButton averageStrategyButton = new JRadioButton("Average Linkage Strategy");
-            averageStrategyButton.setMnemonic(KeyEvent.VK_A);
-            averageStrategyButton.setActionCommand(averageLinkageStrategy);
-            averageStrategyButton.setToolTipText("In Average Linkage Clustering, the distance between two items x and y is the mean of all pairwise distances between items contained in x and y.");
-
-            JRadioButton completeStrategyButton = new JRadioButton("Complete Linkage Strategy");
-            completeStrategyButton.setMnemonic(KeyEvent.VK_C);
-            completeStrategyButton.setActionCommand(completeLinkageStrategy);
-            completeStrategyButton.setToolTipText("In Complete Linkage Clustering the distance between two items x and y is the maximum of all pairwise distances between items contained in x and y. \nAs in single linkage clustering, no other distances need to be calculated once the distance matrix is known.");
-
-            JRadioButton singleStrategyButton = new JRadioButton("Single Linkage Strategy");
-            singleStrategyButton.setMnemonic(KeyEvent.VK_S);
-            singleStrategyButton.setActionCommand(singleLinkageStrategy);
-            singleStrategyButton.setToolTipText("In Single Linkage Clustering the distance between two items x and y is the minimum of all pairwise distances between items contained in x and y. \nUnlike centroid linkage clustering, in single linkage clustering no further distances need to be calculated once the distance matrix is known.");
-
-            JRadioButton weightedStrategyButton = new JRadioButton("Weighted Linkage Strategy");
-            weightedStrategyButton.setMnemonic(KeyEvent.VK_W);
-            weightedStrategyButton.setActionCommand(weightedLinkageStrategy);
-            weightedStrategyButton.setToolTipText("In Weighted Linkage Clustering, a weight is assigned to each pseudo-item, and this weight is used to compute the distances between this pseudo-item and all remaining items or pseudo-items using the same similarity metric as was used to calculate the initial similarity matrix.");
-
-            //Group the radio buttons.
-            ButtonGroup group = new ButtonGroup();
-            group.add(averageStrategyButton);
-            group.add(completeStrategyButton);
-            group.add(singleStrategyButton);
-            group.add(weightedStrategyButton);
-
-            //Register a listener for the radio buttons.
-            averageStrategyButton.addActionListener(this);
-            completeStrategyButton.addActionListener(this);
-            singleStrategyButton.addActionListener(this);
-            weightedStrategyButton.addActionListener(this);
-
-
-            //Put the radio buttons in a column in a panel.
-            JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-            radioPanel.add(averageStrategyButton);
-            radioPanel.add(completeStrategyButton);
-            radioPanel.add(singleStrategyButton);
-            radioPanel.add(weightedStrategyButton);
-
-            add(radioPanel, BorderLayout.CENTER);
-            setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
-            // set up selected radio button according to existing deviatedDTW type value
-            if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(averageLinkageStrategy)) {
-                averageStrategyButton.setSelected(true);
-            } else if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(completeLinkageStrategy)) {
-                completeStrategyButton.setSelected(true);
-            } else if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(singleLinkageStrategy)) {
-                singleStrategyButton.setSelected(true);
-            } else if (DCDMCGUI.this.hierarchicalLinkageStrategy.equals(weightedLinkageStrategy)) {
-                weightedStrategyButton.setSelected(true);
-            } else {
-
-            }
-        }
-
-        /** Listens to the radio buttons. */
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals(averageLinkageStrategy)) {
-                DCDMCGUI.this.hierarchicalLinkageStrategy = averageLinkageStrategy;
-            } else if (e.getActionCommand().equals(completeLinkageStrategy)) {
-                DCDMCGUI.this.hierarchicalLinkageStrategy = completeLinkageStrategy;
-            } else if (e.getActionCommand().equals(singleLinkageStrategy)) {
-                DCDMCGUI.this.hierarchicalLinkageStrategy = singleLinkageStrategy;
-            } else if (e.getActionCommand().equals(weightedLinkageStrategy)) {
-                DCDMCGUI.this.hierarchicalLinkageStrategy = weightedLinkageStrategy;
-            } else if (e.getActionCommand().equals("setButton")) {
-                System.out.println("\n===================================");
-                System.out.println("        Linkage Strategy: " + DCDMCGUI.this.hierarchicalLinkageStrategy);
-                System.out.println("===================================\n");
-                DCDMCGUI.this.setAllComponentsEnabled(true);
-                jFrame.dispose(); // close this frame
-            } else {
-                LOGGER.info("No corresponding action command!");
-            }
-        }
-
-        /**
-         * Create the GUI and show it.  For thread safety,
-         * this method should be invoked from the
-         * event-dispatching thread.
-         */
-        private void createAndShowGUI() {
-            //Create and set up the window
-            jFrame = new JFrame("Hierarchical Linkage Strategy Settings");
-            jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            //Create and set up the content pane.
-            JComponent newContentPane = new HierarchicalClusteringGUI();
-
-            //Set button
-            JButton setButton = new JButton("Set");
-            setButton.setActionCommand("setButton");
-            setButton.addActionListener(this);
-            newContentPane.add(setButton, BorderLayout.PAGE_END);
-
-            newContentPane.setOpaque(true); //content panes must be opaque
-            jFrame.setContentPane(newContentPane);
-
-            //Display the window.
-            jFrame.pack();
-            jFrame.setPreferredSize(jFrame.getPreferredSize());
-            jFrame.setMaximumSize(jFrame.getPreferredSize());
-            jFrame.setMinimumSize(jFrame.getPreferredSize());
-            jFrame.setLocationRelativeTo(null);
-            jFrame.setVisible(true);
-        }
+    public void setHypnogramFormat(String hypnogramFormat) {
+        this.hypnogramFormat = hypnogramFormat;
     }
 
+    /**
+     * Getter
+     * @return state number text field
+     */
+    public JTextField getStateNumberTextField() {
+        return stateNumberTextField;
+    }
 
     /**
-     * Class for GUI of deviated dynamic time warping
+     * Setter
+     * @param stateNumberTextField state number text field
      */
-    private class HypnogramGUI extends JPanel implements ActionListener{
-        private final String originalDataset = "ORIGINALDATASET";
-        private final String wsDataset = "WAKESLEEPDATASET";
-        private final String wnrDataset = "WAKENREMREMDATASET";
-        private final String wdlDataset = "WAKEDEEPLIGHTDATASET";
+    public void setStateNumberTextField(JTextField stateNumberTextField) {
+        this.stateNumberTextField = stateNumberTextField;
+    }
 
-        JFrame jFrame = null;
+    /**
+     * Getter
+     * @return hierarchical linkage strategy
+     */
+    public String getHierarchicalLinkageStrategy() {
+        return hierarchicalLinkageStrategy;
+    }
 
-        public HypnogramGUI() {
-            super(new BorderLayout());
+    /**
+     * Setter
+     * @param hierarchicalLinkageStrategy hierarchical linkage strategy
+     */
+    public void setHierarchicalLinkageStrategy(String hierarchicalLinkageStrategy) {
+        this.hierarchicalLinkageStrategy = hierarchicalLinkageStrategy;
+    }
 
-            //Create the radio buttons.
-            JRadioButton originalButton = new JRadioButton("Original Dataset");
-            originalButton.setMnemonic(KeyEvent.VK_O);
-            originalButton.setActionCommand(originalDataset);
-            originalButton.setToolTipText("It consists of 5 sleep stages: stage 1, 2, 3, 5, and wake stages.");
+    /**
+     * Getter
+     * @return deviated dtw type
+     */
+    public String getDeviatedDTWType() {
+        return deviatedDTWType;
+    }
 
-            JRadioButton wsButton = new JRadioButton("Wake-Sleep Dataset");
-            wsButton.setMnemonic(KeyEvent.VK_W);
-            wsButton.setActionCommand(wsDataset);
-            wsButton.setToolTipText("It consists of 2 sleep stages: wake and sleep stages.");
-
-            JRadioButton wnrButton = new JRadioButton("Wake-NREM-REM Dataset");
-            wnrButton.setMnemonic(KeyEvent.VK_N);
-            wnrButton.setActionCommand(wnrDataset);
-            wnrButton.setToolTipText("It consists of 3 sleep stages: wake, NREM, and REM stages.");
-
-            JRadioButton wdlButton = new JRadioButton("Wake-Deep-Light Dataset");
-            wdlButton.setMnemonic(KeyEvent.VK_R);
-            wdlButton.setActionCommand(wdlDataset);
-            wdlButton.setToolTipText("It consists of 3 sleep stages: wake, deep, and light stages.");
-
-            //Group the radio buttons.
-            ButtonGroup group = new ButtonGroup();
-            group.add(originalButton);
-            group.add(wsButton);
-            group.add(wnrButton);
-            group.add(wdlButton);
-
-            //Register a listener for the radio buttons.
-            originalButton.addActionListener(this);
-            wsButton.addActionListener(this);
-            wnrButton.addActionListener(this);
-            wdlButton.addActionListener(this);
-
-            //Put the radio buttons in a column in a panel.
-            JPanel radioPanel = new JPanel(new GridLayout(0, 1));
-            radioPanel.add(originalButton);
-            radioPanel.add(wsButton);
-            radioPanel.add(wnrButton);
-            radioPanel.add(wdlButton);
-
-            add(radioPanel, BorderLayout.CENTER);
-            setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-            // set up selected radio button according to existing deviatedDTW type value
-            if (DCDMCGUI.this.hypnogramFormat.equals("5")) {
-                originalButton.setSelected(true);
-            } else if (DCDMCGUI.this.hypnogramFormat.equals("2")) {
-                wsButton.setSelected(true);
-            } else if (DCDMCGUI.this.hypnogramFormat.equals("3")) {
-                wnrButton.setSelected(true);
-            } else if (DCDMCGUI.this.hypnogramFormat.equals("4")) {
-                wdlButton.setSelected(true);
-            } else {
-
-            }
-        }
-
-        /** Listens to the radio buttons. */
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals(originalDataset)) {
-                DCDMCGUI.this.hypnogramFormat = "5";
-                DCDMCGUI.this.stateNumberTextField.setText("5");
-            } else if (e.getActionCommand().equals(wsDataset)) {
-                DCDMCGUI.this.hypnogramFormat = "2";
-                DCDMCGUI.this.stateNumberTextField.setText("2");
-            } else if (e.getActionCommand().equals(wnrDataset)) {
-                DCDMCGUI.this.hypnogramFormat = "3";
-                DCDMCGUI.this.stateNumberTextField.setText("3");
-            } else if (e.getActionCommand().equals(wdlDataset)) {
-                DCDMCGUI.this.hypnogramFormat = "4";
-                DCDMCGUI.this.stateNumberTextField.setText("3");
-            } else if (e.getActionCommand().equals("setButton")) {
-                System.out.println("\n===================================");
-                System.out.println("        Hypnogram Format: " + DCDMCGUI.this.hypnogramFormat);
-                System.out.println("===================================\n");
-                DCDMCGUI.this.setAllComponentsEnabled(true);
-                jFrame.dispose(); // close this frame
-            } else {
-                LOGGER.info("No corresponding action command!");
-            }
-        }
-
-        /**
-         * Create the GUI and show it.  For thread safety,
-         * this method should be invoked from the
-         * event-dispatching thread.
-         */
-        private void createAndShowGUI() {
-            //Create and set up the window.
-            jFrame = new JFrame("Hypnogram Dataset Settings");
-            jFrame.setLayout(new GridBagLayout());
-            jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-            //Create and set up the content pane.
-            JComponent newContentPane = new HypnogramGUI();
-
-            //Set button
-            JButton setButton = new JButton("Set");
-            setButton.setActionCommand("setButton");
-            setButton.addActionListener(this);
-            newContentPane.add(setButton, BorderLayout.PAGE_END);
-
-            newContentPane.setOpaque(true); //content panes must be opaque
-            jFrame.setContentPane(newContentPane);
-
-            //Display the window.
-            jFrame.pack();
-            jFrame.setPreferredSize(jFrame.getPreferredSize());
-            jFrame.setMaximumSize(jFrame.getPreferredSize());
-            jFrame.setMinimumSize(jFrame.getPreferredSize());
-            jFrame.setLocationRelativeTo(null);
-            jFrame.setVisible(true);
-        }
+    /**
+     * Setter
+     * @param deviatedDTWType deviated dtw type
+     */
+    public void setDeviatedDTWType(String deviatedDTWType) {
+        this.deviatedDTWType = deviatedDTWType;
     }
 
     /**

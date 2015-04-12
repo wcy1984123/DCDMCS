@@ -1,7 +1,5 @@
 package initializer.clusterings;
 
-import initializer.clusterings.IClusteringAlgorithm;
-
 /**
  * Project: DCDMC
  * Package: initializer.initializers

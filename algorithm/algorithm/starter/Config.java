@@ -113,6 +113,7 @@ public final class Config {
      * Reset all configurations to default configuration
      */
     public static void resetConfig() {
+
         // File Path Default Settings
         CONFIGPATH = CONSTANTS.CONFIGPATH;
         INITIALCLUSTERSFILEPATH = CONSTANTS.INITIALCLUSTERSFILEPATH;
@@ -120,7 +121,6 @@ public final class Config {
         DISTANCEMATRIXFILEPATH = CONSTANTS.DISTANCEMATRIXFILEPATH;
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
-
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -287,7 +287,7 @@ public final class Config {
      * @return deviated dtw type
      */
     public static String getDEVIATEDDTWTYPE() {
-        return DEVIATEDDTWTYPE;
+        return DEVIATEDDTWTYPE.toUpperCase();
     }
 
     /**
@@ -335,7 +335,7 @@ public final class Config {
      * @param DATASETTYPE dataset type
      */
     public static void setDATASETTYPE(String DATASETTYPE) {
-        Config.DATASETTYPE = DATASETTYPE;
+        Config.DATASETTYPE = DATASETTYPE.toUpperCase();
     }
 
     /**
@@ -343,7 +343,7 @@ public final class Config {
      * @param DATASETPATH dataset path
      */
     public static void setDATASETPATH(String DATASETPATH) {
-        Config.DATASETPATH = DATASETPATH;
+        Config.DATASETPATH = DATASETPATH.toUpperCase();
     }
 
     /**
@@ -359,7 +359,7 @@ public final class Config {
      * @param DTWTYPE dtw type
      */
     public static void setDTWTYPE(String DTWTYPE) {
-        Config.DTWTYPE = DTWTYPE;
+        Config.DTWTYPE = DTWTYPE.toUpperCase();
     }
 
     /**
@@ -367,7 +367,7 @@ public final class Config {
      * @param DEVIATEDDTWTYPE deviated dtw type
      */
     public static void setDEVIATEDDTWTYPE(String DEVIATEDDTWTYPE) {
-        Config.DEVIATEDDTWTYPE = DEVIATEDDTWTYPE;
+        Config.DEVIATEDDTWTYPE = DEVIATEDDTWTYPE.toUpperCase();
     }
 
     /**
@@ -375,7 +375,7 @@ public final class Config {
      * @param STOPPINGCRITERIATYPE stopping criteria
      */
     public static void setSTOPPINGCRITERIATYPE(String STOPPINGCRITERIATYPE) {
-        Config.STOPPINGCRITERIATYPE = STOPPINGCRITERIATYPE;
+        Config.STOPPINGCRITERIATYPE = STOPPINGCRITERIATYPE.toUpperCase();
     }
 
     /**
@@ -383,7 +383,7 @@ public final class Config {
      * @param MODELINGMODE modeling mode
      */
     public static void setMODELINGMODE(String MODELINGMODE) {
-        Config.MODELINGMODE = MODELINGMODE;
+        Config.MODELINGMODE = MODELINGMODE.toUpperCase();
     }
 
     /**
@@ -391,7 +391,7 @@ public final class Config {
      * @param DYNAMICMODELTYPE dynamic model type
      */
     public static void setDYNAMICMODELTYPE(String DYNAMICMODELTYPE) {
-        Config.DYNAMICMODELTYPE = DYNAMICMODELTYPE;
+        Config.DYNAMICMODELTYPE = DYNAMICMODELTYPE.toUpperCase();
     }
 
     /**
@@ -399,7 +399,7 @@ public final class Config {
      * @param INITIALCLUSTERINGTYPE initial clustering type
      */
     public static void setINITIALCLUSTERINGTYPE(String INITIALCLUSTERINGTYPE) {
-        Config.INITIALCLUSTERINGTYPE = INITIALCLUSTERINGTYPE;
+        Config.INITIALCLUSTERINGTYPE = INITIALCLUSTERINGTYPE.toUpperCase();
     }
 
     /**
@@ -407,7 +407,7 @@ public final class Config {
      * @param HIERARCHICALLINKAGETYPE hierarchical linkage type
      */
     public static void setHIERARCHICALLINKAGETYPE(String HIERARCHICALLINKAGETYPE) {
-        Config.HIERARCHICALLINKAGETYPE = HIERARCHICALLINKAGETYPE;
+        Config.HIERARCHICALLINKAGETYPE = HIERARCHICALLINKAGETYPE.toUpperCase();
     }
 
     /**
