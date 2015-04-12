@@ -1,5 +1,6 @@
 package starter;
 
+import initializer.dtws.DeviatedDTW;
 import stoppingcriteria.STOPPINGCRITERIA;
 
 import java.util.List;
@@ -476,32 +477,168 @@ public final class Config {
     public static String toFormatAsString() {
         StringBuffer sb = new StringBuffer();
 
-        // DCDMC Parameter Default Configuration
-        sb.append("\n   ||************************************************************** DCDMC Configurations ********************************************************||\n");
-        sb.append("         Cluster Num: " + CLUSTERNUM + "\n");
-        sb.append("         Similarity: " + SIMILARITY + "\n");
-        sb.append("         Dataset Type: " + DATASETTYPE + "\n");
-        sb.append("         Dataset Path: " + DATASETPATH + "\n");
-        sb.append("         State Number: " + STATENUM + "\n");
-        sb.append("         Dataset Format: " + DATAFORMAT + "\n");
-        sb.append("         Dynamic Time Warping Type: " + DTWTYPE + "\n");
-        sb.append("         Deviated Dynamic Time Warping Type: " + DEVIATEDDTWTYPE + "\n");
-        sb.append("         Stopping Criterion: " + STOPPINGCRITERIATYPE + "\n");
-        sb.append("         Modeling Mode: " + MODELINGMODE + "\n");
-        sb.append("         Dynamic Model Type: " + DYNAMICMODELTYPE + "\n");
-        sb.append("         Initial Clustering Type: " + INITIALCLUSTERINGTYPE + "\n");
-        sb.append("         Hierarchical Linkage Type: " + HIERARCHICALLINKAGETYPE + "\n");
-        sb.append("   ||************************************************************************************************************************************************||\n");
+        String color1 = "#66CCCC";
+        String color2 = "#CCFF99";
+        String color3 = "#66CCFF";
+        String color4 = "#CCFFFF";
+        String color5 = "#CC99FF";
+        String color6 = "#FFA500";
+        String color7 = "#FF66CC";
+        sb.append(
+                "<html>\n" +
+                        "<head>\n" +
+                                "<style>\n" +
+                                        "table, th, td {\n" +
+                                            "    border: 1px solid black;\n" +
+                                            "    border-collapse: collapse;\n" +
+                                        "}\n" +
+                                        "th, td {\n" +
+                                            "    padding: 5px;\n" +
+                                            "    text-align: left;\n" +
+                                        "}\n" +
+                                        "th {\n" +
+                                            "    background-color: black;\n" +
+                                            "    color: white;\n" +
+                                        "}\n" +
+                                        "table#t01 {\n" +
+                                            "    width: 100%;    \n" +
+                                            "    background-color: #f1f1c1;\n" +
+                                        "}\n" +
+                                "</style>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                                "<br>\n" +
+                                "<table style=\"width:100%\">\n" +
+                                    "<caption> <b><font size=\"5\" color=\"black\"> General Configurations </font></b></caption>\n" +
+                                    "  <tr>\n" +
+                                        "    <th><font size=\"4\" color=\"white\">Parameter Name</font></th>\n" +
+                                        "    <th><font size=\"4\" color=\"white\">Value</font></th>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color1 + ">Cluster Num</td>\n" +
+                                        "    <td bgcolor=" + color1 + ">" + CLUSTERNUM + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color1 + ">Similarity</td>\n" +
+                                        "    <td bgcolor=" + color1 + ">" + SIMILARITY + "</td>\t\t\n" +
 
-        // File Path Default Settings
-        sb.append("\n   ||*************************************************************** File Path Settings **************************************************************||\n");
-        sb.append("         Config File Path: " + CONFIGPATH + "\n");
-        sb.append("         Initial Clusters File Path: " + INITIALCLUSTERSFILEPATH + "\n");
-        sb.append("         Final Clusters File Path: " + FINALCLUSTERSFILEPATH + "\n");
-        sb.append("         Distance Matrix File Path: " + DISTANCEMATRIXFILEPATH + "\n");
-        sb.append("         Hypnogram Dataset File Path: " + HYPNOGRAMDATASETFILEPATH + "\n");
-        sb.append("         Web User Navigation Behavior Dataset File Path: " + WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH + "\n");
-        sb.append("   ||************************************************************************************************************************************************||\n");
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color2 + ">Dataset Type</td>\n" +
+                                        "    <td bgcolor=" + color2 + ">" + DATASETTYPE + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color2 + ">Dataset Path</td>\n" +
+                                        "    <td bgcolor=" + color2 + ">" + DATASETPATH + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color2 + ">State Number</td>\n" +
+                                        "    <td bgcolor=" + color2 + ">" + STATENUM + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color2 + ">Dataset Format</td>\n" +
+                                        "    <td bgcolor=" + color2 + ">" + DATAFORMAT + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color3 + ">Dynamic Time Warping Type</td>\n" +
+                                        "    <td bgcolor=" + color3 + ">" + DTWTYPE + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color3 + ">Deviated Dynamic Time Warping Type</td>\n" +
+                                        "    <td bgcolor=" + color3 + ">" + DEVIATEDDTWTYPE + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color4 + ">Stopping Criterion</td>\n" +
+                                        "    <td bgcolor=" + color4 + "> " + STOPPINGCRITERIATYPE + " </td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color5 + ">Modeling Mode</td>\n" +
+                                        "    <td bgcolor=" + color5 + "> " + MODELINGMODE + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color5 + ">Dynamic Model Type</td>\n" +
+                                        "    <td bgcolor=" + color5 + ">" + DYNAMICMODELTYPE + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color6 + ">Initial Clustering Type</td>\n" +
+                                        "    <td bgcolor=" + color6 + ">" + INITIALCLUSTERINGTYPE + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color6 + ">Hierarchical Linkage Type</td>\n" +
+                                        "    <td bgcolor=" + color6 + ">" + HIERARCHICALLINKAGETYPE + "</td>\t\t\n" +
+
+                                    "  </tr>\n" +
+                                "</table>\n" +
+                                "<br>\n" +
+                                "<table id=\"t01\" style=\"width:100%\">\n" +
+                                    "<caption> <b><font size=\"5\" color=\"black\">File Path Configurations</font></b></caption>\n" +
+                                    "  <tr>\n" +
+                                        "    <th> <font size=\"4\" color=\"white\">Parameter Name</font></th>\n" +
+                                        "    <th><font size=\"4\" color=\"white\">Value</font></th>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td>Config File Path</td>\n" +
+                                        "    <td>" + CONFIGPATH + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td>Initial Clusters File Path</td>\n" +
+                                        "    <td>" + INITIALCLUSTERSFILEPATH + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td>Final Clusters File Path</td>\n" +
+                                        "    <td>" + FINALCLUSTERSFILEPATH + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td>Distance Matrix File Path</td>\n" +
+                                        "    <td>" + DISTANCEMATRIXFILEPATH + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color7 + ">Hypnogram Dataset File Path</td>\n" +
+                                        "    <td bgcolor=" + color7 + ">" + HYPNOGRAMDATASETFILEPATH + "</td>\t\t\n" +
+                                    "  </tr>\n" +
+                                    "  <tr>\n" +
+                                        "    <td bgcolor=" + color7 + ">Web User Navigation Behavior Dataset File Path</td>\n" +
+                                        "    <td bgcolor=" + color7 + "> " + WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH + " </td>\t\t\n" +
+                                    "  </tr>\n" +
+                                "</table>\n" +
+                        "</body>\n" +
+                "</html>");
+
+        // DCDMC Parameter Default Configuration
+//        sb.append("\n   ||************************************************************** DCDMC Configurations ********************************************************||\n");
+//        sb.append("         Cluster Num: " + CLUSTERNUM + "\n");
+//        sb.append("         Similarity: " + SIMILARITY + "\n");
+//        sb.append("         Dataset Type: " + DATASETTYPE + "\n");
+//        sb.append("         Dataset Path: " + DATASETPATH + "\n");
+//        sb.append("         State Number: " + STATENUM + "\n");
+//        sb.append("         Dataset Format: " + DATAFORMAT + "\n");
+//        sb.append("         Dynamic Time Warping Type: " + DTWTYPE + "\n");
+//        sb.append("         Deviated Dynamic Time Warping Type: " + DEVIATEDDTWTYPE + "\n");
+//        sb.append("         Stopping Criterion: " + STOPPINGCRITERIATYPE + "\n");
+//        sb.append("         Modeling Mode: " + MODELINGMODE + "\n");
+//        sb.append("         Dynamic Model Type: " + DYNAMICMODELTYPE + "\n");
+//        sb.append("         Initial Clustering Type: " + INITIALCLUSTERINGTYPE + "\n");
+//        sb.append("         Hierarchical Linkage Type: " + HIERARCHICALLINKAGETYPE + "\n");
+//        sb.append("   ||************************************************************************************************************************************************||\n");
+//
+//        // File Path Default Settings
+//        sb.append("\n   ||*************************************************************** File Path Settings **************************************************************||\n");
+//        sb.append("         Config File Path: " + CONFIGPATH + "\n");
+//        sb.append("         Initial Clusters File Path: " + INITIALCLUSTERSFILEPATH + "\n");
+//        sb.append("         Final Clusters File Path: " + FINALCLUSTERSFILEPATH + "\n");
+//        sb.append("         Distance Matrix File Path: " + DISTANCEMATRIXFILEPATH + "\n");
+//        sb.append("         Hypnogram Dataset File Path: " + HYPNOGRAMDATASETFILEPATH + "\n");
+//        sb.append("         Web User Navigation Behavior Dataset File Path: " + WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH + "\n");
+//        sb.append("   ||************************************************************************************************************************************************||\n");
 
         return sb.toString();
     }

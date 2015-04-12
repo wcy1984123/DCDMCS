@@ -176,11 +176,12 @@ public class DCDMCMenuGUI {
                 contentPane.setOpaque(true);
 
                 //Create a scrolled text area.
-                JTextArea output = new JTextArea(28, 75);
+                JTextPane output = new JTextPane();
+                output.setContentType("text/html");
                 output.setEditable(false);
-                output.append("\n");
+                output.setText("\n");
                 Config config = new Config(DCDMCMenuGUI.this.dcdmcgui.getParameters());
-                output.append(Config.toFormatAsString());
+                output.setText(Config.toFormatAsString());
                 output.setCaretPosition(output.getDocument().getLength());
                 JScrollPane scrollPane = new JScrollPane(output);
 
