@@ -363,6 +363,8 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension componentDimension = new Dimension(screenDimension.width / (Config.getCLUSTERNUM() + 1), screenDimension.height / (Config.getCLUSTERNUM() + 1));
         Point original = new Point(0, 0);
+
+        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.pink, Color.BLUE};
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
@@ -405,8 +407,9 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
 
             XYListSeriesCollection collec = chart.getSeriesCollection();
-            collec.setColor(0, Color.RED);
+            collec.setColor(0, colors[i % colors.length]);
             collec.setDashPattern(0, "only marks");
+            collec.setColor(1, Color.BLACK);
             collec.setName(1, "Weibull Density Estimation");
 
             JFrame jf = chart.view(300, 400);
