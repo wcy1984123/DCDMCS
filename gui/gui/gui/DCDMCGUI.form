@@ -18,7 +18,7 @@
         </constraints>
         <properties>
           <alignmentY value="0.0"/>
-          <font name="Helvetica Neue" size="22" style="1"/>
+          <font name="Helvetica Neue" size="20" style="1"/>
           <text value="Parameter Settings"/>
         </properties>
       </component>
@@ -421,12 +421,12 @@
           </grid>
         </children>
       </tabbedpane>
-      <component id="dcc42" class="javax.swing.JButton" binding="exitButton">
+      <component id="bad33" class="javax.swing.JButton" binding="exitButton">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Exit"/>
+          <text value="EXIT"/>
         </properties>
       </component>
     </children>
