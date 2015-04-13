@@ -50,14 +50,17 @@ public class DCDMCGUI extends JFrame {
     private JButton startButton;
     private JButton runButton;
     private JPanel BasicSettingsPanel;
-    private JPanel InitializationPanel;
-    private JPanel DynamicModelsPanel;
     private JPanel DataSourcePanel;
     private JPanel StoppingCriteriaPanel;
     private JButton exitButton;
-    private JPanel cdmcPanel;
-    private JPanel initializerPanel;
     private JLabel captionLabel;
+    private JTabbedPane dcdmcTabbedPane;
+    private JPanel initializationJPanel;
+    private JPanel cdmcJPanel;
+    private JPanel dynamicTimeWarpingJPanel;
+    private JPanel clusteringAlgorithmJPanel;
+    private JPanel modelTypeJPanel;
+    private JPanel dynamicModelsJPanel;
     // ----------------------------------------------------------------------------//
 
     // -------------------------- Config File Variables -------------------------- //
@@ -323,12 +326,15 @@ public class DCDMCGUI extends JFrame {
         runButton.setEnabled(enabled);
         DCDMCPanel.setEnabled(enabled);
         BasicSettingsPanel.setEnabled(enabled);
-        InitializationPanel.setEnabled(enabled);
-        DynamicModelsPanel.setEnabled(enabled);
         DataSourcePanel.setEnabled(enabled);
         StoppingCriteriaPanel.setEnabled(enabled);
-        cdmcPanel.setEnabled(enabled);
-        initializerPanel.setEnabled(enabled);
+        dcdmcTabbedPane.setEnabled(enabled);
+        initializationJPanel.setEnabled(enabled);
+        cdmcJPanel.setEnabled(enabled);
+        dynamicTimeWarpingJPanel.setEnabled(enabled);
+        clusteringAlgorithmJPanel.setEnabled(enabled);
+        modelTypeJPanel.setEnabled(enabled);
+        dynamicModelsJPanel.setEnabled(enabled);
     }
 
     /**

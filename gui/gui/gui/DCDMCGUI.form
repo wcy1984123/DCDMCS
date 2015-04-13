@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="DCDMCPanel" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="977" height="1125"/>
+      <xy x="20" y="20" width="977" height="1029"/>
     </constraints>
     <properties>
       <font name="Helvetica Neue"/>
@@ -12,62 +12,116 @@
       <font name="Helvetica Neue" size="20" style="1"/>
     </border>
     <children>
-      <component id="ef941" class="javax.swing.JButton" binding="startButton" default-binding="true">
+      <component id="8df35" class="javax.swing.JLabel" binding="captionLabel">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Start"/>
+          <alignmentY value="0.0"/>
+          <font name="Helvetica Neue" size="22" style="1"/>
+          <text value="Parameter Settings"/>
         </properties>
       </component>
-      <component id="f1dab" class="javax.swing.JButton" binding="runButton" default-binding="true">
+      <tabbedpane id="587c0" binding="dcdmcTabbedPane">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Run"/>
-        </properties>
-      </component>
-      <component id="dcc42" class="javax.swing.JButton" binding="exitButton">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Exit"/>
-        </properties>
-      </component>
-      <grid id="7c07a" binding="initializerPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="dba23" binding="InitializationPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="580b6" binding="initializationJPanel" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <tabbedpane title="INITIALIZATION"/>
             </constraints>
-            <properties>
-              <font name="Helvetica Neue"/>
-              <toolTipText value="Initialization provides the initial cluster guesses in the first step of DCDMC system."/>
-            </properties>
-            <border type="line" title="INITIALIZATION" title-justification="2" title-position="3">
-              <font name="Helvetica Neue" size="16" style="1"/>
-            </border>
+            <properties/>
+            <border type="none"/>
             <children>
-              <grid id="ed7e4" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="34117" binding="DataSourcePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Helvetica Neue"/>
+                  <toolTipText value="Data source is input data source in the system."/>
+                </properties>
+                <border type="none" title="DATA SOURCE">
+                  <font name="Helvetica Neue" size="14" style="1"/>
+                </border>
+                <children>
+                  <component id="d48b2" class="javax.swing.JRadioButton" binding="webUserNavigationBehaviorRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="Web User Behavior Dataset       "/>
+                      <toolTipText value="Web user navigation behavior dataset is data source of web user surfing behavior of webpages history."/>
+                    </properties>
+                  </component>
+                  <component id="d9066" class="javax.swing.JRadioButton" binding="hypnogramDatasetRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <selected value="true"/>
+                      <text value="Hypnogram Dataset"/>
+                      <toolTipText value="Hypnogram dataset is data source of humna sleep sequences."/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="9d93d" binding="clusteringAlgorithmJPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Helvetica Neue"/>
+                  <toolTipText value="Clustering algorithm is to cluster input data based on the distance matrix by dynamic time warping evaluation."/>
+                </properties>
+                <border type="none" title="Clustering Algorithm">
+                  <font name="Helvetica Neue" size="14" style="1"/>
+                </border>
+                <children>
+                  <component id="453cf" class="javax.swing.JRadioButton" binding="hierarchicalClusteringRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <selected value="true"/>
+                      <text value="Hierarchical Clustering"/>
+                      <toolTipText value="Hierarchical clustering provides a tree structure of clusters."/>
+                    </properties>
+                  </component>
+                  <component id="b4bfa" class="javax.swing.JRadioButton" binding="KMeansClusteringRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="KMeans Clustering"/>
+                      <toolTipText value="Kmeans clustering is a classic clustering algorithm."/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="ed7e4" binding="dynamicTimeWarpingJPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <font name="Helvetica Neue"/>
                   <toolTipText value="Dynamic time warping is a classic alignment method of evaluating distance between two time series."/>
                 </properties>
                 <border type="none" title="Dynamic Time Warping">
-                  <font name="Helvetica Neue" style="2"/>
+                  <font name="Helvetica Neue" size="14" style="1"/>
                 </border>
                 <children>
                   <component id="edf8d" class="javax.swing.JRadioButton" binding="deviatedDynamicTimeWarpingRadioButton" default-binding="true">
@@ -133,113 +187,137 @@
                   </component>
                 </children>
               </grid>
-              <grid id="9d93d" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                <margin top="0" left="0" bottom="0" right="0"/>
+              <component id="f1dab" class="javax.swing.JButton" binding="runButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <font name="Helvetica Neue"/>
-                  <toolTipText value="Clustering algorithm is to cluster input data based on the distance matrix by dynamic time warping evaluation."/>
+                  <text value="Run"/>
                 </properties>
-                <border type="none" title="Clustering Algorithm">
-                  <font name="Helvetica Neue" style="2"/>
+              </component>
+            </children>
+          </grid>
+          <grid id="bbb4c" binding="cdmcJPanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="COLLECTIVE DYNAMIC MODELING &amp; CLUSTERING"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="532e0" binding="BasicSettingsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none" title="BASIC SETTINGS" title-justification="1">
+                  <font name="Helvetica Neue" size="14" style="1"/>
+                  <color color="-16777216"/>
                 </border>
                 <children>
-                  <component id="453cf" class="javax.swing.JRadioButton" binding="hierarchicalClusteringRadioButton" default-binding="true">
+                  <component id="19a54" class="javax.swing.JLabel">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
-                      <selected value="true"/>
-                      <text value="Hierarchical Clustering"/>
-                      <toolTipText value="Hierarchical clustering provides a tree structure of clusters."/>
+                      <text value="Cluster Number:"/>
+                      <toolTipText value="Cluster Number is a integer value that is the maximum number of clusters."/>
                     </properties>
                   </component>
-                  <component id="b4bfa" class="javax.swing.JRadioButton" binding="KMeansClusteringRadioButton" default-binding="true">
+                  <component id="7e280" class="javax.swing.JTextField" binding="clusterNumberTextField">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="75" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="3"/>
+                      <toolTipText value="Please input cluster number (at least 2)."/>
+                    </properties>
+                  </component>
+                  <component id="79de6" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="Similarity Threshold:"/>
+                      <toolTipText value="Similarity threshold is a double value that is used to evaluate the clustering agreement of two consecutive clustering results."/>
+                    </properties>
+                  </component>
+                  <component id="e0a94" class="javax.swing.JTextField" binding="similarityThresholdTextField">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="75" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="0.99"/>
+                      <toolTipText value="Please input similarity threshold (range from 0 to 1)."/>
+                    </properties>
+                  </component>
+                  <component id="be337" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="State Number:"/>
+                      <toolTipText value="State number is a integer value that is the number of states in dynamic models."/>
+                    </properties>
+                  </component>
+                  <component id="66532" class="javax.swing.JTextField" binding="stateNumberTextField">
+                    <constraints>
+                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="75" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="3"/>
+                      <toolTipText value="Please input state number (at least 2)."/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="9e4a5" binding="modelTypeJPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Helvetica Neue"/>
+                  <toolTipText value="Model types are training model types."/>
+                </properties>
+                <border type="none" title="Model Types">
+                  <font name="Helvetica Neue" size="14" style="1"/>
+                </border>
+                <children>
+                  <component id="51d8b" class="javax.swing.JRadioButton" binding="stateBasedDynamicModelRadioButton" default-binding="true">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
-                      <text value="KMeans Clustering"/>
-                      <toolTipText value="Kmeans clustering is a classic clustering algorithm."/>
+                      <selected value="true"/>
+                      <text value="State-Based Dynamic Model"/>
+                      <toolTipText value="State-based dynamic model is dynamic model based on states."/>
                     </properties>
                   </component>
                 </children>
               </grid>
-            </children>
-          </grid>
-          <grid id="34117" binding="DataSourcePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Helvetica Neue"/>
-              <toolTipText value="Data source is input data source in the system."/>
-            </properties>
-            <border type="line" title="DATA SOURCE" title-justification="2" title-position="3">
-              <font name="Helvetica Neue" size="16" style="1"/>
-            </border>
-            <children>
-              <component id="d48b2" class="javax.swing.JRadioButton" binding="webUserNavigationBehaviorRadioButton" default-binding="true">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="Web User Behavior Dataset"/>
-                  <toolTipText value="Web user navigation behavior dataset is data source of web user surfing behavior of webpages history."/>
-                </properties>
-              </component>
-              <component id="d9066" class="javax.swing.JRadioButton" binding="hypnogramDatasetRadioButton" default-binding="true">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <selected value="true"/>
-                  <text value="Hypnogram Dataset"/>
-                  <toolTipText value="Hypnogram dataset is data source of humna sleep sequences."/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-        </children>
-      </grid>
-      <grid id="47d32" binding="cdmcPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <grid id="ee79c" binding="DynamicModelsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Helvetica Neue"/>
-            </properties>
-            <border type="line" title="DYNAMIC MODELS" title-justification="2" title-position="3">
-              <font name="Helvetica Neue" size="16" style="1"/>
-            </border>
-            <children>
-              <grid id="24aa6" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="24aa6" binding="dynamicModelsJPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <font name="Helvetica Neue"/>
                   <toolTipText value="Dynamic models are to build models over dataset."/>
                 </properties>
                 <border type="none" title="Dynamic Models">
-                  <font name="Helvetica Neue" style="2"/>
+                  <font name="Helvetica Neue" size="14" style="1"/>
                 </border>
                 <children>
                   <component id="cfac8" class="javax.swing.JRadioButton" binding="markovChainModelRadioButton" default-binding="true">
@@ -249,7 +327,7 @@
                     <properties>
                       <font name="Helvetica Neue"/>
                       <selected value="true"/>
-                      <text value="Markov Chain Model"/>
+                      <text value="Markov Chain Model                      "/>
                       <toolTipText value="Markov chain model is a random process that undergoes transitions from one state to another on a state space."/>
                     </properties>
                   </component>
@@ -259,7 +337,7 @@
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
-                      <text value="Semi-Markov Chain Model"/>
+                      <text value="Semi-Markov Chain Model "/>
                       <toolTipText value="Semi-Markov chain model is the actual random process that evolves over time and any realisation of the process has a defined state for any given time."/>
                     </properties>
                   </component>
@@ -275,176 +353,80 @@
                   </component>
                 </children>
               </grid>
-              <grid id="9e4a5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="b1b44" binding="StoppingCriteriaPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <font name="Helvetica Neue"/>
-                  <toolTipText value="Model types are training model types."/>
+                  <toolTipText value="Stopping criteria is to determine if iterative process stops in terms of a certain clustering agreement evaluation."/>
                 </properties>
-                <border type="none" title="Model Types">
-                  <font name="Helvetica Neue" style="2"/>
+                <border type="none" title="STOPPING CRITERIA">
+                  <font name="Helvetica Neue" size="14" style="1"/>
                 </border>
                 <children>
-                  <component id="51d8b" class="javax.swing.JRadioButton" binding="stateBasedDynamicModelRadioButton" default-binding="true">
+                  <component id="bea9d" class="javax.swing.JRadioButton" binding="normalMutualInformationRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="Normal Mutual Information"/>
+                      <toolTipText value="Normal mutual information trades off the quality of the clustering against the number of clusters."/>
+                    </properties>
+                  </component>
+                  <component id="cef3b" class="javax.swing.JRadioButton" binding="adjustedRandIndexRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="Adjusted Rand Index"/>
+                      <toolTipText value="Adjusted rand index corrects the chance of zero expectation."/>
+                    </properties>
+                  </component>
+                  <component id="d07e9" class="javax.swing.JRadioButton" binding="randIndexRadioButton" default-binding="true">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
                       <selected value="true"/>
-                      <text value="State-Based Dynamic Model                      "/>
-                      <toolTipText value="State-based dynamic model is dynamic model based on states."/>
+                      <text value="Rand Index"/>
+                      <toolTipText value="Rand index penalizes both false positive and false negative decisions during clustering."/>
+                    </properties>
+                  </component>
+                  <component id="633c5" class="javax.swing.JRadioButton" binding="purityRadioButton" default-binding="true">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Helvetica Neue"/>
+                      <text value="Purity"/>
+                      <toolTipText value="Purity is a simple and transparent evaluation measure."/>
                     </properties>
                   </component>
                 </children>
               </grid>
-            </children>
-          </grid>
-          <grid id="532e0" binding="BasicSettingsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="line" title="BASIC SETTINGS" title-justification="2" title-position="3">
-              <font name="Helvetica Neue" size="16" style="1"/>
-              <color color="-16777216"/>
-            </border>
-            <children>
-              <component id="19a54" class="javax.swing.JLabel">
+              <component id="ef941" class="javax.swing.JButton" binding="startButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="Cluster Number:"/>
-                  <toolTipText value="Cluster Number is a integer value that is the maximum number of clusters."/>
-                </properties>
-              </component>
-              <component id="7e280" class="javax.swing.JTextField" binding="clusterNumberTextField">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="75" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value="3"/>
-                  <toolTipText value="Please input cluster number (at least 2)."/>
-                </properties>
-              </component>
-              <component id="79de6" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="Similarity Threshold:"/>
-                  <toolTipText value="Similarity threshold is a double value that is used to evaluate the clustering agreement of two consecutive clustering results."/>
-                </properties>
-              </component>
-              <component id="e0a94" class="javax.swing.JTextField" binding="similarityThresholdTextField">
-                <constraints>
-                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="75" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value="0.99"/>
-                  <toolTipText value="Please input similarity threshold (range from 0 to 1)."/>
-                </properties>
-              </component>
-              <component id="be337" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="State Number:"/>
-                  <toolTipText value="State number is a integer value that is the number of states in dynamic models."/>
-                </properties>
-              </component>
-              <component id="66532" class="javax.swing.JTextField" binding="stateNumberTextField">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="75" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <text value="3"/>
-                  <toolTipText value="Please input state number (at least 2)."/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="b1b44" binding="StoppingCriteriaPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font name="Helvetica Neue"/>
-              <toolTipText value="Stopping criteria is to determine if iterative process stops in terms of a certain clustering agreement evaluation."/>
-            </properties>
-            <border type="line" title="STOPPING CRITERIA" title-justification="2" title-position="3">
-              <font name="Helvetica Neue" size="16" style="1"/>
-            </border>
-            <children>
-              <component id="bea9d" class="javax.swing.JRadioButton" binding="normalMutualInformationRadioButton" default-binding="true">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="Normal Mutual Information"/>
-                  <toolTipText value="Normal mutual information trades off the quality of the clustering against the number of clusters."/>
-                </properties>
-              </component>
-              <component id="cef3b" class="javax.swing.JRadioButton" binding="adjustedRandIndexRadioButton" default-binding="true">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="Adjusted Rand Index"/>
-                  <toolTipText value="Adjusted rand index corrects the chance of zero expectation."/>
-                </properties>
-              </component>
-              <component id="d07e9" class="javax.swing.JRadioButton" binding="randIndexRadioButton" default-binding="true">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <selected value="true"/>
-                  <text value="Rand Index"/>
-                  <toolTipText value="Rand index penalizes both false positive and false negative decisions during clustering."/>
-                </properties>
-              </component>
-              <component id="633c5" class="javax.swing.JRadioButton" binding="purityRadioButton" default-binding="true">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Helvetica Neue"/>
-                  <text value="Purity"/>
-                  <toolTipText value="Purity is a simple and transparent evaluation measure."/>
+                  <text value="Start"/>
                 </properties>
               </component>
             </children>
           </grid>
         </children>
-      </grid>
-      <component id="8df35" class="javax.swing.JLabel" binding="captionLabel">
+      </tabbedpane>
+      <component id="dcc42" class="javax.swing.JButton" binding="exitButton">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <alignmentY value="0.0"/>
-          <font name="Helvetica Neue" size="22" style="1"/>
-          <text value="Parameter Settings"/>
+          <text value="Exit"/>
         </properties>
       </component>
     </children>
