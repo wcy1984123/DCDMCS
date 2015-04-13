@@ -168,45 +168,7 @@ public class DCDMCMenuGUI {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final JFrame frame = new JFrame("Distributed Collective Dynamical Modeling & Clustering Configurations");
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-                //Create the content-pane-to-be.
-                JPanel contentPane = new JPanel(new BorderLayout());
-                contentPane.setOpaque(true);
-
-                //Create a scrolled text area.
-                JTextPane output = new JTextPane();
-                output.setContentType("text/html");
-                output.setEditable(false);
-                output.setText("\n");
-                Config config = new Config(DCDMCMenuGUI.this.dcdmcgui.getParameters());
-                output.setText(Config.toFormatAsString());
-                output.setCaretPosition(output.getDocument().getLength());
-                JScrollPane scrollPane = new JScrollPane(output);
-
-                //Add the text area to the content pane.
-                contentPane.add(scrollPane, BorderLayout.CENTER);
-
-                // Add the button to the content pane.
-                JButton jButton = new JButton("Close");
-                jButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        frame.dispose();
-                    }
-                });
-                contentPane.add(jButton, BorderLayout.PAGE_END);
-
-                //Create and set up the content pane.
-                frame.setContentPane(contentPane);
-
-                //Display the window.
-                Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-                frame.setSize((int)screenDimension.getWidth() / 2, (int)screenDimension.getWidth() / 2);
-                frame.setLocationRelativeTo(null);
-                frame.pack();
-                frame.setVisible(true);
+                showAllParameterConfigurations(dcdmcgui);
             }
         });
 
@@ -251,6 +213,48 @@ public class DCDMCMenuGUI {
         menu.add(menuItem);
 
         return menuBar;
+    }
+
+    public static void showAllParameterConfigurations(final DCDMCGUI dcdmcgui) {
+        final JFrame frame = new JFrame("Distributed Collective Dynamical Modeling & Clustering Configurations");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        //Create the content-pane-to-be.
+        JPanel contentPane = new JPanel(new BorderLayout());
+        contentPane.setOpaque(true);
+
+        //Create a scrolled text area.
+        JTextPane output = new JTextPane();
+        output.setContentType("text/html");
+        output.setEditable(false);
+        output.setText("\n");
+        Config config = new Config(dcdmcgui.getParameters());
+        output.setText(Config.toFormatAsString());
+        output.setCaretPosition(output.getDocument().getLength());
+        JScrollPane scrollPane = new JScrollPane(output);
+
+        //Add the text area to the content pane.
+        contentPane.add(scrollPane, BorderLayout.CENTER);
+
+        // Add the button to the content pane.
+        JButton jButton = new JButton("Close");
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+        contentPane.add(jButton, BorderLayout.PAGE_END);
+
+        //Create and set up the content pane.
+        frame.setContentPane(contentPane);
+
+        //Display the window.
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize((int)screenDimension.getWidth() / 2, (int)screenDimension.getWidth() / 2);
+        frame.setLocationRelativeTo(null);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     /**

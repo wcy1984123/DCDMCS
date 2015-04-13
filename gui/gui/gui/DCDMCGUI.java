@@ -57,6 +57,7 @@ public class DCDMCGUI extends JFrame {
     private JButton exitButton;
     private JPanel cdmcPanel;
     private JPanel initializerPanel;
+    private JLabel captionLabel;
     // ----------------------------------------------------------------------------//
 
     // -------------------------- Config File Variables -------------------------- //
@@ -212,6 +213,60 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
+        // parameter settings label
+        captionLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // double click
+                if (e.getClickCount() == 2) {
+                    DCDMCMenuGUI.showAllParameterConfigurations(DCDMCGUI.this);
+                }
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                captionLabel.setForeground(Color.YELLOW);
+                captionLabel.setBackground(Color.WHITE);
+                captionLabel.setFont(new Font("Helvetica neue", Font.BOLD, 22));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                captionLabel.setForeground(Color.BLACK);
+                captionLabel.setBackground(Color.WHITE);
+                captionLabel.setFont(new Font("Helvetica neue", Font.BOLD, 22));
+            }
+        });
+
+        // semi-Markov chain options
+        semiMarkovChainModelRadioButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                SemiMarkovChainGUI semiMarkovChainGUI = new SemiMarkovChainGUI(DCDMCGUI.this);
+                DCDMCGUI.this.setAllComponentsEnabled(false);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                semiMarkovChainModelRadioButton.setForeground(Color.GREEN);
+                semiMarkovChainModelRadioButton.setBackground(Color.WHITE);
+                semiMarkovChainModelRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                semiMarkovChainModelRadioButton.setForeground(Color.BLACK);
+                semiMarkovChainModelRadioButton.setBackground(Color.WHITE);
+                semiMarkovChainModelRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
+            }
+        });
+
         // exit button
         exitButton.addActionListener(new ActionListener() {
             @Override
@@ -219,8 +274,7 @@ public class DCDMCGUI extends JFrame {
                 System.exit(0);
             }
         });
-        hierarchicalClusteringRadioButton.addMouseListener(new MouseAdapter() {
-        });
+
     }
 
     /**

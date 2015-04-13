@@ -8,7 +8,6 @@ import gui.XYLineChartApdater;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.title.TextTitle;
 import starter.Config;
-import umontreal.iro.lecuyer.charts.XYLineChart;
 import umontreal.iro.lecuyer.charts.XYListSeriesCollection;
 import umontreal.iro.lecuyer.probdist.ContinuousDistribution;
 import umontreal.iro.lecuyer.probdist.WeibullDist;
@@ -395,7 +394,9 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             // compute the estimated probability distribution
             double[][] estimatedProbs = computeDensityStateDurationForAState(wd, stateSeq);
 
-            String title = "Weibull Dist\nAlpha = " + String.format("%.4f", alpha) + " Lambda = " + String.format("%.4f", lambda) + " Delta = " + String.format("%.4f", delta);
+            String params = "   Alpha = " + String.format("%.4f", alpha) + " Lambda = " + String.format("%.4f", lambda) + " Delta = " + String.format("%.4f", delta);
+            System.out.println(params);
+            String title = "Weibull Distribution\n" + params;
             XYLineChartApdater chart = new XYLineChartApdater(title, "State Duration", "Probability", actualProbs, estimatedProbs);
 
             // change font and its size
