@@ -541,6 +541,41 @@ public class Utilities {
     }
 
     /**
+     * Normalize the given one dimensional array
+     * @param array one dimensional matrix
+     * @return a normalized one dimensional array
+     */
+    public static double[] normalizeMatrix(int[] array) {
+
+        double[] res = null;
+
+        if (array == null) {
+            LOGGER.log(Level.INFO, "The one dimensional array of integers is null!");
+            return res;
+        }
+
+        if (array.length == 0) {
+            LOGGER.log(Level.INFO, "The one dimensional array of integers is empty!");
+            return res;
+        }
+
+        int COLUMN = array.length;
+        res = new double[COLUMN];
+        double sum = 0.0;
+        for (int i = 0; i < COLUMN; i++) {
+            sum += array[i];
+        }
+
+        if (sum != 0) {
+            for (int j = 0; j < COLUMN; j++) {
+                res[j] = array[j] * 1.0 / sum;
+            }
+        }
+
+        return res;
+    }
+
+    /**
      * test
      * @param args user input
      */

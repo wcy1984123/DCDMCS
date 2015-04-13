@@ -4,17 +4,20 @@ import Utilities.Utilities;
 import Utilities.Models;
 import cluster.ICluster;
 import gui.ContinuousDistChartAdapter;
+import gui.XYLineChartApdater;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.title.TextTitle;
 import starter.Config;
+import umontreal.iro.lecuyer.charts.XYLineChart;
+import umontreal.iro.lecuyer.charts.XYListSeriesCollection;
+import umontreal.iro.lecuyer.probdist.ContinuousDistribution;
 import umontreal.iro.lecuyer.probdist.WeibullDist;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
-import java.awt.geom.Arc2D;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -385,9 +388,172 @@ public class SemiMarkovChainModel implements IModel, ICluster {
 
 
             int stateSeq = i + 1; // modulo// current state sequence value under total states scope
+
+            // compute the actual data probability distribution
+            double[][] actualProbs = normalizeStateDurationsForAState(stateSeq);
+
+            // compute the estimated probability distribution
+            double[][] estimatedProbs = computeDensityStateDurationForAState(wd, stateSeq);
+
+            String title = "Weibull Dist\nAlpha = " + String.format("%.4f", alpha) + " Lambda = " + String.format("%.4f", lambda) + " Delta = " + String.format("%.4f", delta);
+            XYLineChartApdater chart = new XYLineChartApdater(title, "State Duration", "Probability", actualProbs, estimatedProbs);
+
+            // change font and its size
+            JFreeChart jc = chart.getChart();
+            TextTitle tt = jc.getTitle();
+            tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
+
+            XYListSeriesCollection collec = chart.getSeriesCollection();
+            collec.setColor(0, Color.RED);
+            collec.setDashPattern(0, "only marks");
+            collec.setName(1, "Weibull Density Estimation");
+
+            JFrame jf = chart.view(300, 400);
+            // put all individual frames into a frame
+            Component component = jf.getComponent(0);
+            component.setLocation(original);
+
+            generalJframe.add(component, c);
+            original = new Point(original.x + component.getBounds().width, original.y);
+
+            // set frame title
+            jf.setTitle("Model [ " + modelSeq + " ] --- State [ " + stateSeq + " ]");
+            jf.setVisible(false); // hide individual frame figures
+
+        }
+
+        generalJframe.pack();
+        generalJframe.setLocation(screenDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM());
+        generalJframe.setSize(componentDimension);
+        generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        generalJframe.setVisible(true);
+
+    }
+
+    /**
+     * Compute the probability of state durations for a given state
+     * @param state a given state
+     * @return the probability of state durations for a given state
+     */
+    private double[][] normalizeStateDurationsForAState(int state) {
+        double[][] probs = null;
+        if (this.mInstances == null || this.mInstances.size() == 0) {
+            probs = new double[2][1];
+            probs[0] = new double[]{0.0};
+            probs[1] = new double[]{0.0};
+            return probs;
+        }
+
+        Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
+        Map<Integer, Integer> stateDuration = map.get(state);
+
+        if (stateDuration == null) {
+            probs = new double[2][1];
+            probs[0] = new double[]{0.0};
+            probs[1] = new double[]{0.0};
+            return probs;
+        }
+
+        int[] data = new int[stateDuration.keySet().size()];
+        int count = 0;
+        for (Integer key : stateDuration.keySet()) {
+            data[count++] = stateDuration.get(key);
+        }
+
+        double[] probData = Utilities.normalizeMatrix(data); // compute the probability of state duration given a state
+
+        probs = new double[2][count];
+        count = 0;
+        for (Integer key : stateDuration.keySet()) {
+            probs[0][count] = key;
+            probs[1][count] = probData[count];
+            count++;
+        }
+
+        return probs;
+    }
+
+    /**
+     * Compute the density probabilities of state duration given a state
+     * @param cd distribution of the given state
+     * @param state a given state
+     * @return the density probabilities of state duration given a state
+     */
+    private double[][] computeDensityStateDurationForAState(ContinuousDistribution cd, int state) {
+        double[][] probs = null;
+        if (this.mInstances == null || this.mInstances.size() == 0) {
+            probs = new double[2][1];
+            probs[0] = new double[]{0.0};
+            probs[1] = new double[]{0.0};
+            return probs;
+        }
+
+        Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
+        Map<Integer, Integer> stateDuration = map.get(state);
+
+        if (stateDuration == null) {
+            probs = new double[2][1];
+            probs[0] = new double[]{0.0};
+            probs[1] = new double[]{0.0};
+            return probs;
+        }
+
+        int count = stateDuration.keySet().size();
+
+        probs = new double[2][count];
+        count = 0;
+        for (Integer key : stateDuration.keySet()) {
+            probs[0][count] = key;
+            probs[1][count] = cd.cdf(key + 1) - cd.cdf(key);
+            count++;
+        }
+
+        return probs;
+    }
+
+    /**
+     * Visualize CDF view
+     */
+    private void visualizeCDFView() {
+        int stateNum = Config.getSTATENUM();
+        int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
+
+        JFrame generalJframe = new JFrame("Model [ " + modelSeq + " ] - " + stateNum + " States");
+        generalJframe.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension componentDimension = new Dimension(screenDimension.width / (Config.getCLUSTERNUM() + 1), screenDimension.height / (Config.getCLUSTERNUM() + 1));
+        Point original = new Point(0, 0);
+        // print out state duration distribution
+        for(int i = 0; i < stateNum; i++) {
+            double alpha = this.mParameters[i][0];
+            double lambda = this.mParameters[i][1];
+            double delta = this.mParameters[i][2];
+
+            WeibullDist wd = null;
+
+            // if invalid parameters set up
+            if (alpha <= 0 || lambda <= 0) {
+                // create a plot of probability density estimation
+                wd = new WeibullDist(Double.POSITIVE_INFINITY, 1, 0);
+
+            } else {
+                // create a plot of probability density estimation
+                wd = new WeibullDist(alpha, lambda, delta);
+
+            }
+
+            int min = this.scopeForStateDurations.get(i).get(0);
+            int max = this.scopeForStateDurations.get(i).get(1);
+
+
+            int stateSeq = i + 1; // modulo// current state sequence value under total states scope
             ContinuousDistChartAdapter chart = new ContinuousDistChartAdapter(wd, min, max, max - min + 1);
             chart.setDensityChartFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12));
-            JFrame jf = chart.viewDensity(300, 400);
+            JFrame jf = chart.viewCdf(300, 400);
 
             // put all individual frames into a frame
             Component component = jf.getComponent(0);
@@ -406,7 +572,6 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         generalJframe.setSize(componentDimension);
         generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         generalJframe.setVisible(true);
-
     }
 
     /**

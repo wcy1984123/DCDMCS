@@ -509,10 +509,10 @@ public final class Config {
                         "<body>\n" +
                                 "<br>\n" +
                                 "<table style=\"width:100%\">\n" +
-                                    "<caption> <b><font size=\"5\" color=\"black\"> General Configurations </font></b></caption>\n" +
+                                    "<caption> <b><i><font size=\"5\" color=\"black\"> System General Configurations </font></i></b></caption>\n" +
                                     "  <tr>\n" +
-                                        "    <th><font size=\"4\" color=\"white\">Parameter Name</font></th>\n" +
-                                        "    <th><font size=\"4\" color=\"white\">Value</font></th>\t\t\n" +
+                                        "    <th><font size=\"5\" color=\"white\">Parameter Name</font></th>\n" +
+                                        "    <th><font size=\"5\" color=\"white\">Value</font></th>\t\t\n" +
                                     "  </tr>\n" +
                                     "  <tr>\n" +
                                         "    <td bgcolor=" + color1 + ">Cluster Num</td>\n" +
@@ -580,10 +580,10 @@ public final class Config {
                                 "</table>\n" +
                                 "<br>\n" +
                                 "<table id=\"t01\" style=\"width:100%\">\n" +
-                                    "<caption> <b><font size=\"5\" color=\"black\">File Path Configurations</font></b></caption>\n" +
+                                    "<caption> <b><i><font size=\"5\" color=\"black\">System File Path Configurations</font></b></i></caption>\n" +
                                     "  <tr>\n" +
-                                        "    <th> <font size=\"4\" color=\"white\">Parameter Name</font></th>\n" +
-                                        "    <th><font size=\"4\" color=\"white\">Value</font></th>\t\t\n" +
+                                        "    <th> <font size=\"5\" color=\"white\">Parameter Name</font></th>\n" +
+                                        "    <th><font size=\"5\" color=\"white\">Value</font></th>\t\t\n" +
                                     "  </tr>\n" +
                                     "  <tr>\n" +
                                         "    <td>Config File Path</td>\n" +
@@ -612,33 +612,6 @@ public final class Config {
                                 "</table>\n" +
                         "</body>\n" +
                 "</html>");
-
-        // DCDMC Parameter Default Configuration
-//        sb.append("\n   ||************************************************************** DCDMC Configurations ********************************************************||\n");
-//        sb.append("         Cluster Num: " + CLUSTERNUM + "\n");
-//        sb.append("         Similarity: " + SIMILARITY + "\n");
-//        sb.append("         Dataset Type: " + DATASETTYPE + "\n");
-//        sb.append("         Dataset Path: " + DATASETPATH + "\n");
-//        sb.append("         State Number: " + STATENUM + "\n");
-//        sb.append("         Dataset Format: " + DATAFORMAT + "\n");
-//        sb.append("         Dynamic Time Warping Type: " + DTWTYPE + "\n");
-//        sb.append("         Deviated Dynamic Time Warping Type: " + DEVIATEDDTWTYPE + "\n");
-//        sb.append("         Stopping Criterion: " + STOPPINGCRITERIATYPE + "\n");
-//        sb.append("         Modeling Mode: " + MODELINGMODE + "\n");
-//        sb.append("         Dynamic Model Type: " + DYNAMICMODELTYPE + "\n");
-//        sb.append("         Initial Clustering Type: " + INITIALCLUSTERINGTYPE + "\n");
-//        sb.append("         Hierarchical Linkage Type: " + HIERARCHICALLINKAGETYPE + "\n");
-//        sb.append("   ||************************************************************************************************************************************************||\n");
-//
-//        // File Path Default Settings
-//        sb.append("\n   ||*************************************************************** File Path Settings **************************************************************||\n");
-//        sb.append("         Config File Path: " + CONFIGPATH + "\n");
-//        sb.append("         Initial Clusters File Path: " + INITIALCLUSTERSFILEPATH + "\n");
-//        sb.append("         Final Clusters File Path: " + FINALCLUSTERSFILEPATH + "\n");
-//        sb.append("         Distance Matrix File Path: " + DISTANCEMATRIXFILEPATH + "\n");
-//        sb.append("         Hypnogram Dataset File Path: " + HYPNOGRAMDATASETFILEPATH + "\n");
-//        sb.append("         Web User Navigation Behavior Dataset File Path: " + WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH + "\n");
-//        sb.append("   ||************************************************************************************************************************************************||\n");
 
         return sb.toString();
     }

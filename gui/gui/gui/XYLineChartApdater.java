@@ -1,6 +1,7 @@
 package gui;
 
 import cern.colt.list.DoubleArrayList;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeriesCollection;
 import umontreal.iro.lecuyer.charts.XYLineChart;
@@ -8,6 +9,7 @@ import umontreal.iro.lecuyer.charts.XYListSeriesCollection;
 import umontreal.iro.lecuyer.charts.YListChart;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Project: DCDMC
@@ -38,7 +40,39 @@ public class XYLineChartApdater extends XYLineChart{
         super.initAxis();
     }
 
+    /**
+     * (Modified method from XYLineChart class)
+     * I comment out the myFrame.setVisible(true) to avoid its display on the screen
+     *
+     * Displays chart on the screen using Swing.
+     *    This method creates an application containing a chart panel displaying
+     *    the chart. The created frame is positioned on-screen, and displayed before
+     *    it is returned. The <TT>width</TT> and the <TT>height</TT>
+     *    of the chart are measured in pixels.
+     *
+     * @param width frame width in pixels.
+     *
+     *    @param height frame height in pixels.
+     *
+     *    @return frame containing the chart.;
+     *
+     */
+    public JFrame view (int width, int height)  {
 
+        JFrame myFrame;
+        if(chart.getTitle() != null)
+            myFrame = new JFrame("XYLineChart from SSJ: " + chart.getTitle().getText());
+        else
+            myFrame = new JFrame("XYLineChart from SSJ");
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(width, height));
+        myFrame.setContentPane(chartPanel);
+        myFrame.pack();
+        myFrame.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+        myFrame.setLocationRelativeTo (null);
+        // myFrame.setVisible(true); comment out to delete its transient display on screen
+        return myFrame;
+    }
 
     /**
      * Initializes a new <TT>XYLineChart</TT> instance with an empty data set.
@@ -329,25 +363,6 @@ public class XYLineChartApdater extends XYLineChart{
      */
     public void setTicksSynchro (int s)  {
         super.setTicksSynchro(s);
-    }
-
-
-    /**
-     * Displays chart on the screen using Swing.
-     *    This method creates an application containing a chart panel displaying
-     *    the chart. The created frame is positioned on-screen, and displayed before
-     *    it is returned. The <TT>width</TT> and the <TT>height</TT>
-     *    of the chart are measured in pixels.
-     *
-     * @param width frame width in pixels.
-     *
-     *    @param height frame height in pixels.
-     *
-     *    @return frame containing the chart.;
-     *
-     */
-    public JFrame view (int width, int height)  {
-        return super.view(width, height);
     }
 
     /**
