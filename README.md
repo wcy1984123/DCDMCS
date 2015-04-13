@@ -2,6 +2,8 @@
 
 Collective Dynamical Modeling-Clustering (CDMC) is an algorithmic framework for time series dynamical modeling and clustering using probabilistic state-transition models. In our work, an efficient initialization technique based on Itakura slope-constrained Dynamic Time Warping is applied to CDMC. Semi-Markov chains are used as the dynamical models. Experimental evaluation demonstrates the effectiveness of the proposed approach in providing more realistic dynamical modeling of stage dynamics than Markov models, with improved clustering quality and convergence speed as compared with pseudorandom initialization.
 
+![GUIIMAGE](/images/GUIScreenSnapshot.png)
+
 ###Distributed Collective Dynamic Modeling & Clustering System
 One way of processing large-scale datasets of discrete time series is to use compressed representation of instances based on the quartiles of the duration distributions. This data representation is used as a basis for the discovery of duration-related patterns in symbolic time series. It reduces the input size of the dataset before going to the learning procedure. An alternative way is to distribute existing algorithms over distributed system. The distributed environment such as Storm, that is distributed and fault-tolerant real-time computation, is widely used for the past five years. A systematic way of distributing the proposed method is important to extend the capability of processing large-scale dataset of time series. The following is the deployment of CDMC in Storm platform.
 
