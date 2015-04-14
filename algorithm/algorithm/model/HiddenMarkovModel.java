@@ -364,6 +364,15 @@ public class HiddenMarkovModel implements IModel, ICluster {
     }
 
     /**
+     * Model name
+     * @return model name
+     */
+    @Override
+    public String getModelName() {
+        return "Hidden Markov Model";
+    }
+
+    /**
      * test
      * @param args user input
      */

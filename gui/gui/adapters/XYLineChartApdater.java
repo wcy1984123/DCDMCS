@@ -61,9 +61,9 @@ public class XYLineChartApdater extends XYLineChart{
 
         JFrame myFrame;
         if(chart.getTitle() != null)
-            myFrame = new JFrame("XYLineChart from SSJ: " + chart.getTitle().getText());
+            myFrame = new JFrame("XYLineChart: " + chart.getTitle().getText());
         else
-            myFrame = new JFrame("XYLineChart from SSJ");
+            myFrame = new JFrame("XYLineChart");
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(width, height));
         myFrame.setContentPane(chartPanel);

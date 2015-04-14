@@ -36,6 +36,10 @@ public final class CONSTANTS {
     public final static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     public final static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
 
+    /*-------------------- GUI Variables ------------------*/
+    public final static Boolean PROBABILITYDENSITYVIEW;
+    public final static Boolean CUMULATIVEDISTRIBUTIONVIEW;
+
     static {
         // File Path Default Settings
         CONFIGPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
@@ -60,5 +64,9 @@ public final class CONSTANTS {
         INITIALCLUSTERINGTYPE = "HIERARCHICALCLUSTERING";
         HIERARCHICALLINKAGETYPE = "AVERAGELINKAGESTRATEGY";
         DATAFORMAT = 3;
+
+        // GUI variables
+        PROBABILITYDENSITYVIEW = true;
+        CUMULATIVEDISTRIBUTIONVIEW = false;
     }
 }

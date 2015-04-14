@@ -341,6 +341,20 @@ public class SemiMarkovChainModel implements IModel, ICluster {
      */
     @Override
     public void visualizeOutput() {
+        if (Config.isPROBABILITYDENSITYVIEW()) {
+            visualizePDFView();
+        }
+
+        if (Config.isCUMULATIVEDISTRIBUTIONVIEW()) {
+            visualizeCDFView();
+        }
+
+    }
+
+    /**
+     * Visualize PDF view
+     */
+    private void visualizePDFView() {
         int stateNum = Config.getSTATENUM();
         int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
         System.out.println("\n               -------- Model [ " + modelSeq + " ] -------- ");
@@ -354,7 +368,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             System.out.println();
         }
 
-        JFrame generalJframe = new JFrame("Model [ " + modelSeq + " ] - " + stateNum + " States");
+        JFrame generalJframe = new JFrame("Model [ " + modelSeq + " ] - " + stateNum + " States" + " {" + (this.mInstances == null ? 0 : this.mInstances.size()) + " Instances}");
         generalJframe.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -362,9 +376,14 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         c.weighty = 0.5;
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension componentDimension = new Dimension(screenDimension.width / (Config.getCLUSTERNUM() + 1), screenDimension.height / (Config.getCLUSTERNUM() + 1));
+
+        if (Config.isCUMULATIVEDISTRIBUTIONVIEW()) {
+            componentDimension = new Dimension((int)componentDimension.getWidth(), (int)componentDimension.getHeight() / 2);
+        }
+
         Point original = new Point(0, 0);
 
-        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.YELLOW, Color.CYAN, Color.MAGENTA, Color.pink, Color.BLUE};
+        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
@@ -398,7 +417,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
 
             String params = "   Alpha = " + String.format("%.4f", alpha) + " Lambda = " + String.format("%.4f", lambda) + " Delta = " + String.format("%.4f", delta);
             System.out.println(params);
-            String title = "Weibull Distribution\n" + params;
+            String title = "Weibull Probability Density Distribution\n" + params;
             XYLineChartApdater chart = new XYLineChartApdater(title, "State Duration", "Probability", actualProbs, estimatedProbs);
 
             // change font and its size
@@ -431,7 +450,6 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         generalJframe.setSize(componentDimension);
         generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         generalJframe.setVisible(true);
-
     }
 
     /**
@@ -522,7 +540,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         int stateNum = Config.getSTATENUM();
         int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
 
-        JFrame generalJframe = new JFrame("Model [ " + modelSeq + " ] - " + stateNum + " States");
+        JFrame generalJframe = new JFrame("Model [ " + modelSeq + " ] - " + stateNum + " States" + " {" + (this.mInstances == null ? 0 : this.mInstances.size()) + " Instances}");
         generalJframe.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -530,7 +548,10 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         c.weighty = 0.5;
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension componentDimension = new Dimension(screenDimension.width / (Config.getCLUSTERNUM() + 1), screenDimension.height / (Config.getCLUSTERNUM() + 1));
+        componentDimension = new Dimension(componentDimension.width, componentDimension.height / 2);
         Point original = new Point(0, 0);
+
+        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
@@ -555,10 +576,29 @@ public class SemiMarkovChainModel implements IModel, ICluster {
 
 
             int stateSeq = i + 1; // modulo// current state sequence value under total states scope
-            ContinuousDistChartAdapter chart = new ContinuousDistChartAdapter(wd, min, max, max - min + 1);
-            chart.setDensityChartFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12));
-            JFrame jf = chart.viewCdf(300, 400);
+            // compute the actual data probability distribution
+            double[][] actualProbs = normalizeCumulativeStateDurationsForAState(stateSeq);
 
+            // compute the estimated cumulative distribution
+            double[][] estimatedProbs = computeCumulativeStateDurationForAState(wd, stateSeq);
+
+            String params = "   Alpha = " + String.format("%.4f", alpha) + " Lambda = " + String.format("%.4f", lambda) + " Delta = " + String.format("%.4f", delta);
+            System.out.println(params);
+            String title = "Weibull Cumulative Density Probability Distribution\n" + params;
+            XYLineChartApdater chart = new XYLineChartApdater(title, "State Duration", "Probability", actualProbs, estimatedProbs);
+
+            // change font and its size
+            JFreeChart jc = chart.getChart();
+            TextTitle tt = jc.getTitle();
+            tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
+
+            XYListSeriesCollection collec = chart.getSeriesCollection();
+            collec.setColor(0, colors[i % colors.length]);
+            collec.setDashPattern(0, "only marks");
+            collec.setColor(1, Color.BLACK);
+            collec.setName(1, "Weibull Cumulative Estimation");
+
+            JFrame jf = chart.view(300, 400);
             // put all individual frames into a frame
             Component component = jf.getComponent(0);
             component.setLocation(original);
@@ -572,10 +612,85 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         }
 
         generalJframe.pack();
-        generalJframe.setLocation(screenDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM());
+        generalJframe.setLocation(screenDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM() + componentDimension.height);
         generalJframe.setSize(componentDimension);
         generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         generalJframe.setVisible(true);
+    }
+
+    /**
+     * Compute the cumulative of state durations for a given state
+     * @param state a given state
+     * @return the probability of state durations for a given state
+     */
+    private double[][] normalizeCumulativeStateDurationsForAState(int state) {
+        double[][] probs = normalizeStateDurationsForAState(state);
+
+        SortedMap<Double, Double> sortedMap = new TreeMap<Double, Double>();
+
+        int COLUMN = probs[0].length;
+        for (int i = 0; i < COLUMN; i++) {
+            sortedMap.put(probs[0][i], probs[1][i]);
+        }
+
+        double cumulativeProbs = 0;
+        int count = 0;
+        double[][] newProbs = new double[2][COLUMN];
+        for (Double key : sortedMap.keySet()) {
+            cumulativeProbs += sortedMap.get(key);
+            newProbs[0][count] = key;
+            newProbs[1][count] = cumulativeProbs;
+            count++;
+        }
+
+        return newProbs;
+    }
+
+    /**
+     * Compute the cumulative probabilities of state duration given a state
+     * @param cd distribution of the given state
+     * @param state a given state
+     * @return the density probabilities of state duration given a state
+     */
+    private double[][] computeCumulativeStateDurationForAState(ContinuousDistribution cd, int state) {
+        double[][] probs = null;
+        if (this.mInstances == null || this.mInstances.size() == 0) {
+            probs = new double[2][1];
+            probs[0] = new double[]{0.0};
+            probs[1] = new double[]{0.0};
+            return probs;
+        }
+
+        Map<Integer, Map<Integer, Integer>> map = Models.countStateDurationForSequences(this.mInstances);
+        Map<Integer, Integer> stateDuration = map.get(state);
+
+        if (stateDuration == null) {
+            probs = new double[2][1];
+            probs[0] = new double[]{0.0};
+            probs[1] = new double[]{0.0};
+            return probs;
+        }
+
+        int count = stateDuration.keySet().size();
+
+        probs = new double[2][count];
+        count = 0;
+        for (Integer key : stateDuration.keySet()) {
+            probs[0][count] = key;
+            probs[1][count] = cd.cdf(key);
+            count++;
+        }
+
+        return probs;
+    }
+
+    /**
+     * Model name
+     * @return model name
+     */
+    @Override
+    public String getModelName() {
+        return "Semi-Markov Chain Model";
     }
 
     /**

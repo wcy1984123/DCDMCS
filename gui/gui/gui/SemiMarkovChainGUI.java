@@ -1,9 +1,14 @@
 package gui;
 
+import starter.CONSTANTS;
+import starter.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Project: DCDMC
@@ -30,19 +35,92 @@ public class SemiMarkovChainGUI extends JFrame{
 
         setContentPane(semiMarkovChainJPanel);
 
+        probabilityDensityViewCheckBox.setActionCommand("");
+
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(weibullDensityDistributionRadioButton);
         buttonGroup.add(exponentialDensityDistributionRadioButton);
 
+        // set up selected checkbox according to existing selection
+        final Boolean probabilityDensityView = Config.isPROBABILITYDENSITYVIEW();
         probabilityDensityViewCheckBox.setEnabled(false);
-        probabilityDensityViewCheckBox.setSelected(true);
+        if (probabilityDensityView == true) {
+            probabilityDensityViewCheckBox.setSelected(true);
+        } else {
+            probabilityDensityViewCheckBox.setSelected(false);
+        }
+
+        Boolean cumulativeDistributionView = Config.isCUMULATIVEDISTRIBUTIONVIEW();
+        if (cumulativeDistributionView == true) {
+            cumulativeDistributionViewCheckBox.setSelected(true);
+        } else {
+            cumulativeDistributionViewCheckBox.setSelected(false);
+        }
+
         weibullDensityDistributionRadioButton.setSelected(true);
+
+        // listen for the state change and then modify configuration values
+        probabilityDensityViewCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getItemSelectable() == probabilityDensityViewCheckBox) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        Config.setPROBABILITYDENSITYVIEW(true);
+                    } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                        Config.setPROBABILITYDENSITYVIEW(false);
+                    }
+                    System.out.println("        Probability Density View: " + Config.isPROBABILITYDENSITYVIEW().toString().toUpperCase());
+
+                }
+            }
+        });
+
+        cumulativeDistributionViewCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getItemSelectable() == cumulativeDistributionViewCheckBox) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        Config.setCUMULATIVEDISTRIBUTIONVIEW(true);
+                    } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                        Config.setCUMULATIVEDISTRIBUTIONVIEW(false);
+                    }
+                    System.out.println("        Cumulative Distribution View: " + Config.isCUMULATIVEDISTRIBUTIONVIEW().toString().toUpperCase());
+                }
+            }
+        });
 
         setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dcdmcgui.setAllComponentsEnabled(true);
                 dispose();
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object[] options = {"Yes, please",
+                        "No, thanks"};
+                int n = JOptionPane.showOptionDialog(SemiMarkovChainGUI.this,
+                        "Would you like to reset current configurations?",
+                        "Caution",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        options,
+                        options[1]);
+
+                // press yes button
+                if (n == 0) {
+                    Config.setPROBABILITYDENSITYVIEW(CONSTANTS.PROBABILITYDENSITYVIEW);
+                    Config.setCUMULATIVEDISTRIBUTIONVIEW(CONSTANTS.CUMULATIVEDISTRIBUTIONVIEW);
+                    probabilityDensityViewCheckBox.setSelected(Config.isPROBABILITYDENSITYVIEW());
+                    cumulativeDistributionViewCheckBox.setSelected(Config.isCUMULATIVEDISTRIBUTIONVIEW());
+                    System.out.println("            Reset view configurations in Semi-Markov Chain GUI components successfully.");
+                } else {
+                    System.out.println("            Cancel to reset view configurations in Semi-Markov Chain GUI components.");
+                }
             }
         });
 

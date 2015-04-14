@@ -45,7 +45,9 @@ public final class Config {
     private static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
 
 
-    /*--------------------- Constant ----------------------*/
+    //*-------------------- GUI Variables ------------------*/
+    private static Boolean PROBABILITYDENSITYVIEW;
+    private static Boolean CUMULATIVEDISTRIBUTIONVIEW;
 
 
     static {
@@ -73,6 +75,10 @@ public final class Config {
         INITIALCLUSTERINGTYPE = CONSTANTS.INITIALCLUSTERINGTYPE;
         HIERARCHICALLINKAGETYPE = CONSTANTS.HIERARCHICALLINKAGETYPE;
         DATAFORMAT = CONSTANTS.DATAFORMAT;
+
+        // GUI variables
+        PROBABILITYDENSITYVIEW = CONSTANTS.PROBABILITYDENSITYVIEW;
+        CUMULATIVEDISTRIBUTIONVIEW = CONSTANTS.CUMULATIVEDISTRIBUTIONVIEW;
     }
 
     /**
@@ -137,6 +143,10 @@ public final class Config {
         INITIALCLUSTERINGTYPE = CONSTANTS.INITIALCLUSTERINGTYPE;
         HIERARCHICALLINKAGETYPE = CONSTANTS.HIERARCHICALLINKAGETYPE;
         DATAFORMAT = CONSTANTS.DATAFORMAT;
+
+        // GUI variables
+        PROBABILITYDENSITYVIEW = CONSTANTS.PROBABILITYDENSITYVIEW;
+        CUMULATIVEDISTRIBUTIONVIEW = CONSTANTS.CUMULATIVEDISTRIBUTIONVIEW;
     }
 
     /**
@@ -449,6 +459,38 @@ public final class Config {
      */
     public static void setWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH(String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH) {
         Config.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
+    }
+
+    /**
+     * Getter
+     * @return  probability density view
+     */
+    public static Boolean isPROBABILITYDENSITYVIEW() {
+        return PROBABILITYDENSITYVIEW;
+    }
+
+    /**
+     * Setter
+     * @param PROBABILITYDENSITYVIEW  probability density view
+     */
+    public static void setPROBABILITYDENSITYVIEW(Boolean PROBABILITYDENSITYVIEW) {
+        Config.PROBABILITYDENSITYVIEW = PROBABILITYDENSITYVIEW;
+    }
+
+    /**
+     * Getter
+     * @return cumulative probability view
+     */
+    public static Boolean isCUMULATIVEDISTRIBUTIONVIEW() {
+        return CUMULATIVEDISTRIBUTIONVIEW;
+    }
+
+    /**
+     * Setter
+     * @param CUMULATIVEDISTRIBUTIONVIEW cumulative distribution view
+     */
+    public static void setCUMULATIVEDISTRIBUTIONVIEW(Boolean CUMULATIVEDISTRIBUTIONVIEW) {
+        Config.CUMULATIVEDISTRIBUTIONVIEW = CUMULATIVEDISTRIBUTIONVIEW;
     }
 
     /*--------------------- String Sources -------------------*/

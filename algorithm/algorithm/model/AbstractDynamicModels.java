@@ -8,6 +8,15 @@ package model;
  * System Time: 5:25 PM
  */
 
+import adapters.AxisAdapter;
+import adapters.HistogramChartAdapter;
+import adapters.XYLineChartApdater;
+import starter.Config;
+import umontreal.iro.lecuyer.charts.CustomHistogramDataset;
+import umontreal.iro.lecuyer.charts.HistogramChart;
+import umontreal.iro.lecuyer.charts.HistogramSeriesCollection;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +32,17 @@ abstract public class AbstractDynamicModels implements IModels{
 
     private List<IModel> mModels; // dynamic models
 
+    // GUI Variable
+    private double[] mClusterLabelDistributions; // cluster labels distribution
+    private int mMaxSizeInOneClusters; // maximum number of instances in one cluster
+
+    /**
+     * Class constructor
+     */
     public AbstractDynamicModels() {
         this.mModels = null;
     }
+
 
     /**
      * Build models over instances
@@ -81,6 +98,21 @@ abstract public class AbstractDynamicModels implements IModels{
                 System.out.println("        Model[" + (i + 1) + "]: 0 instances.");
             } else {
                 System.out.println("        Model[" + (i + 1) + "]: " + clusterInstances.get(i).size() + " instances.");
+            }
+        }
+
+        // build cluster labels distribution for GUI display
+        mClusterLabelDistributions = new double[instances.size()];
+        mMaxSizeInOneClusters = 0;
+        int count = 0;
+        for (int i = 0; i < clusterNum; i++) {
+            if (clusterInstances.get(i) == null) {
+            } else {
+                int dataNum = clusterInstances.get(i).size();
+                mMaxSizeInOneClusters = Math.max(mMaxSizeInOneClusters, dataNum);
+                for (int j = 0; j < dataNum; j++) {
+                    mClusterLabelDistributions[count++] = 2 * i + 1.0;
+                }
             }
         }
 
@@ -172,5 +204,26 @@ abstract public class AbstractDynamicModels implements IModels{
         for (int i = 0; i < this.mModels.size(); i++) {
             this.mModels.get(i).visualizeOutput();
         }
+
+        visualizeClusterDistributions();
+    }
+
+    /**
+     * Make a histogram plot on cluster labels distribution
+     */
+    private void visualizeClusterDistributions() {
+        HistogramChartAdapter chart;
+        String modelName = this.mModels == null? "" : this.mModels.get(0).getModelName();
+        chart = new HistogramChartAdapter("Cluster Distribution [" + modelName + "]", "Clusters", "Frequency", this.mClusterLabelDistributions);
+        HistogramSeriesCollection collec = chart.getSeriesCollection();
+        collec.setBins(0, 2 * Config.getCLUSTERNUM());
+        collec.setColor(0, new Color(179, 232, 172));
+
+        double[] bounds = { 0, 2 * Config.getCLUSTERNUM(), 0, this.mMaxSizeInOneClusters};
+        chart.setManualRange(bounds);
+
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        chart.view(screenDimension.width / 3, screenDimension.height / 5);
+
     }
 }

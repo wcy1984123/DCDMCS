@@ -88,7 +88,7 @@ public class HypnogramGUI extends JPanel implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // set up selected radio button according to existing deviatedDTW type value
-        String hypnogramFormat = Config.getDATAFORMAT() == 0 ? null : String.valueOf(Config.getDATAFORMAT());
+        String hypnogramFormat = Config.getDATAFORMAT() == 0 ? "" : String.valueOf(Config.getDATAFORMAT());
         if (hypnogramFormat.equals("5")) {
             originalButton.setSelected(true);
         } else if (hypnogramFormat.equals("2")) {

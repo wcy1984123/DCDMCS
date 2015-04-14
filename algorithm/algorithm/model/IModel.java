@@ -35,4 +35,10 @@ public interface IModel {
      */
     public void visualizeOutput();
 
+    /**
+     * Model name
+     * @return model name
+     */
+    public String getModelName();
+
 }

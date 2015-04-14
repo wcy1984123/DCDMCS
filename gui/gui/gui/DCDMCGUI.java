@@ -61,13 +61,16 @@ public class DCDMCGUI extends JFrame {
     private JPanel clusteringAlgorithmJPanel;
     private JPanel modelTypeJPanel;
     private JPanel dynamicModelsJPanel;
+    private JLabel clusterNumberJLabel;
+    private JLabel similarityThresholdJLabel;
+    private JLabel stateNumberJLabel;
     // ----------------------------------------------------------------------------//
 
     /**
      * class constructor
      */
     public DCDMCGUI() {
-        super("Distributed Collective Dynamic Modeling & Clustering");
+        super("Distributed Collective Dynamic Modeling & Clustering System");
 
         // add menu
         DCDMCMenuGUI dcdmcMenuGUI = new DCDMCMenuGUI(DCDMCGUI.this);
@@ -314,6 +317,9 @@ public class DCDMCGUI extends JFrame {
         clusteringAlgorithmJPanel.setEnabled(enabled);
         modelTypeJPanel.setEnabled(enabled);
         dynamicModelsJPanel.setEnabled(enabled);
+        clusterNumberJLabel.setEnabled(enabled);
+        similarityThresholdJLabel.setEnabled(enabled);
+        stateNumberJLabel.setEnabled(enabled);
     }
 
     /**

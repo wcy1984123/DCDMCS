@@ -151,4 +151,13 @@ public class MarkovChainModel implements IModel, ICluster {
         }
 
     }
+
+    /**
+     * Model name
+     * @return model name
+     */
+    @Override
+    public String getModelName() {
+        return "Markov Chain Model";
+    }
 }
