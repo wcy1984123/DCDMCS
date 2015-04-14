@@ -1,4 +1,4 @@
-package gui;
+package adapters;
 
 import org.jfree.chart.title.TextTitle;
 import umontreal.iro.lecuyer.probdist.ContinuousDistribution;

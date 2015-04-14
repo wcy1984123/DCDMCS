@@ -1,4 +1,4 @@
-package gui;
+package adapters;
 
 import cern.colt.list.DoubleArrayList;
 import org.jfree.chart.ChartPanel;
