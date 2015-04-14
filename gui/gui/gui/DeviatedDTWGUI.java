@@ -64,7 +64,7 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         // set up selected radio button according to existing deviatedDTW type value
-        if (dcdmcgui.getDeviatedDTWType().equals(gwDTW)) {
+        if (Config.getDEVIATEDDTWTYPE().equals(gwDTW)) {
             gwDTWButton.setSelected(true);
         } else {
             sdDTWButton.setSelected(true);
@@ -74,18 +74,18 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
     /** Listens to the radio buttons. */
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(gwDTW)) {
-           this.dcdmcgui.setDeviatedDTWType(gwDTW);
+           Config.setDEVIATEDDTWTYPE(gwDTW);
             // update current configuration
             Config.setDEVIATEDDTWTYPE(gwDTW);
             Config.setDTWTYPE(gwDTW);
         } else if (e.getActionCommand().equals(sdDTW)){
-            this.dcdmcgui.setDeviatedDTWType(sdDTW);
+            Config.setDEVIATEDDTWTYPE(sdDTW);
             // update current configuration
             Config.setDEVIATEDDTWTYPE(sdDTW);
             Config.setDTWTYPE(sdDTW);
         } else if (e.getActionCommand().equals("setButton")) {
             System.out.println("\n===================================");
-            System.out.println("        Deviated DTW: " + this.dcdmcgui.getDeviatedDTWType());
+            System.out.println("        Deviated DTW: " + Config.getDEVIATEDDTWTYPE());
             System.out.println("===================================\n");
             this.dcdmcgui.setAllComponentsEnabled(true);
             jFrame.dispose(); // close this frame

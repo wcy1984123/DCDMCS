@@ -8,6 +8,8 @@ package gui;
  * System Time: 10:20 PM
  */
 
+import starter.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -80,7 +82,7 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
         setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
         // set up selected radio button according to existing deviatedDTW type value
-        String hierarchicalLinkageStrategy = this.dcdmcgui.getHierarchicalLinkageStrategy();
+        String hierarchicalLinkageStrategy = Config.getHIERARCHICALLINKAGETYPE();
         if (hierarchicalLinkageStrategy.equals(averageLinkageStrategy)) {
             averageStrategyButton.setSelected(true);
         } else if (hierarchicalLinkageStrategy.equals(completeLinkageStrategy)) {
@@ -97,16 +99,16 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
     /** Listens to the radio buttons. */
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(averageLinkageStrategy)) {
-            this.dcdmcgui.setHierarchicalLinkageStrategy(averageLinkageStrategy);
+            Config.setHIERARCHICALLINKAGETYPE(averageLinkageStrategy);
         } else if (e.getActionCommand().equals(completeLinkageStrategy)) {
-            this.dcdmcgui.setHierarchicalLinkageStrategy(completeLinkageStrategy);
+            Config.setHIERARCHICALLINKAGETYPE(completeLinkageStrategy);
         } else if (e.getActionCommand().equals(singleLinkageStrategy)) {
-            this.dcdmcgui.setHierarchicalLinkageStrategy(singleLinkageStrategy);
+            Config.setHIERARCHICALLINKAGETYPE(singleLinkageStrategy);
         } else if (e.getActionCommand().equals(weightedLinkageStrategy)) {
-            this.dcdmcgui.setHierarchicalLinkageStrategy(weightedLinkageStrategy);
+            Config.setHIERARCHICALLINKAGETYPE(weightedLinkageStrategy);
         } else if (e.getActionCommand().equals("setButton")) {
             System.out.println("\n===================================");
-            System.out.println("        Linkage Strategy: " + this.dcdmcgui.getHierarchicalLinkageStrategy());
+            System.out.println("        Linkage Strategy: " + Config.getHIERARCHICALLINKAGETYPE());
             System.out.println("===================================\n");
             this.dcdmcgui.setAllComponentsEnabled(true);
             jFrame.dispose(); // close this frame

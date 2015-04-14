@@ -63,19 +63,6 @@ public class DCDMCGUI extends JFrame {
     private JPanel dynamicModelsJPanel;
     // ----------------------------------------------------------------------------//
 
-    // -------------------------- Config File Variables -------------------------- //
-    private String distanceMatrixFilePath;
-    private String hypnogramDatasetFilePath;
-    private String webUserNavigationBehaviorDatasetFilePath;
-    // --------------------------------------------------------------------------- //
-
-    // ------------------------- Model Parameter Options ------------------------- //
-    private String deviatedDTWType; // Deviated Dynamic Time Warping Type Variable
-    private String hierarchicalLinkageStrategy; // hierarchical clustering linkage strategy
-    private String hypnogramFormat; // hypnogram format
-    // ----------------------------------------------------------------------------//
-
-
     /**
      * class constructor
      */
@@ -106,7 +93,7 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<String> parameters = getParameters();
-                Starter starter = new Starter(parameters, DCDMCGUI.this.distanceMatrixFilePath);
+                Starter starter = new Starter(parameters, Config.getDISTANCEMATRIXFILEPATH());
                 starter.runCDMC();
             }
         });
@@ -285,14 +272,6 @@ public class DCDMCGUI extends JFrame {
      */
     private void initComponents() {
 
-        // default configuration
-        deviatedDTWType = Config.getDEVIATEDDTWTYPE();
-        hierarchicalLinkageStrategy = Config.getHIERARCHICALLINKAGETYPE();
-        hypnogramFormat = String.valueOf(Config.getDATAFORMAT());
-
-        distanceMatrixFilePath = Config.getDISTANCEMATRIXFILEPATH();
-        hypnogramDatasetFilePath = Config.getHYPNOGRAMDATASETFILEPATH();
-        webUserNavigationBehaviorDatasetFilePath = Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH();
     }
 
     /**
@@ -451,7 +430,7 @@ public class DCDMCGUI extends JFrame {
         // data source + state number + dataset format
         String dataSource = getDataSource();
         String stateNumber = this.stateNumberTextField.getText();
-        configs.add(dataSource + " " + stateNumber + " " + this.hypnogramFormat);
+        configs.add(dataSource + " " + stateNumber + " " + Config.getDATAFORMAT());
 
         // dynamic time warping
         String dynamicTimeWarping = getDynamicTimeWarping();
@@ -468,7 +447,7 @@ public class DCDMCGUI extends JFrame {
 
         // clustering model + strategy
         String clusteringModel = getInitialClusteringModel();
-        String linkageStrategy = this.hierarchicalLinkageStrategy;
+        String linkageStrategy = Config.getHIERARCHICALLINKAGETYPE();
         configs.add(clusteringModel + " " + linkageStrategy);
 
         return configs;
@@ -481,9 +460,9 @@ public class DCDMCGUI extends JFrame {
     private String getDataSource() {
         String res = null;
         if (hypnogramDatasetRadioButton.isSelected()) {
-            res = "HYPNOGRAM" + " " + hypnogramDatasetFilePath;
+            res = "HYPNOGRAM" + " " + Config.getHYPNOGRAMDATASETFILEPATH();;
         } else if (webUserNavigationBehaviorRadioButton.isSelected()) {
-            res = "MSNBC" + " " + webUserNavigationBehaviorDatasetFilePath;
+            res = "MSNBC" + " " + Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH();
         } else {
             LOGGER.warning("The input data source is null!");
         }
@@ -509,7 +488,7 @@ public class DCDMCGUI extends JFrame {
         } else if (fastOptimalDynamicTimeRadioButton.isSelected()) {
             res = "FASTOPTIMALDTW";
         } else if (deviatedDynamicTimeWarpingRadioButton.isSelected()) {
-            if (deviatedDTWType.equals("GLOBALWEIGHTEDDTW")) {
+            if (Config.getDEVIATEDDTWTYPE().equals("GLOBALWEIGHTEDDTW")) {
                 res = "GLOBALWEIGHTEDDTW";
             } else {
                 res = "STEPWISEDEVIATEDDTW";
@@ -612,14 +591,14 @@ public class DCDMCGUI extends JFrame {
         String param = params[0].toUpperCase();
         if (param.equals("HYPNOGRAM")) {
             hypnogramDatasetRadioButton.setSelected(true);
-            this.hypnogramDatasetFilePath = params[1];
+            Config.setHYPNOGRAMDATASETFILEPATH(params[1]);
             this.stateNumberTextField.setText(params[2]);
-            this.hypnogramFormat = params[3];
+            Config.setDATAFORMAT(Integer.parseInt(params[3]));
         } else if (param.equals("MSNBC")) {
             webUserNavigationBehaviorRadioButton.setSelected(true);
-            this.hypnogramDatasetFilePath = params[1];
+            Config.setWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH(params[1]);
             this.stateNumberTextField.setText(params[2]);
-            this.hypnogramFormat = null;
+            Config.setDATAFORMAT(0);
         } else {
             LOGGER.warning("The input data source is invalid!");
         }
@@ -649,10 +628,10 @@ public class DCDMCGUI extends JFrame {
             fastOptimalDynamicTimeRadioButton.setSelected(true);
         } else if (dtw.equals("GLOBALWEIGHTEDDTW")) {
             deviatedDynamicTimeWarpingRadioButton.setSelected(true);
-            this.deviatedDTWType = "GLOBALWEIGHTEDDTW";
+            Config.setDEVIATEDDTWTYPE("GLOBALWEIGHTEDDTW");
         } else if (dtw.equals("STEPWISEDEVIATEDDTW")) {
             deviatedDynamicTimeWarpingRadioButton.setSelected(true);
-            this.deviatedDTWType = "STEPWISEDEVIATEDDTW";
+            Config.setDEVIATEDDTWTYPE("STEPWISEDEVIATEDDTW");
         } else {
             LOGGER.warning("The dynamic time warping is invalid!");
         }
@@ -702,10 +681,10 @@ public class DCDMCGUI extends JFrame {
 
         if (icType.equals("HIERARCHICALCLUSTERING")) {
             hierarchicalClusteringRadioButton.setSelected(true);
-            this.hierarchicalLinkageStrategy = params[1];
+            Config.setHIERARCHICALLINKAGETYPE(params[1]);
         } else if (icType.equals("KMEANSCLUSTERING")) {
             KMeansClusteringRadioButton.setSelected(true);
-            this.hierarchicalLinkageStrategy = null;
+            Config.setHIERARCHICALLINKAGETYPE(null);
         } else {
             LOGGER.warning("The initial clustering model is invalid!");
         }
@@ -757,22 +736,6 @@ public class DCDMCGUI extends JFrame {
 
     /**
      * Getter
-     * @return hypnogram format
-     */
-    public String getHypnogramFormat() {
-        return hypnogramFormat;
-    }
-
-    /**
-     * Setter
-     * @param hypnogramFormat  hypnogram format
-     */
-    public void setHypnogramFormat(String hypnogramFormat) {
-        this.hypnogramFormat = hypnogramFormat;
-    }
-
-    /**
-     * Getter
      * @return state number text field
      */
     public JTextField getStateNumberTextField() {
@@ -785,38 +748,6 @@ public class DCDMCGUI extends JFrame {
      */
     public void setStateNumberTextField(JTextField stateNumberTextField) {
         this.stateNumberTextField = stateNumberTextField;
-    }
-
-    /**
-     * Getter
-     * @return hierarchical linkage strategy
-     */
-    public String getHierarchicalLinkageStrategy() {
-        return hierarchicalLinkageStrategy;
-    }
-
-    /**
-     * Setter
-     * @param hierarchicalLinkageStrategy hierarchical linkage strategy
-     */
-    public void setHierarchicalLinkageStrategy(String hierarchicalLinkageStrategy) {
-        this.hierarchicalLinkageStrategy = hierarchicalLinkageStrategy;
-    }
-
-    /**
-     * Getter
-     * @return deviated dtw type
-     */
-    public String getDeviatedDTWType() {
-        return deviatedDTWType;
-    }
-
-    /**
-     * Setter
-     * @param deviatedDTWType deviated dtw type
-     */
-    public void setDeviatedDTWType(String deviatedDTWType) {
-        this.deviatedDTWType = deviatedDTWType;
     }
 
     /**

@@ -1,5 +1,7 @@
 package gui;
 
+import starter.Config;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -86,7 +88,7 @@ public class HypnogramGUI extends JPanel implements ActionListener {
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // set up selected radio button according to existing deviatedDTW type value
-        String hypnogramFormat = dcdmcgui.getHypnogramFormat();
+        String hypnogramFormat = Config.getDATAFORMAT() == 0 ? null : String.valueOf(Config.getDATAFORMAT());
         if (hypnogramFormat.equals("5")) {
             originalButton.setSelected(true);
         } else if (hypnogramFormat.equals("2")) {
@@ -103,20 +105,20 @@ public class HypnogramGUI extends JPanel implements ActionListener {
     /** Listens to the radio buttons. */
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals(originalDataset)) {
-            dcdmcgui.setHypnogramFormat("5");
+            Config.setDATAFORMAT(5);
             dcdmcgui.getStateNumberTextField().setText("5");
         } else if (e.getActionCommand().equals(wsDataset)) {
-            dcdmcgui.setHypnogramFormat("2");
+            Config.setDATAFORMAT(2);
             dcdmcgui.getStateNumberTextField().setText("2");
         } else if (e.getActionCommand().equals(wnrDataset)) {
-            dcdmcgui.setHypnogramFormat("3");
+            Config.setDATAFORMAT(3);
             dcdmcgui.getStateNumberTextField().setText("3");
         } else if (e.getActionCommand().equals(wdlDataset)) {
-            dcdmcgui.setHypnogramFormat("4");
+            Config.setDATAFORMAT(4);
             dcdmcgui.getStateNumberTextField().setText("3");
         } else if (e.getActionCommand().equals("setButton")) {
             System.out.println("\n===================================");
-            System.out.println("        Hypnogram Format: " +dcdmcgui.getHypnogramFormat());
+            System.out.println("        Hypnogram Format: " + (Config.getDATAFORMAT() == 0 ? "" : Config.getDATAFORMAT()));
             System.out.println("===================================\n");
             dcdmcgui.setAllComponentsEnabled(true);
             jFrame.dispose(); // close this frame
