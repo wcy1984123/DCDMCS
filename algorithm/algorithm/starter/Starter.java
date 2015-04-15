@@ -364,7 +364,7 @@ public class Starter {
             super(new BorderLayout());
 
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            progressBarSize = new Dimension(screenSize.width / 5, 20);
+            progressBarSize = new Dimension(screenSize.width / 3, 20);
             progressBar = new JProgressBar(0, 300);
             progressBar.setValue(300);
             progressBar.setPreferredSize(progressBarSize);
@@ -395,7 +395,9 @@ public class Starter {
             JComponent newContentPane = new ProgressBar();
             newContentPane.setOpaque(true); //content panes must be opaque
             frame.setContentPane(newContentPane);
-            frame.setLocationRelativeTo(null);
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            Dimension originalPoint = new Dimension(screenSize.width / 3, screenSize.height / 2);
+            frame.setLocation(originalPoint.width, originalPoint.height);
             //Display the window.
             frame.pack();
             frame.setVisible(true);
