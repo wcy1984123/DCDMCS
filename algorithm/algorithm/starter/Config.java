@@ -113,7 +113,7 @@ public final class Config {
         DYNAMICMODELTYPE = strs[1];
         String[] params = args.get(6).split(" ");
         INITIALCLUSTERINGTYPE = params[0];
-        HIERARCHICALLINKAGETYPE = params[1];
+        HIERARCHICALLINKAGETYPE = params.length < 2 ? "N\\A" : params[1];
     }
 
     /**

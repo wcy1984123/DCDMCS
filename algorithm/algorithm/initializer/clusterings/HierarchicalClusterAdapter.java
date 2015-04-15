@@ -294,31 +294,42 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm {
      * Build a dendrogram panel to visualize hierarchical clustering
      * @param cluster hierarchical clustering of instances
      */
-    private void visualizeHierarchicalClustering(Cluster cluster) {
-        JFrame frame = new JFrame("Hierarchical Clustering Visualization - " + linkageStrategy.toString());
-        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension componentDimension = new Dimension(screenDimension.width / 4, screenDimension.height / 3);
-        frame.setSize(componentDimension);
-        frame.setLocation(0, screenDimension.height);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    private void visualizeHierarchicalClustering(final Cluster cluster) {
 
-        JPanel content = new JPanel();
-        DendrogramPanel dp = new DendrogramPanel();
+        // background work thread
+        SwingWorker worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                JFrame frame = new JFrame("Hierarchical Clustering Visualization - " + linkageStrategy.toString());
+                Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+                Dimension componentDimension = new Dimension(screenDimension.width / 4, screenDimension.height / 3);
+                frame.setSize(componentDimension);
+                frame.setLocation(0, screenDimension.height);
+                frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+                JPanel content = new JPanel();
+                DendrogramPanel dp = new DendrogramPanel();
 
 
-        frame.setContentPane(content);
-        content.setBackground(Color.red);
-        content.setLayout(new BorderLayout());
-        content.add(dp, BorderLayout.CENTER);
-        dp.setBackground(Color.WHITE);
-        dp.setLineColor(Color.BLACK);
-        dp.setScaleValueDecimals(0);
-        dp.setScaleValueInterval(1);
-        dp.setShowDistances(false);
+                frame.setContentPane(content);
+                content.setBackground(Color.red);
+                content.setLayout(new BorderLayout());
+                content.add(dp, BorderLayout.CENTER);
+                dp.setBackground(Color.WHITE);
+                dp.setLineColor(Color.BLACK);
+                dp.setScaleValueDecimals(0);
+                dp.setScaleValueInterval(1);
+                dp.setShowDistances(false);
 
-        // visualize the hierarchical clustering
-        dp.setModel(cluster);
-        frame.setVisible(true);
+                // visualize the hierarchical clustering
+                dp.setModel(cluster);
+                frame.setVisible(true);
+
+                return null;
+            }
+        };
+
+        worker.execute();
     }
 
     /**

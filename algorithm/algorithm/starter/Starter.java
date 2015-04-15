@@ -12,6 +12,7 @@ import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -234,77 +235,96 @@ public class Starter {
      */
     public void runCDMC() {
 
-        LOGGER.info("Cluster & Models Starts");
-        System.out.println("\n||************** Cluster & Models Starts ************||");
+        // start a new background thread to run CDMC algorithm
+        SwingWorker task = new SwingWorker<Void, String>() {
 
-        //------------------- Initialization --------------------//
-        List<List<Double>> instances = this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getDATAFORMAT()));
-        int[] previousClusterLabels = this.initialClusterLalels;
+            private void printInBackground(String info) {
+                System.out.println(info);
+//                publish(info);
+            }
 
-        //--------------- CDMC Iterative Process ----------------//
-        int instancesNum = instances.size();
-        int[] initialClusterLabels  = new int[instancesNum];
-        double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
-        int[] currentClusterLabels = null;
-        int iterationCount = 1;
+            @Override
+            protected Void doInBackground() throws Exception {
 
-        while(similarity < Config.getSIMILARITY()) {
+                LOGGER.info("Cluster & Models Starts");
+                printInBackground("\n||************** Cluster & Models Starts ************||");
 
-            System.out.println("\n   ============== " + iterationCount + " ==============");
-            String preSimilarity = String.format("%.4f", similarity);
-            System.out.println("        Previous Similarity = " + preSimilarity + " [ " + Config.getSIMILARITY() + " ].");
-            LOGGER.info("Train Models Starts");
-            System.out.println("        Train Models Starts.");
+                //------------------- Initialization --------------------//
+                List<List<Double>> instances = Starter.this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getDATAFORMAT()));
+                int[] previousClusterLabels = Starter.this.initialClusterLalels;
 
+                //--------------- CDMC Iterative Process ----------------//
+                int instancesNum = instances.size();
+                int[] initialClusterLabels  = new int[instancesNum];
+                double similarity = mIsc.computeSimilarity(initialClusterLabels, previousClusterLabels);
+                int[] currentClusterLabels = null;
+                int iterationCount = 1;
 
-            // build dynamic model
-            this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
-            LOGGER.info("       Train Models Ends");
-            System.out.println("        Train Models Ends.");
+                while(similarity < Config.getSIMILARITY()) {
 
-            LOGGER.info("Cluster Process Starts");
-            System.out.println("        Cluster Process Starts.");
+                    printInBackground("\n   ============== " + iterationCount + " ==============");
+                    String preSimilarity = String.format("%.4f", similarity);
 
-
-            // assign cluster labels
-            currentClusterLabels = this.mIModels.assignClusterLabels(instances);
-            LOGGER.info("Cluster Process Ends");
-            System.out.println("        Cluster Process Ends.");
+                    printInBackground("        Previous Similarity = " + preSimilarity + " [ " + Config.getSIMILARITY() + " ].");
+                    LOGGER.info("Train Models Starts");
+                    printInBackground("        Train Models Starts.");
 
 
-            LOGGER.info("Cluster Agreement Evaluation Starts");
-            // compute similarity
-            similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
-            LOGGER.info("Cluster Agreement Evaluation Ends");
-            String curSimilarity = String.format("%.4f", similarity);
-            System.out.println("        Current Similarity  = " + curSimilarity + " [ " + Config.getSIMILARITY() + " ].");
+                    // build dynamic model
+                    Starter.this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels, MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
+                    LOGGER.info("       Train Models Ends");
+                    printInBackground("        Train Models Ends.");
+
+                    LOGGER.info("Cluster Process Starts");
+                    printInBackground("        Cluster Process Starts.");
+
+                    // assign cluster labels
+                    currentClusterLabels = Starter.this.mIModels.assignClusterLabels(instances);
+                    LOGGER.info("Cluster Process Ends");
+                    printInBackground("        Cluster Process Ends.");
 
 
-            // update cluster labels
-            previousClusterLabels = currentClusterLabels;
-            System.out.println("   ==============================\n");
+                    LOGGER.info("Cluster Agreement Evaluation Starts");
+                    // compute similarity
+                    similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
+                    LOGGER.info("Cluster Agreement Evaluation Ends");
+                    String curSimilarity = String.format("%.4f", similarity);
+                    printInBackground("        Current Similarity  = " + curSimilarity + " [ " + Config.getSIMILARITY() + " ].");
 
+                    // update cluster labels
+                    previousClusterLabels = currentClusterLabels;
+                    printInBackground("   ==============================\n");
 
-            iterationCount++;
-        }
+                    iterationCount++;
+                }
 
-        // save results
-        IOOperation.writeFile(this.initialClusterLalels, Config.getINITIALCLUSTERSFILEPATH());
-        IOOperation.writeFile(currentClusterLabels, Config.getFINALCLUSTERSFILEPATH());
+                // save results
+                IOOperation.writeFile(Starter.this.initialClusterLalels, Config.getINITIALCLUSTERSFILEPATH());
+                IOOperation.writeFile(currentClusterLabels, Config.getFINALCLUSTERSFILEPATH());
 
-        // visualize results
-        System.out.println("\n   ======= Final Models Parameters ======= ");
-        // if initial clusters have provided a good enough clustering
-        if(currentClusterLabels == null) {
-            // build dynamic model over initial clusters
-            System.out.println("        Never Enter Into CDMC Algorithm!");
-            this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
-        }
-        this.mIModels.visualizeOutputs();
-        System.out.println("\n   ============================== \n");
+                // Just in case if initial clusters have provided a good enough clustering, it never goes into the above CDMC loop
+                if(currentClusterLabels == null) {
+                    // build dynamic model over initial clusters
+                    LOGGER.warning("        Never Enter Into CDMC Algorithm!");
+                    Starter.this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
+                }
 
-        LOGGER.info("Cluster & Models Ends");
-        System.out.println("||************** Cluster & Models Ends *************||\n");
+                // visualize results
+                Starter.this.mIModels.visualizeOutputs();
+                LOGGER.info("Cluster & Models Ends");
+
+                return null;
+            }
+
+            @Override
+            protected void process(List<String> chunks) {
+                String info = chunks.get(chunks.size() - 1);
+                System.out.println(info);
+            }
+        };
+
+        task.execute();
+
     }
 
     /**

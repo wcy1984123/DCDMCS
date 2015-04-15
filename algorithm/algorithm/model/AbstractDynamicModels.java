@@ -8,14 +8,11 @@ package model;
  * System Time: 5:25 PM
  */
 
-import adapters.AxisAdapter;
 import adapters.HistogramChartAdapter;
-import adapters.XYLineChartApdater;
 import starter.Config;
-import umontreal.iro.lecuyer.charts.CustomHistogramDataset;
-import umontreal.iro.lecuyer.charts.HistogramChart;
 import umontreal.iro.lecuyer.charts.HistogramSeriesCollection;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,9 +198,22 @@ abstract public class AbstractDynamicModels implements IModels{
             return;
         }
 
-        for (int i = 0; i < this.mModels.size(); i++) {
-            this.mModels.get(i).visualizeOutput();
-        }
+        // background working thread
+        SwingWorker worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                System.out.println("\n   ======= Final Models Parameters ======= ");
+                for (int i = 0; i < AbstractDynamicModels.this.mModels.size(); i++) {
+                    AbstractDynamicModels.this.mModels.get(i).visualizeOutput();
+                }
+
+                System.out.println("\n   ============================== \n");
+                System.out.println("||************** Cluster & Models Ends *************||\n");
+                return null;
+            }
+        };
+
+        worker.execute();
 
         visualizeClusterDistributions();
     }

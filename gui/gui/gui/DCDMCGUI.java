@@ -690,7 +690,7 @@ public class DCDMCGUI extends JFrame {
             Config.setHIERARCHICALLINKAGETYPE(params[1]);
         } else if (icType.equals("KMEANSCLUSTERING")) {
             KMeansClusteringRadioButton.setSelected(true);
-            Config.setHIERARCHICALLINKAGETYPE(null);
+            Config.setHIERARCHICALLINKAGETYPE("");
         } else {
             LOGGER.warning("The initial clustering model is invalid!");
         }
