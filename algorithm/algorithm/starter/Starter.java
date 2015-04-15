@@ -13,11 +13,15 @@ import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
 
 import javax.swing.*;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -238,6 +242,8 @@ public class Starter {
         // start a new background thread to run CDMC algorithm
         SwingWorker task = new SwingWorker<Void, String>() {
 
+            ProgressBar progressBar = new ProgressBar();
+
             /**
              * Print out information
              * @param info printed-out information
@@ -249,6 +255,8 @@ public class Starter {
 
             @Override
             protected Void doInBackground() throws Exception {
+
+                progressBar.createAndShowGUI();
 
                 LOGGER.info("Cluster & Models Starts");
                 printInBackground("\n||************** Cluster & Models Starts ************||");
@@ -325,9 +333,80 @@ public class Starter {
                 String info = chunks.get(chunks.size() - 1);
                 System.out.println(info);
             }
+
+            /*
+             * Executed in event dispatch thread
+             */
+            @Override
+            public void done() {
+                progressBar.dispose();
+                Toolkit.getDefaultToolkit().beep();
+            }
         };
 
         task.execute();
+
+    }
+
+    /**
+     * Progress bar class
+     */
+    private class ProgressBar extends JPanel{
+
+        //Create and set up the window.
+        JFrame frame;
+
+        Dimension progressBarSize;
+
+        private JProgressBar progressBar;
+
+        ProgressBar() {
+            super(new BorderLayout());
+
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            progressBarSize = new Dimension(screenSize.width / 5, 20);
+            progressBar = new JProgressBar(0, 300);
+            progressBar.setValue(300);
+            progressBar.setPreferredSize(progressBarSize);
+
+            //Call setStringPainted now so that the progress bar height
+            //stays the same whether or not the string is shown.
+            progressBar.setStringPainted(true);
+
+            JPanel panel = new JPanel();
+            panel.add(progressBar);
+
+            add(panel, BorderLayout.PAGE_START);
+            setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+            progressBar.setIndeterminate(true);
+        }
+
+        /**
+         * Create the GUI and show it. As with all GUI code, this must run
+         * on the event-dispatching thread.
+         */
+        private void createAndShowGUI() {
+            //Create and set up the window.
+            frame = new JFrame("Collective Dynamical Modeling & Clustering");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            //Create and set up the content pane.
+            JComponent newContentPane = new ProgressBar();
+            newContentPane.setOpaque(true); //content panes must be opaque
+            frame.setContentPane(newContentPane);
+            frame.setLocationRelativeTo(null);
+            //Display the window.
+            frame.pack();
+            frame.setVisible(true);
+        }
+
+        /**
+         * Close progress bar
+         */
+        public void dispose() {
+            frame.dispose();
+        }
 
     }
 
