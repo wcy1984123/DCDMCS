@@ -12,9 +12,7 @@ import starter.Config;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.logging.Logger;
 
 /**
@@ -139,6 +137,14 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);
 
+        //Add window listener
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                dcdmcgui.setAllComponentsEnabled(true);
+            }
+        });
+
         //Display the window.
         jFrame.pack();
         jFrame.setPreferredSize(jFrame.getPreferredSize());
@@ -147,4 +153,5 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
     }
+
 }

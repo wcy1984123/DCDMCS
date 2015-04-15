@@ -238,9 +238,13 @@ public class Starter {
         // start a new background thread to run CDMC algorithm
         SwingWorker task = new SwingWorker<Void, String>() {
 
+            /**
+             * Print out information
+             * @param info printed-out information
+             */
             private void printInBackground(String info) {
                 System.out.println(info);
-//                publish(info);
+                // publish(info);
             }
 
             @Override

@@ -13,9 +13,7 @@ import starter.Config;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.logging.Logger;
 
 /**
@@ -115,6 +113,14 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);
+
+        //Add window listener
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                dcdmcgui.setAllComponentsEnabled(true);
+            }
+        });
 
         //Display the window.
         jFrame.pack();
