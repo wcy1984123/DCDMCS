@@ -473,8 +473,8 @@ public class Utilities {
 
     /**
      * Convert one dimensional double list into one dimensional double array
-     * @param data a two-dimensional double array
-     * @return one dimensional integer array
+     * @param data a one-dimensional double list
+     * @return one dimensional double array
      */
     public static double[] convertToOneDimensionalDoubleArray(List<Double> data) {
 
@@ -495,6 +495,37 @@ public class Utilities {
 
         for (int i = 0; i < N; i++) {
             double temp = data.get(i);
+            res[i] = temp;
+        }
+
+        return res;
+
+    }
+
+    /**
+     * Convert one dimensional integer array into one dimensional double array
+     * @param data a one-dimensional integer array
+     * @return one dimensional double array
+     */
+    public static double[] convertToOneDimensionalDoubleArray(int[] data) {
+
+        double[] res = null;
+
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The one dimensional array is null!");
+            return res;
+        }
+
+        if (data.length == 0) {
+            LOGGER.log(Level.INFO, "The one dimensional array is empty!");
+            return res;
+        }
+
+        int N = data.length;
+        res = new double[N];
+
+        for (int i = 0; i < N; i++) {
+            double temp = data[i];
             res[i] = temp;
         }
 

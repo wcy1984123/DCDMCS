@@ -1,6 +1,8 @@
 package starter;
 
 import Utilities.IOOperation;
+import Utilities.Utilities;
+import adapters.HistogramChartAdapter;
 import dao.DATATYPE;
 import dao.DaoFactory;
 import dao.IDAO;
@@ -11,17 +13,15 @@ import model.*;
 import stoppingcriteria.IStoppingCriteria;
 import stoppingcriteria.STOPPINGCRITERIA;
 import stoppingcriteria.StoppingCriteriaFactory;
+import umontreal.iro.lecuyer.charts.HistogramSeriesCollection;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -321,6 +321,9 @@ public class Starter {
                     Starter.this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
                 }
 
+                // visualize initial cluster distribution
+                visualizeInitialClusterDistribution();
+
                 // visualize results
                 Starter.this.mIModels.visualizeOutputs();
                 LOGGER.info("Cluster & Models Ends");
@@ -410,6 +413,48 @@ public class Starter {
             frame.dispose();
         }
 
+    }
+
+    /**
+     * Visualize initial cluster distribution
+     */
+    private void visualizeInitialClusterDistribution() {
+        // build cluster labels distribution for GUI display
+        double[] initialClusterDistribution = Utilities.convertToOneDimensionalDoubleArray(this.initialClusterLalels);
+
+        // cluster label : count
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < initialClusterDistribution.length; i++) {
+            int key = this.initialClusterLalels[i];
+            if (map.containsKey(key)) {
+                map.put(key, map.get(key) + 1);
+            } else {
+                map.put(key, 1);
+            }
+            initialClusterDistribution[i] = 2 * initialClusterDistribution[i] + 1.0;
+        }
+
+        // compute the maximum number of a cluster
+        int maxSizeInOneClusters = 0;
+        for (Integer key : map.keySet()) {
+            maxSizeInOneClusters = Math.max(maxSizeInOneClusters, map.get(key));
+        }
+
+        // visualize initial cluster distribution
+        HistogramChartAdapter chart;
+        String modelName = this.mIModels.getModelName();
+        chart = new HistogramChartAdapter("Cluster Distribution [" + modelName + "]", "Clusters", "Frequency", initialClusterDistribution);
+        HistogramSeriesCollection collec = chart.getSeriesCollection();
+        collec.setBins(0, 2 * Config.getCLUSTERNUM());
+        collec.setColor(0, new Color(179, 232, 172));
+
+        double[] bounds = { 0, 2 * Config.getCLUSTERNUM(), 0, maxSizeInOneClusters};
+        chart.setManualRange(bounds);
+
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        JFrame jFrame = chart.view(screenDimension.width / 3, screenDimension.height / 10);
+        jFrame.setLocation((int)screenDimension.getWidth() / 3, 0);
+        jFrame.setVisible(true);
     }
 
     /**

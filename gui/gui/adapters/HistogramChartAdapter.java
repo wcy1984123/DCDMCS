@@ -94,8 +94,6 @@ public class HistogramChartAdapter extends XYChartAdapter {
         myFrame.pack();
         myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        myFrame.setLocation((int)screenSize.getWidth() / 3, 0);
-        myFrame.setVisible(true);
         return myFrame;
     }
 

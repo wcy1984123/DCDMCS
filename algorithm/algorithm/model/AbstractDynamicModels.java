@@ -233,7 +233,17 @@ abstract public class AbstractDynamicModels implements IModels{
         chart.setManualRange(bounds);
 
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        chart.view(screenDimension.width / 3, screenDimension.height / 5);
+        JFrame jFrame = chart.view(screenDimension.width / 3, screenDimension.height / 10);
+        jFrame.setLocation(screenDimension.width / 3, screenDimension.height / 10);
+        jFrame.setVisible(true);
+    }
 
+    /**
+     * Model name
+     * @return model name
+     */
+    @Override
+    public String getModelName() {
+        return this.mModels == null? "" : this.mModels.get(0).getModelName();
     }
 }

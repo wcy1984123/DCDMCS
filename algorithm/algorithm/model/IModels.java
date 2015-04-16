@@ -37,4 +37,10 @@ public interface IModels {
      */
     public void visualizeOutputs();
 
+    /**
+     * Model name
+     * @return model name
+     */
+    public String getModelName();
+
 }
