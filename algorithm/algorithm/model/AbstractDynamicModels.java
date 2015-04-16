@@ -215,7 +215,6 @@ abstract public class AbstractDynamicModels implements IModels{
 
         worker.execute();
 
-        visualizeClusterDistributions();
     }
 
     /**

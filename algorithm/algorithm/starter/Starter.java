@@ -45,6 +45,7 @@ public class Starter {
     private IStoppingCriteria mIsc; // stopping criteria
     private IModels mIModels; // dynamic model
     private int[] initialClusterLalels; // initial cluster labels
+    private int[] finalClusterLabels; // final cluster labels
     private double[][] distanceMatrix; // distance matrix
 
     /**
@@ -311,6 +312,7 @@ public class Starter {
                 }
 
                 // save results
+                finalClusterLabels = currentClusterLabels;
                 IOOperation.writeFile(Starter.this.initialClusterLalels, Config.getINITIALCLUSTERSFILEPATH());
                 IOOperation.writeFile(currentClusterLabels, Config.getFINALCLUSTERSFILEPATH());
 
@@ -321,8 +323,8 @@ public class Starter {
                     Starter.this.mIModels.trainDynamicModels(instances, Config.getCLUSTERNUM(), previousClusterLabels,  MODELTYPE.valueOf(Config.getDYNAMICMODELTYPE()));
                 }
 
-                // visualize initial cluster distribution
-                visualizeInitialClusterDistribution();
+                // visualize initial and final cluster distributions
+                Starter.this.visualizeClusterDistributionVariation();
 
                 // visualize results
                 Starter.this.mIModels.visualizeOutputs();
@@ -416,16 +418,51 @@ public class Starter {
     }
 
     /**
-     * Visualize initial cluster distribution
+     * Visualize
      */
-    private void visualizeInitialClusterDistribution() {
+    private void visualizeClusterDistributionVariation() {
+        JFrame jFrameInitialClusterDistribution = visualizeClusterDistribution(this.initialClusterLalels, "Initial Cluster Distribution");
+        JFrame jFrameFinalClusterDistribution = visualizeClusterDistribution(this.finalClusterLabels, "Final Cluster Distribution");
+
+        JFrame jFrame = new JFrame("Histogram Chart: Initial vs. Final Cluster Distribution");
+        JPanel jPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.5;
+        c.weighty = 0.5;
+        c.gridx = 0;
+        c.gridy = 1;
+        Component jComponentInitialClusterDistribution = jFrameInitialClusterDistribution.getComponent(0);
+        Component jComponentFinalClusterDistribution = jFrameFinalClusterDistribution.getComponent(0);
+        jPanel.add(jComponentInitialClusterDistribution, c);
+        c.gridy = jComponentInitialClusterDistribution.getBounds().y;
+        jPanel.add(jComponentFinalClusterDistribution, c);
+        jPanel.setOpaque(true);
+        jFrame.setContentPane(jPanel);
+
+        // set location
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        jFrame.setLocation(screenDimension.width / 3, 0);
+
+        // visualize cluster distribution
+        jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jFrame.pack();
+        jFrame.setVisible(true);
+    }
+
+    /**
+     * Visualize initial cluster distribution
+     * @param clusterDistribution cluster distribution
+     * @return a frame of cluster distribution
+     */
+    private JFrame visualizeClusterDistribution(int[] clusterDistribution, String name) {
         // build cluster labels distribution for GUI display
-        double[] initialClusterDistribution = Utilities.convertToOneDimensionalDoubleArray(this.initialClusterLalels);
+        double[] initialClusterDistribution = Utilities.convertToOneDimensionalDoubleArray(clusterDistribution);
 
         // cluster label : count
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < initialClusterDistribution.length; i++) {
-            int key = this.initialClusterLalels[i];
+            int key = clusterDistribution[i];
             if (map.containsKey(key)) {
                 map.put(key, map.get(key) + 1);
             } else {
@@ -443,7 +480,7 @@ public class Starter {
         // visualize initial cluster distribution
         HistogramChartAdapter chart;
         String modelName = this.mIModels.getModelName();
-        chart = new HistogramChartAdapter("Cluster Distribution [" + modelName + "]", "Clusters", "Frequency", initialClusterDistribution);
+        chart = new HistogramChartAdapter(name + " [" + modelName + "]", "Clusters", "Frequency", initialClusterDistribution);
         HistogramSeriesCollection collec = chart.getSeriesCollection();
         collec.setBins(0, 2 * Config.getCLUSTERNUM());
         collec.setColor(0, new Color(179, 232, 172));
@@ -453,8 +490,7 @@ public class Starter {
 
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame jFrame = chart.view(screenDimension.width / 3, screenDimension.height / 10);
-        jFrame.setLocation((int)screenDimension.getWidth() / 3, 0);
-        jFrame.setVisible(true);
+        return jFrame;
     }
 
     /**
