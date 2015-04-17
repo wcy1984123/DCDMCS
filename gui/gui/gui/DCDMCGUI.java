@@ -333,11 +333,11 @@ public class DCDMCGUI extends JFrame {
         stateNumberTextField.setText(String.valueOf(Config.getSTATENUM()));
 
         // initialization
-        setInitialClusteringModel(Config.getINITIALCLUSTERINGTYPE() + " " + Config.getHIERARCHICALLINKAGETYPE());
+        setInitialClusteringModel(Config.getINITIALCLUSTERINGTYPE() + Config.getCONFIGSEPARATOR() + Config.getHIERARCHICALLINKAGETYPE());
         setDynamicTimeWarping(Config.getDTWTYPE());
 
         // data source
-        setDataSource(Config.getDATASETTYPE() + " " + Config.getDATASETPATH() + " " + Config.getSTATENUM() + " " + Config.getDATAFORMAT());
+        setDataSource(Config.getDATASETTYPE() + Config.getCONFIGSEPARATOR() + Config.getDATASETPATH() + Config.getCONFIGSEPARATOR() + Config.getSTATENUM() + Config.getCONFIGSEPARATOR() + Config.getDATAFORMAT());
 
         // dynamic models
         setModelType(Config.getMODELINGMODE());
@@ -385,8 +385,8 @@ public class DCDMCGUI extends JFrame {
         setStoppingCriteria(configs.get(4));
 
         // set model type + dynamic model
-        setModelType(configs.get(5).split(" ")[0]);
-        setDynamicModel(configs.get(5).split(" ")[1]);
+        setModelType(configs.get(5).split(Config.getCONFIGSEPARATOR())[0]);
+        setDynamicModel(configs.get(5).split(Config.getCONFIGSEPARATOR())[1]);
 
         // set clustering model + strategy
         setInitialClusteringModel(configs.get(6));
@@ -405,7 +405,8 @@ public class DCDMCGUI extends JFrame {
             List<String> parameters = getParameters();
 
             for (String line : parameters) {
-                bw.write(line + "\n");
+                bw.write(line);
+                bw.newLine();
             }
 
             bw.close();
@@ -436,7 +437,7 @@ public class DCDMCGUI extends JFrame {
         // data source + state number + dataset format
         String dataSource = getDataSource();
         String stateNumber = this.stateNumberTextField.getText();
-        configs.add(dataSource + " " + stateNumber + " " + Config.getDATAFORMAT());
+        configs.add(dataSource + Config.getCONFIGSEPARATOR() + stateNumber + Config.getCONFIGSEPARATOR() + Config.getDATAFORMAT());
 
         // dynamic time warping
         String dynamicTimeWarping = getDynamicTimeWarping();
@@ -449,12 +450,12 @@ public class DCDMCGUI extends JFrame {
         // model type + dynamic model
         String modelType = getModelType();
         String dynamicModel = getDynamicModel();
-        configs.add(modelType + " " + dynamicModel);
+        configs.add(modelType + Config.getCONFIGSEPARATOR() + dynamicModel);
 
         // clustering model + strategy
         String clusteringModel = getInitialClusteringModel();
         String linkageStrategy = Config.getHIERARCHICALLINKAGETYPE();
-        configs.add(clusteringModel + " " + linkageStrategy);
+        configs.add(clusteringModel + Config.getCONFIGSEPARATOR() + linkageStrategy);
 
         return configs;
     }
@@ -466,9 +467,9 @@ public class DCDMCGUI extends JFrame {
     private String getDataSource() {
         String res = null;
         if (hypnogramDatasetRadioButton.isSelected()) {
-            res = "HYPNOGRAM" + " " + Config.getHYPNOGRAMDATASETFILEPATH();;
+            res = "HYPNOGRAM" + Config.getCONFIGSEPARATOR() + Config.getHYPNOGRAMDATASETFILEPATH();;
         } else if (webUserNavigationBehaviorRadioButton.isSelected()) {
-            res = "MSNBC" + " " + Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH();
+            res = "MSNBC" + Config.getCONFIGSEPARATOR() + Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH();
         } else {
             LOGGER.warning("The input data source is null!");
         }
@@ -682,7 +683,7 @@ public class DCDMCGUI extends JFrame {
             return;
         }
 
-        String[] params = initialClusterType.split(" ");
+        String[] params = initialClusterType.split(Config.getCONFIGSEPARATOR());
         String icType = params[0].toUpperCase();
 
         if (icType.equals("HIERARCHICALCLUSTERING")) {

@@ -1,5 +1,6 @@
 package starter;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 /**
@@ -40,14 +41,17 @@ public final class CONSTANTS {
     public final static Boolean PROBABILITYDENSITYVIEW;
     public final static Boolean CUMULATIVEDISTRIBUTIONVIEW;
 
+    /*---------------------- Separator --------------------*/
+    public final static String CONFIGSEPARATOR;
+
     static {
         // File Path Default Settings
-        CONFIGPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
-        INITIALCLUSTERSFILEPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/InitialClusteringAssignment.txt";
-        FINALCLUSTERSFILEPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/FinalClusterLabels.txt";
-        DISTANCEMATRIXFILEPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt";
-        HYPNOGRAMDATASETFILEPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/hypnogram.csv";
-        WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/dataset/msnbcData.csv";
+        CONFIGPATH = new File("config" + File.separator + "config.txt").getAbsolutePath();
+        INITIALCLUSTERSFILEPATH = new File("results" + File.separator + "InitialClusteringAssignment.txt").getAbsolutePath();
+        FINALCLUSTERSFILEPATH = new File("results" + File.separator + "FinalClusterLabels.txt").getAbsolutePath();
+        DISTANCEMATRIXFILEPATH = new File("results" + File.separator + "DistanceMatrix.txt").getAbsolutePath();
+        HYPNOGRAMDATASETFILEPATH = new File("dataset" + File.separator + "hypnogram.csv").getAbsolutePath();
+        WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = new File("dataset" + File.separator + "msnbcData.csv").getAbsolutePath();
 
 
         // DCDMC Parameter Default Configuration
@@ -68,5 +72,8 @@ public final class CONSTANTS {
         // GUI variables
         PROBABILITYDENSITYVIEW = true;
         CUMULATIVEDISTRIBUTIONVIEW = false;
+
+        // Separator
+        CONFIGSEPARATOR = "@@@";
     }
 }

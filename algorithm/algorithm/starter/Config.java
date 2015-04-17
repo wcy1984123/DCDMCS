@@ -3,6 +3,7 @@ package starter;
 import initializer.dtws.DeviatedDTW;
 import stoppingcriteria.STOPPINGCRITERIA;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -50,6 +51,9 @@ public final class Config {
     private static Boolean CUMULATIVEDISTRIBUTIONVIEW;
 
 
+    /*---------------------- Separator --------------------*/
+    private static String CONFIGSEPARATOR;
+
     static {
 
         // File Path Default Settings
@@ -79,6 +83,9 @@ public final class Config {
         // GUI variables
         PROBABILITYDENSITYVIEW = CONSTANTS.PROBABILITYDENSITYVIEW;
         CUMULATIVEDISTRIBUTIONVIEW = CONSTANTS.CUMULATIVEDISTRIBUTIONVIEW;
+
+        // Separator
+        CONFIGSEPARATOR = CONSTANTS.CONFIGSEPARATOR;
     }
 
     /**
@@ -101,19 +108,19 @@ public final class Config {
 
         SIMILARITY = Double.parseDouble(args.get(1));
 
-        String[] strs = args.get(2).split(" ");
+        String[] strs = args.get(2).split(CONFIGSEPARATOR);
         DATASETTYPE = strs[0];
         DATASETPATH = strs[1];
         STATENUM = Integer.parseInt(strs[2]);
         DATAFORMAT = Integer.parseInt(strs[3]);
         DTWTYPE = args.get(3);
         STOPPINGCRITERIATYPE = args.get(4);
-        strs = args.get(5).split(" ");
+        strs = args.get(5).split(CONFIGSEPARATOR);
         MODELINGMODE = strs[0];
         DYNAMICMODELTYPE = strs[1];
-        String[] params = args.get(6).split(" ");
+        String[] params = args.get(6).split(CONFIGSEPARATOR);
         INITIALCLUSTERINGTYPE = params[0];
-        HIERARCHICALLINKAGETYPE = params.length < 2 ? "N\\A" : params[1];
+        HIERARCHICALLINKAGETYPE = params.length < 2 ? ("N" + File.separator + "A") : params[1];
     }
 
     /**
@@ -147,6 +154,9 @@ public final class Config {
         // GUI variables
         PROBABILITYDENSITYVIEW = CONSTANTS.PROBABILITYDENSITYVIEW;
         CUMULATIVEDISTRIBUTIONVIEW = CONSTANTS.CUMULATIVEDISTRIBUTIONVIEW;
+
+        // Separator
+        CONFIGSEPARATOR = CONSTANTS.CONFIGSEPARATOR;
     }
 
     /**
@@ -491,6 +501,22 @@ public final class Config {
      */
     public static void setCUMULATIVEDISTRIBUTIONVIEW(Boolean CUMULATIVEDISTRIBUTIONVIEW) {
         Config.CUMULATIVEDISTRIBUTIONVIEW = CUMULATIVEDISTRIBUTIONVIEW;
+    }
+
+    /**
+     * Getter
+     * @return config parameter separator
+     */
+    public static String getCONFIGSEPARATOR() {
+        return CONFIGSEPARATOR;
+    }
+
+    /**
+     * Setter
+     * @param CONFIGSEPARATOR config parameter separator
+     */
+    public static void setCONFIGSEPARATOR(String CONFIGSEPARATOR) {
+        Config.CONFIGSEPARATOR = CONFIGSEPARATOR;
     }
 
     /*--------------------- String Sources -------------------*/
