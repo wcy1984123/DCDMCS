@@ -593,7 +593,7 @@ public class DCDMCGUI extends JFrame {
             return;
         }
 
-        String[] params = datatype.split(" ");
+        String[] params = datatype.split(Config.getCONFIGSEPARATOR());
 
         String param = params[0].toUpperCase();
         if (param.equals("HYPNOGRAM")) {
