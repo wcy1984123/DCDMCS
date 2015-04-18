@@ -1,8 +1,5 @@
 package starter;
 
-import initializer.dtws.DeviatedDTW;
-import stoppingcriteria.STOPPINGCRITERIA;
-
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
@@ -47,12 +44,12 @@ public final class Config {
 
 
     //*-------------------- GUI Variables ------------------*/
-    private static Boolean PROBABILITYDENSITYVIEW;
-    private static Boolean CUMULATIVEDISTRIBUTIONVIEW;
+    private static Boolean PROBABILITYDENSITYVIEW; // probability density view
+    private static Boolean CUMULATIVEDISTRIBUTIONVIEW; // cumulative distribution view
 
 
     /*---------------------- Separator --------------------*/
-    private static String CONFIGSEPARATOR;
+    private static String CONFIGSEPARATOR; // separator between configuration parameters
 
     static {
 

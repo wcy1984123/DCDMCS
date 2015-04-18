@@ -38,11 +38,11 @@ public final class CONSTANTS {
     public final static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
 
     /*-------------------- GUI Variables ------------------*/
-    public final static Boolean PROBABILITYDENSITYVIEW;
-    public final static Boolean CUMULATIVEDISTRIBUTIONVIEW;
+    public final static Boolean PROBABILITYDENSITYVIEW; // probability density view
+    public final static Boolean CUMULATIVEDISTRIBUTIONVIEW; // cumulative distribution view
 
     /*---------------------- Separator --------------------*/
-    public final static String CONFIGSEPARATOR;
+    public final static String CONFIGSEPARATOR; // separator between configuration parameters
 
     static {
         // File Path Default Settings
