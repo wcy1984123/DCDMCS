@@ -446,7 +446,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         }
 
         generalJframe.pack();
-        generalJframe.setLocation(screenDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM());
+        generalJframe.setLocation(screenDimension.width - componentDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM());
         generalJframe.setSize(componentDimension);
         generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         generalJframe.setVisible(true);
@@ -612,7 +612,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         }
 
         generalJframe.pack();
-        generalJframe.setLocation(screenDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM() + componentDimension.height);
+        generalJframe.setLocation(screenDimension.width - componentDimension.width, (modelSeq - 1) * screenDimension.height / Config.getCLUSTERNUM() + componentDimension.height);
         generalJframe.setSize(componentDimension);
         generalJframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         generalJframe.setVisible(true);

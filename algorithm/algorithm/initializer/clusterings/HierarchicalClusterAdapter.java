@@ -304,7 +304,7 @@ public class HierarchicalClusterAdapter implements IClusteringAlgorithm {
                 Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
                 Dimension componentDimension = new Dimension(screenDimension.width / 4, screenDimension.height / 3);
                 frame.setSize(componentDimension);
-                frame.setLocation(0, screenDimension.height);
+                frame.setLocation(0, screenDimension.height-componentDimension.height);
                 frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
                 JPanel content = new JPanel();
