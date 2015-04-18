@@ -101,7 +101,7 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
-        // start initialization
+        // run initialization
         runButton.addActionListener(new ActionListener() {
             /**
              * Action performed
@@ -123,9 +123,8 @@ public class DCDMCGUI extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                DeviatedDTWGUI ddtw = new DeviatedDTWGUI(DCDMCGUI.this);
                 DCDMCGUI.this.setAllComponentsEnabled(false);
-                ddtw.createAndShowGUI();
+                DeviatedDTWGUI.createAndShowGUI(DCDMCGUI.this);
             }
         });
 
@@ -154,9 +153,8 @@ public class DCDMCGUI extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                HierarchicalClusteringGUI hcls = new HierarchicalClusteringGUI(DCDMCGUI.this);
                 DCDMCGUI.this.setAllComponentsEnabled(false);
-                hcls.createAndShowGUI();
+                HierarchicalClusteringGUI.createAndShowGUI(DCDMCGUI.this);
             }
         });
 
@@ -184,9 +182,8 @@ public class DCDMCGUI extends JFrame {
              */
             @Override
             public void actionPerformed(ActionEvent e) {
-                HypnogramGUI hd = new HypnogramGUI(DCDMCGUI.this);
                 DCDMCGUI.this.setAllComponentsEnabled(false);
-                hd.createAndShowGUI();
+                HypnogramGUI.createAndShowGUI(DCDMCGUI.this);
             }
         });
 

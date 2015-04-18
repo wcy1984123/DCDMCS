@@ -435,7 +435,7 @@ public class Starter {
         Component jComponentInitialClusterDistribution = jFrameInitialClusterDistribution.getComponent(0);
         Component jComponentFinalClusterDistribution = jFrameFinalClusterDistribution.getComponent(0);
         jPanel.add(jComponentInitialClusterDistribution, c);
-        c.gridy = jComponentInitialClusterDistribution.getBounds().y;
+        c.gridy = c.gridy + jComponentInitialClusterDistribution.getBounds().y;
         jPanel.add(jComponentFinalClusterDistribution, c);
         jPanel.setOpaque(true);
         jFrame.setContentPane(jPanel);

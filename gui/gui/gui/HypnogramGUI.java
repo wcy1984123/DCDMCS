@@ -33,13 +33,11 @@ public class HypnogramGUI extends JPanel implements ActionListener {
     private final String wsDataset = "WAKESLEEPDATASET";
     private final String wnrDataset = "WAKENREMREMDATASET";
     private final String wdlDataset = "WAKEDEEPLIGHTDATASET";
-    private final DCDMCGUI dcdmcgui;
-    private JFrame jFrame = null;
+    private static DCDMCGUI dcdmcgui;
+    private static JFrame jFrame = null;
 
-    public HypnogramGUI(DCDMCGUI dcdmcgui) {
+    public HypnogramGUI() {
         super(new BorderLayout());
-
-        this.dcdmcgui = dcdmcgui;
 
         //Create the radio buttons.
         JRadioButton originalButton = new JRadioButton("Original Dataset");
@@ -98,6 +96,12 @@ public class HypnogramGUI extends JPanel implements ActionListener {
         } else {
 
         }
+
+        //Set button
+        JButton setButton = new JButton("Set");
+        setButton.setActionCommand("setButton");
+        setButton.addActionListener(this);
+        add(setButton, BorderLayout.PAGE_END);
     }
 
     /** Listens to the radio buttons. */
@@ -130,20 +134,16 @@ public class HypnogramGUI extends JPanel implements ActionListener {
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    public void createAndShowGUI() {
+    public static void createAndShowGUI(final DCDMCGUI dcdmcgui) {
         //Create and set up the window.
         jFrame = new JFrame("Hypnogram Dataset Settings");
         jFrame.setLayout(new GridBagLayout());
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //Create and set up the content pane.
-        JComponent newContentPane = new HypnogramGUI(this.dcdmcgui);
+        JComponent newContentPane = new HypnogramGUI();
 
-        //Set button
-        JButton setButton = new JButton("Set");
-        setButton.setActionCommand("setButton");
-        setButton.addActionListener(this);
-        newContentPane.add(setButton, BorderLayout.PAGE_END);
+        HypnogramGUI.dcdmcgui = dcdmcgui;
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);

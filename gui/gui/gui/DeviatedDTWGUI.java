@@ -26,13 +26,14 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
 
     private final String gwDTW = "GLOBALWEIGHTEDDTW";
     private final String sdDTW = "STEPWISEDEVIATEDDTW";
-    private final DCDMCGUI dcdmcgui;
-    private JFrame jFrame = null;
+    private static DCDMCGUI dcdmcgui;
+    private static JFrame jFrame = null;
 
-    public DeviatedDTWGUI(DCDMCGUI dcdmcgui) {
+    /**
+     * Class constructor
+     */
+    public DeviatedDTWGUI() {
         super(new BorderLayout());
-
-        this.dcdmcgui = dcdmcgui;
 
         //Create the radio buttons.
         JRadioButton gwDTWButton = new JRadioButton("Global Weighted Dynamic Time Warping");
@@ -67,6 +68,12 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
         } else {
             sdDTWButton.setSelected(true);
         }
+
+        //Set button
+        JButton setButton = new JButton("Set");
+        setButton.setActionCommand("setButton");
+        setButton.addActionListener(this);
+        add(setButton, BorderLayout.PAGE_END);
     }
 
     /** Listens to the radio buttons. */
@@ -97,19 +104,15 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    public void createAndShowGUI() {
+    public static void createAndShowGUI(final DCDMCGUI dcdmcgui) {
         //Create and set up the window.
         jFrame = new JFrame("Deviated Dynamic Time Warping Settings");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         //Create and set up the content pane.
-        JComponent newContentPane = new DeviatedDTWGUI(this.dcdmcgui);
+        JComponent newContentPane = new DeviatedDTWGUI();
 
-        //Set button
-        JButton setButton = new JButton("Set");
-        setButton.setActionCommand("setButton");
-        setButton.addActionListener(this);
-        newContentPane.add(setButton, BorderLayout.PAGE_END);
+        DeviatedDTWGUI.dcdmcgui = dcdmcgui;
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);

@@ -10,6 +10,7 @@ package Utilities;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -162,6 +163,32 @@ public class IOOperation {
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Read initial cluster labels into memory
+     * @param path file path
+     * @return an array of integers
+     */
+    public static List<Integer> readClusterLabels(String path) {
+        List<Integer> clusterLabels = new ArrayList<Integer>(); // cache configuration parameters
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line = null;
+
+            while((line = br.readLine()) != null) {
+                String[] strs = line.split(" ");
+                for (int i = 0; i < strs.length; i++) {
+                    clusterLabels.add(Integer.parseInt(strs[i]));
+                }
+            }
+            br.close();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return clusterLabels;
     }
 
     /**

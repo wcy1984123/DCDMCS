@@ -172,6 +172,20 @@ public class DCDMCMenuGUI {
             }
         });
 
+
+        //-------------------------------------- Analysis Menu --------------------------------------//
+        menu = new JMenu("Analysis");
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Data Cluster Distribution Graph");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DataClusterDistributionGraphGUI.createAndShowGUI(dcdmcgui);
+            }
+        });
+
+
         //---------------------------------------- Help Menu ----------------------------------------//
         menu = new JMenu("Help");
         menuBar.add(menu);
