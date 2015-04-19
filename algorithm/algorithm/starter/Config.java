@@ -43,6 +43,7 @@ public final class Config {
     private static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     private static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
     private static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
+    private static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances file path
 
 
     //*-------------------- GUI Variables ------------------*/
@@ -66,6 +67,7 @@ public final class Config {
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
         SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
+        FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -141,6 +143,7 @@ public final class Config {
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
         SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
+        FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -551,6 +554,23 @@ public final class Config {
     public static String getSIMILARITYTRENDLINEFILEPATH() {
         return SIMILARITYTRENDLINEFILEPATH;
     }
+
+    /**
+     * Setter
+     * @param FINALPROBSFORALLINSTANCESFILEPATH final probabilities for all instances file path
+     */
+    public static void setFINALPROBSFORALLINSTANCESFILEPATH(String FINALPROBSFORALLINSTANCESFILEPATH) {
+        Config.FINALPROBSFORALLINSTANCESFILEPATH = FINALPROBSFORALLINSTANCESFILEPATH;
+    }
+
+    /**
+     * Getter
+     * @return final probabilities for all instances file path
+     */
+    public static String getFINALPROBSFORALLINSTANCESFILEPATH() {
+        return FINALPROBSFORALLINSTANCESFILEPATH;
+    }
+
 
     /**
      * Setter

@@ -38,6 +38,7 @@ public final class CONSTANTS {
     public final static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     public final static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
     public final static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
+    public final static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances
 
     /*-------------------- GUI Variables ------------------*/
     public final static Boolean PROBABILITYDENSITYVIEW; // probability density view
@@ -58,6 +59,7 @@ public final class CONSTANTS {
         HYPNOGRAMDATASETFILEPATH = new File("dataset" + File.separator + "hypnogram.csv").getAbsolutePath();
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = new File("dataset" + File.separator + "msnbcData.csv").getAbsolutePath();
         SIMILARITYTRENDLINEFILEPATH = new File("results" + File.separator + "SimilarityTrendline.txt").getAbsolutePath();
+        FINALPROBSFORALLINSTANCESFILEPATH = new File("results" + File.separator + "FinalProbsForAllInstances.txt").getAbsolutePath();
 
 
         // DCDMC Parameter Default Configuration

@@ -512,8 +512,8 @@ public class Starter {
      * @param args user input
      */
     public static void main(String[] args) {
-        String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
-        String distanceMatrixPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/Results/DistanceMatrix.txt";
+        String configPath = Config.getCONFIGPATH();
+        String distanceMatrixPath = Config.getDISTANCEMATRIXFILEPATH();
         Starter test = new Starter(configPath, distanceMatrixPath);
 
         test.runCDMC();

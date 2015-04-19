@@ -4,8 +4,8 @@ package gui;
  * Project: DCDMC
  * Package: gui
  * Date: 18/Apr/2015
- * Time: 21:02
- * System Time: 9:02 PM
+ * Time: 22:37
+ * System Time: 10:37 PM
  */
 
 import adapters.XYLineChartApdater;
@@ -26,18 +26,18 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Class for similarity distribution during CDMC iterative process
+ * Class for probabilities for all instances GUI
  */
-public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
-    private final static Logger LOGGER = Logger.getLogger(SimilarityTrendlineGUI.class.getName());
-    private static List<Double> similarityTrendline;
+public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
+    private final static Logger LOGGER = Logger.getLogger(ProbsForAllInstancesGUI.class.getName());
+    private static List<List<Double>> probsForAllInstances;
     private GridBagConstraints gridBagConstraints;
     private static JFrame jFrame = null;
 
     /**
      * Class constructor
      */
-    public SimilarityTrendlineGUI() {
+    public ProbsForAllInstancesGUI() {
 
         // set up layout
         super(new GridBagLayout());
@@ -48,7 +48,6 @@ public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
 
-        double[][] data = formatInstance(similarityTrendline);
         XYLineChartApdater chart = new XYLineChartApdater("CDMC Similarity Trendline", "Iteration No.", "Similarity", data);
         XYListSeriesCollection collec = chart.getSeriesCollection();
         collec.setColor(0, Color.magenta);
@@ -115,16 +114,16 @@ public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
      * event-dispatching thread.
      * @param dcdmcgui a parent gui
      */
-    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Double> similarityTrendline) {
+    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<List<Double>> probsForAllInstances) {
         // Create and set up the window
-        jFrame = new JFrame("Similarity Trendline");
+        jFrame = new JFrame("Box Plot Over Probabilities Of All Instances");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // save cluster labels
-        SimilarityTrendlineGUI.similarityTrendline = similarityTrendline;
+        ProbsForAllInstancesGUI.probsForAllInstances = probsForAllInstances;
 
         // Create and set up the content pane.
-        JComponent newContentPane = new SimilarityTrendlineGUI();
+        JComponent newContentPane = new ProbsForAllInstancesGUI();
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);
@@ -144,5 +143,4 @@ public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
     public static void main(String[] args) {
 
     }
-
 }
