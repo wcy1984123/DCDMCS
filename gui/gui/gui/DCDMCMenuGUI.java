@@ -1,5 +1,6 @@
 package gui;
 
+import Utilities.IOOperation;
 import starter.Config;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URI;
 import java.util.logging.Logger;
+import java.util.List;
 
 /**
  * Project: DCDMC
@@ -175,13 +177,37 @@ public class DCDMCMenuGUI {
 
         //-------------------------------------- Analysis Menu --------------------------------------//
         menu = new JMenu("Analysis");
+
         menuBar.add(menu);
-        menuItem = new JMenuItem("Data Cluster Distribution Graph");
+        menuItem = new JMenuItem("Similarity Trendline");
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DataClusterDistributionGraphGUI.createAndShowGUI(dcdmcgui);
+                List<Double> similarityTrendline = IOOperation.readSimilarityTrendline(Config.getSIMILARITYTRENDLINEFILEPATH());
+                SimilarityTrendlineGUI.createAndShowGUI(dcdmcgui, similarityTrendline);
+            }
+        });
+
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Initial Data Cluster Distribution Graph");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Integer> initialClusterLabels = IOOperation.readClusterLabels(Config.getINITIALCLUSTERSFILEPATH());
+                DataClusterDistributionGraphGUI.createAndShowGUI(dcdmcgui, initialClusterLabels);
+            }
+        });
+
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Final Data Cluster Distribution Graph");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Integer> finalClusterLabels = IOOperation.readClusterLabels(Config.getFINALCLUSTERSFILEPATH());
+                DataClusterDistributionGraphGUI.createAndShowGUI(dcdmcgui, finalClusterLabels);
             }
         });
 
@@ -216,12 +242,12 @@ public class DCDMCMenuGUI {
         });
 
 
-        menuItem = new JMenuItem("About us");
+        menuItem = new JMenuItem("About me");
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(DCDMCMenuGUI.this.dcdmcgui, "KNOWLEDGE DISCOVERY AND DATA MINING \n" +
-                        "RESEARCH GROUP", "About us", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(DCDMCMenuGUI.this.dcdmcgui, "CHIYING WANG \n" +
+                        "WPI", "About me", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         menu.add(menuItem);

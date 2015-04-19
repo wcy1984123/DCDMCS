@@ -383,7 +383,6 @@ public class SemiMarkovChainModel implements IModel, ICluster {
 
         Point original = new Point(0, 0);
 
-        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
@@ -426,7 +425,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
 
             XYListSeriesCollection collec = chart.getSeriesCollection();
-            collec.setColor(0, colors[i % colors.length]);
+            collec.setColor(0, Config.getCOLORCOLLECTION()[i % Config.getCOLORCOLLECTION().length]);
             collec.setDashPattern(0, "only marks");
             collec.setColor(1, Color.BLACK);
             collec.setName(1, "Weibull Density Estimation");
@@ -551,7 +550,6 @@ public class SemiMarkovChainModel implements IModel, ICluster {
         componentDimension = new Dimension(componentDimension.width, componentDimension.height / 2);
         Point original = new Point(0, 0);
 
-        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
         // print out state duration distribution
         for(int i = 0; i < stateNum; i++) {
             double alpha = this.mParameters[i][0];
@@ -593,7 +591,7 @@ public class SemiMarkovChainModel implements IModel, ICluster {
             tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
 
             XYListSeriesCollection collec = chart.getSeriesCollection();
-            collec.setColor(0, colors[i % colors.length]);
+            collec.setColor(0, Config.getCOLORCOLLECTION()[i % Config.getCOLORCOLLECTION().length]);
             collec.setDashPattern(0, "only marks");
             collec.setColor(1, Color.BLACK);
             collec.setName(1, "Weibull Cumulative Estimation");

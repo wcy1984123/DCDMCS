@@ -1,5 +1,6 @@
 package starter;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,6 +42,8 @@ public final class Config {
     private static String DISTANCEMATRIXFILEPATH; // distance matrix file path
     private static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     private static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
+    private static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
+    private static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances file path
 
 
     //*-------------------- GUI Variables ------------------*/
@@ -51,6 +54,9 @@ public final class Config {
     /*---------------------- Separator --------------------*/
     private static String CONFIGSEPARATOR; // separator between configuration parameters
 
+    /*--------------------- Color Array -------------------*/
+    private static Color[] COLORCOLLECTION; // colors for plot
+
     static {
 
         // File Path Default Settings
@@ -60,7 +66,8 @@ public final class Config {
         DISTANCEMATRIXFILEPATH = CONSTANTS.DISTANCEMATRIXFILEPATH;
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
-
+        SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
+        FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -83,6 +90,9 @@ public final class Config {
 
         // Separator
         CONFIGSEPARATOR = CONSTANTS.CONFIGSEPARATOR;
+
+        // Color array
+        COLORCOLLECTION = CONSTANTS.COLORCOLLECTION;
     }
 
     /**
@@ -132,6 +142,8 @@ public final class Config {
         DISTANCEMATRIXFILEPATH = CONSTANTS.DISTANCEMATRIXFILEPATH;
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
+        SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
+        FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -154,6 +166,9 @@ public final class Config {
 
         // Separator
         CONFIGSEPARATOR = CONSTANTS.CONFIGSEPARATOR;
+
+        // Color array
+        COLORCOLLECTION = CONSTANTS.COLORCOLLECTION;
     }
 
     /**
@@ -510,6 +525,55 @@ public final class Config {
 
     /**
      * Setter
+     * @param COLORCOLLECTION color collection
+     */
+    public static void setCOLORCOLLECTION(Color[] COLORCOLLECTION) {
+        Config.COLORCOLLECTION = COLORCOLLECTION;
+    }
+
+    /**
+     * Getter
+     * @return color collection
+     */
+    public static Color[] getCOLORCOLLECTION() {
+        return COLORCOLLECTION;
+    }
+
+    /**
+     * Setter
+     * @param SIMILARITYTRENDLINEFILEPATH similarity trendline file path
+     */
+    public static void setSIMILARITYTRENDLINEFILEPATH(String SIMILARITYTRENDLINEFILEPATH) {
+        Config.SIMILARITYTRENDLINEFILEPATH = SIMILARITYTRENDLINEFILEPATH;
+    }
+
+    /**
+     * Getter
+     * @return similarity trendline file path
+     */
+    public static String getSIMILARITYTRENDLINEFILEPATH() {
+        return SIMILARITYTRENDLINEFILEPATH;
+    }
+
+    /**
+     * Setter
+     * @param FINALPROBSFORALLINSTANCESFILEPATH final probabilities for all instances file path
+     */
+    public static void setFINALPROBSFORALLINSTANCESFILEPATH(String FINALPROBSFORALLINSTANCESFILEPATH) {
+        Config.FINALPROBSFORALLINSTANCESFILEPATH = FINALPROBSFORALLINSTANCESFILEPATH;
+    }
+
+    /**
+     * Getter
+     * @return final probabilities for all instances file path
+     */
+    public static String getFINALPROBSFORALLINSTANCESFILEPATH() {
+        return FINALPROBSFORALLINSTANCESFILEPATH;
+    }
+
+
+    /**
+     * Setter
      * @param CONFIGSEPARATOR config parameter separator
      */
     public static void setCONFIGSEPARATOR(String CONFIGSEPARATOR) {
@@ -520,7 +584,7 @@ public final class Config {
     public final static String VERSIONINFO =
             "\n|*******************************************************************************|\n" +
             " * Version 1.1.0\n" +
-            " * Copyright 2015 Alex Wong\n" +
+            " * Copyright 2015 CHIYING WANG\n" +
             " * \n" +
             " * Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
             " * you may not use this file except in compliance with the License.\n" +

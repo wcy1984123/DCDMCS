@@ -16,5 +16,5 @@ Data Access Operator:
 Starter:
 1. starter works as the main function
 2. instances starts with index 1
-3. cluster labe starts with index 0
+3. cluster label starts with index 0
 4. state number starts with index 0

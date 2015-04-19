@@ -8,7 +8,6 @@ package gui;
  * System Time: 3:28 PM
  */
 
-import Utilities.IOOperation;
 import adapters.XYLineChartApdater;
 import dao.DATATYPE;
 import dao.DaoFactory;
@@ -31,7 +30,7 @@ import java.util.List;
 public class DataClusterDistributionGraphGUI extends JPanel implements ActionListener {
 
     private final static Logger LOGGER = Logger.getLogger(DataClusterDistributionGraphGUI.class.getName());
-    private List<Integer> clusterLabels;
+    private static List<Integer> clusterLabels;
     private IDAO idao;
     private List<List<Double>> instances;
     private GridBagConstraints gridBagConstraints;
@@ -51,21 +50,14 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
 
-        // get final cluster labels
-        this.clusterLabels = IOOperation.readClusterLabels(Config.getFINALCLUSTERSFILEPATH());
-
         // get data source
         this.idao = DaoFactory.getInstance().createData(DATATYPE.valueOf(Config.getDATASETTYPE()));
         this.instances = this.idao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getSTATENUM()));
 
-        // color array
-        Color[] colors = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
-
-
         // get data distribution for each cluster label
         int clusterNum = Config.getCLUSTERNUM();
         for (int i = 0; i < clusterNum; i++) {
-            JFrame jFrame = createOneClusterDistributionFrame(i, colors[i % colors.length]);
+            JFrame jFrame = createOneClusterDistributionFrame(i, Config.getCOLORCOLLECTION()[i % Config.getCOLORCOLLECTION().length]);
             Component jComponent = jFrame.getComponent(0);
             add(jComponent, gridBagConstraints);
             gridBagConstraints.gridy = gridBagConstraints.gridy + jComponent.getBounds().y;
@@ -91,7 +83,7 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
         double[][] origianl = new double[2][1]; // a null point
         origianl[0][0] = 0;
         origianl[1][0] = 0;
-        XYLineChartApdater chart = new XYLineChartApdater("", "Time", "Value", origianl);
+        XYLineChartApdater chart = new XYLineChartApdater("", "Time", "State", origianl);
         XYListSeriesCollection collec = chart.getSeriesCollection();
         collec.setColor(0, color);
 
@@ -104,9 +96,7 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
                 // get data instance
                 double[][] data = formatInstance(instances.get(i));
                 chart.add(data);
-
-                collec = chart.getSeriesCollection();
-                collec.setColor(count++, color);
+                collec.setColor(++count, color);
             }
         }
 
@@ -115,7 +105,7 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
 
         // set x and y axis range and ticks
         chart.setManualRange(new double[]{0, maximumLength, 1, Config.getSTATENUM()});
-        chart.getYAxis().setLabels(1);
+        chart.getYAxis().setLabels(1); // set up ticks in y axis
 
         // change font and its size
         JFreeChart jc = chart.getChart();
@@ -167,19 +157,24 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
      * event-dispatching thread.
      * @param dcdmcgui a parent gui
      */
-    public static void createAndShowGUI(final DCDMCGUI dcdmcgui) {
-        //Create and set up the window
+    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Integer> clusterLabels) {
+        // Create and set up the window
         jFrame = new JFrame("Data Cluster Distribution Chart");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        //Create and set up the content pane.
+        // save cluster labels
+        DataClusterDistributionGraphGUI.clusterLabels = clusterLabels;
+
+        // Create and set up the content pane.
         JComponent newContentPane = new DataClusterDistributionGraphGUI();
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);
 
         //Display the window.
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         jFrame.pack();
+        jFrame.setSize(screenSize.width / 3, screenSize.height / 3);
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
     }

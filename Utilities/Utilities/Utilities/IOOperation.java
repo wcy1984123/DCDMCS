@@ -166,6 +166,110 @@ public class IOOperation {
     }
 
     /**
+     * Write the input two dimensional list into file
+     * @param data a two dimensional list
+     * @param path file path
+     */
+    public static void writeProbsToFile(List<List<Double>> data, String path) {
+
+        if (data == null) {
+            LOGGER.info("The input two dimensional list is null!");
+            return;
+        }
+
+        if (data.size() == 0) {
+            LOGGER.info("The input two dimensional list is empty!");
+            return;
+        }
+
+        try{
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            int N = data.size();
+
+            for (int i = 0; i < N; i++) {
+                int M =  data.get(i).size();
+                for (int j = 0; j < M; j++) {
+                    bw.write(String.format("%.4f", data.get(i).get(j)));
+
+                    if (j < M - 1) bw.write(' ');
+                }
+                bw.newLine();
+            }
+
+            bw.newLine();
+            bw.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Write the input list into file
+     * @param dataList a list
+     * @param path file path
+     */
+    public static void writeFile(double[] dataList, String path) {
+
+        if (dataList == null) {
+            LOGGER.info("The input array is null!");
+            return;
+        }
+
+        if (dataList.length == 0) {
+            LOGGER.info("The input array is empty!");
+            return;
+        }
+
+        try{
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            int N = dataList.length;
+
+            for (int i = 0; i < N; i++) {
+                bw.write(String.format("%.4f", dataList[i]));
+
+                if (i < N - 1) bw.write(' ');
+            }
+
+            bw.newLine();
+            bw.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Read the input two dimensional list into memory
+     * @param path file path
+     * @return a two dimensional list
+     */
+    public static List<List<Double>> readProbsFromFile(String path) {
+
+        List<List<Double>> data = new ArrayList<List<Double>>();
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line = null;
+
+            while((line = br.readLine()) != null) {
+                String[] strs = line.split(" ");
+                List<Double> eachLine = new ArrayList<Double>();
+                for (int i = 0; i < strs.length; i++) {
+                    eachLine.add(Double.parseDouble(strs[i]));
+                }
+                data.add(eachLine);
+            }
+            br.close();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+    /**
      * Read initial cluster labels into memory
      * @param path file path
      * @return an array of integers
@@ -189,6 +293,32 @@ public class IOOperation {
         }
 
         return clusterLabels;
+    }
+
+    /**
+     * Read similarity trendline into memory
+     * @param path file path
+     * @return an array of doubles
+     */
+    public static List<Double> readSimilarityTrendline(String path) {
+        List<Double> similarityTrendline = new ArrayList<Double>(); // cache configuration parameters
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line = null;
+
+            while((line = br.readLine()) != null) {
+                String[] strs = line.split(" ");
+                for (int i = 0; i < strs.length; i++) {
+                    similarityTrendline.add(Double.parseDouble(strs[i]));
+                }
+            }
+            br.close();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return similarityTrendline;
     }
 
     /**
