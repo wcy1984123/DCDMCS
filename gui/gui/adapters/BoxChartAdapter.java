@@ -7,20 +7,8 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import umontreal.iro.lecuyer.charts.Axis;
-import umontreal.iro.lecuyer.charts.BoxSeriesCollection;
 import umontreal.iro.lecuyer.charts.CategoryChart;
 
-import javax.swing.*;
-
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
-import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
-
-import java.util.Locale;
-import java.util.Formatter;
 import javax.swing.JFrame;
 
 /**
@@ -122,6 +110,12 @@ public class BoxChartAdapter extends CategoryChart {
         return myFrame;
     }
 
+    /**
+     * Modified Method: set legend to be false instead of true
+     * @param title boxplot title
+     * @param XLabel x axis label
+     * @param YLabel y axis label
+     */
     protected void init (String title, String XLabel, String YLabel) {
         // create the chart...
         chart = ChartFactory.createBoxAndWhiskerChart(
@@ -129,7 +123,7 @@ public class BoxChartAdapter extends CategoryChart {
                 XLabel,                        // x axis label
                 YLabel,                        // y axis label
                 (DefaultBoxAndWhiskerCategoryDataset) dataset.getSeriesCollection(), // data
-                true                          // include legend
+                false                          // include legend
         );
 
         ((CategoryPlot)chart.getPlot()).setRenderer(dataset.getRenderer());
@@ -146,17 +140,21 @@ public class BoxChartAdapter extends CategoryChart {
 
 
     /**
+     * Modified Method (change BoxSeriesCollection to BoxSeriesCollectionAdapter)
+     *
      * Initializes a new <TT>BoxChart</TT> instance with an empty data set.
      *
      */
     public BoxChartAdapter()  {
         super();
-        dataset = new BoxSeriesCollection();
+        dataset = new BoxSeriesCollectionAdapter();
         init (null, null, null);
     }
 
 
     /**
+     * Modified Method (change BoxSeriesCollection to BoxSeriesCollectionAdapter)
+     *
      * Initializes a new <TT>BoxChart</TT> instance with data <TT>data</TT>.
      * <TT>title</TT> is a title, <TT>XLabel</TT> is a short description of the
      * <SPAN CLASS="MATH"><I>x</I></SPAN>-axis, and <TT>YLabel</TT> a short description of the <SPAN CLASS="MATH"><I>y</I></SPAN>-axis.
@@ -179,12 +177,14 @@ public class BoxChartAdapter extends CategoryChart {
     public BoxChartAdapter (String title, String XLabel, String YLabel,
                      double[] data, int numPoints)  {
         super();
-        dataset = new BoxSeriesCollection(data, numPoints);
+        dataset = new BoxSeriesCollectionAdapter(data, numPoints);
         init (title, XLabel, YLabel);
     }
 
 
     /**
+     * Modified Method (change BoxSeriesCollection to BoxSeriesCollectionAdapter)
+     *
      * Initializes a new <TT>BoxChart</TT> instance with data <TT>data</TT>.
      * <TT>title</TT> sets a title, <TT>XLabel</TT> is a short description of the
      * <SPAN CLASS="MATH"><I>x</I></SPAN>-axis, and <TT>YLabel</TT> is a short description of the <SPAN CLASS="MATH"><I>y</I></SPAN>-axis.
@@ -202,7 +202,7 @@ public class BoxChartAdapter extends CategoryChart {
     public BoxChartAdapter (String title, String XLabel, String YLabel,
                      double[]... data)  {
         super();
-        dataset = new BoxSeriesCollection(data);
+        dataset = new BoxSeriesCollectionAdapter(data);
         init (title, XLabel, YLabel);
     }
 
@@ -241,24 +241,28 @@ public class BoxChartAdapter extends CategoryChart {
 
 
     /**
+     * Modified Method (change BoxSeriesCollection to BoxSeriesCollectionAdapter)
+     *
      * Returns the chart's dataset.
      *
      * @return the chart's dataset.
      *
      */
-    public BoxSeriesCollection getSeriesCollection()  {
-        return (BoxSeriesCollection)dataset;
+    public BoxSeriesCollectionAdapter getSeriesCollection()  {
+        return (BoxSeriesCollectionAdapter)dataset;
     }
 
 
     /**
+     * Modified Method (change BoxSeriesCollection to BoxSeriesCollectionAdapter)
+     *
      * Links a new dataset to the current chart.
      *
      * @param dataset new dataset.
      *
      *
      */
-    public void setSeriesCollection (BoxSeriesCollection dataset)  {
+    public void setSeriesCollection (BoxSeriesCollectionAdapter dataset)  {
         this.dataset = dataset;
     }
 

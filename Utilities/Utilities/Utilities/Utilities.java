@@ -607,6 +607,119 @@ public class Utilities {
     }
 
     /**
+     * Normalize the given one dimensional array
+     * @param array one dimensional matrix
+     * @return a normalized one dimensional array
+     */
+    public static double[] normalizeArray(double[] array) {
+
+        double[] res = null;
+
+        if (array == null) {
+            LOGGER.log(Level.INFO, "The one dimensional array of integers is null!");
+            return res;
+        }
+
+        if (array.length == 0) {
+            LOGGER.log(Level.INFO, "The one dimensional array of integers is empty!");
+            return res;
+        }
+
+        int COLUMN = array.length;
+        res = new double[COLUMN];
+        double sum = 0.0;
+        double min = Double.POSITIVE_INFINITY;
+        double max = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < COLUMN; i++) {
+            min = Math.min(min, array[i]);
+            max = Math.max(max, array[i]);
+        }
+
+        if ((max - min) != 0) {
+            for (int j = 0; j < COLUMN; j++) {
+                res[j] = (array[j] * 1.0 - min) / (max - min);
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Normalize list of list of data
+     * @param data a list of list of double data
+     * @return a array of normalized data
+     */
+    public static double[] normalizeListOfList(List<List<Double>> data) {
+        double[] output = null;
+        if (data == null) {
+            LOGGER.log(Level.INFO, "The data is null!");
+            return output;
+        }
+
+        if (data.size() == 0 || data.get(0).size() == 0) {
+            LOGGER.log(Level.INFO, "The data is empty!");
+            return output;
+        }
+
+        int count = 0;
+        int length = 0;
+
+        for (int i = 0; i < data.size(); i++) {
+            length+= data.get(i).size();
+        }
+
+        output = new double[length];
+
+        for (int i = 0; i < data.size(); i++) {
+            for (int j = 0; j < data.get(i).size(); j++) {
+                output[count++] = data.get(i).get(j);
+            }
+        }
+
+        // normaize the array
+        return normalizeArray(output);
+    }
+
+    /**
+     * Retrieve a certain number of data in the array
+     * @param data data source
+     * @param start start position in the array
+     * @param end ending position in the array
+     * @return the partial data in the array
+     */
+    public static double[] retrievePartialDataFromArray(double[] data, int start, int end) {
+        double[] output = null;
+
+        if (data == null || data.length == 0) {
+            LOGGER.info("The data is null or empty!");
+            return output;
+        }
+
+        if (start < 0 || start > data.length) {
+            LOGGER.info("The starting position is invalid!");
+            return output;
+        }
+
+        if (end < 0 || end > data.length) {
+            LOGGER.info("The ending position is invalid!");
+            return output;
+        }
+
+        if (start > end) {
+            LOGGER.info("The starting position should be less than or equal to ending position!");
+            return output;
+        }
+
+        output = new double[end - start + 1];
+
+        for (int i = start; i <= end; i++) {
+            output[i - start] = data[i];
+        }
+
+        return output;
+    }
+
+    /**
      * test
      * @param args user input
      */

@@ -11,16 +11,10 @@ package gui;
 import Utilities.Utilities;
 import Utilities.IOOperation;
 import adapters.BoxChartAdapter;
-import adapters.XYLineChartApdater;
-import dao.DATATYPE;
-import dao.DaoFactory;
-import dao.IDAO;
+import adapters.BoxSeriesCollectionAdapter;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.title.TextTitle;
 import starter.Config;
-import umontreal.iro.lecuyer.charts.BoxChart;
-import umontreal.iro.lecuyer.charts.BoxSeriesCollection;
-import umontreal.iro.lecuyer.charts.XYListSeriesCollection;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -53,65 +47,44 @@ public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
 
-        double[] data = Utilities.convertToOneDimensionalDoubleArray(this.probsForAllInstances.get(0));
-//        for (int i = 0; i < data.length; i++) {
-//            data[i] = data[i] * -1;
-//        }
-        BoxChartAdapter chart = new BoxChartAdapter("Box Plot Over Probabilities Of All Instances", "Cluster No.", "Y", data);
-        BoxSeriesCollection collec = chart.getSeriesCollection();
-        collec.setColor(0, Config.getCOLORCOLLECTION()[0]);
+        // process data
+        int offset = 0; // indicate the offset of the next list in normalizedData structure
+        double[] normalizedData = Utilities.normalizeListOfList(this.probsForAllInstances); // normalize data using (value - min) / (max - min)
+        double[] data = Utilities.retrievePartialDataFromArray(normalizedData, offset, (offset + this.probsForAllInstances.get(0).size() - 1));
+
+        // create box plot
+        offset += this.probsForAllInstances.get(0).size();
+        BoxChartAdapter chart = new BoxChartAdapter("Boxplot over Probabilities of Instances in Clusters", "Cluster No.", "Normalized Log-Probabilities", data);
+        BoxSeriesCollectionAdapter collec = chart.getSeriesCollection();
+
         for (int i = 1; i < this.probsForAllInstances.size(); i++) {
-            data = Utilities.convertToOneDimensionalDoubleArray(this.probsForAllInstances.get(i));
-            if (data == null) chart.add(new double[]{0.0});
-            else chart.add(data);
-            collec.setColor(i, Config.getCOLORCOLLECTION()[i % Config.getCOLORCOLLECTION().length]);
+            data = Utilities.retrievePartialDataFromArray(normalizedData, offset, (offset + this.probsForAllInstances.get(i).size() - 1));
+            offset += this.probsForAllInstances.get(i).size();
+            chart.add(data == null ? new double[]{0.0} : data);
         }
 
-        chart.setFillBox(true);
+        chart.getYAxis();
+
         // change font and its size
         JFreeChart jc = chart.getJFreeChart();
         TextTitle tt = jc.getTitle();
         tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
 
         // add view to panel
-        add(chart.view(300, 400).getComponent(0), gridBagConstraints);
+        JFrame jFrame = chart.view(200, 300);
+        Component component = jFrame.getComponent(0);
+        add(component, gridBagConstraints);
 
         //Set button
         JButton setButton = new JButton("Close");
         setButton.setActionCommand("setButton");
         setButton.addActionListener(this);
+        gridBagConstraints.gridy += component.getBounds().height;
         gridBagConstraints.weighty = 0;
         add(setButton, gridBagConstraints);
 
         // set up border
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    }
-
-    /**
-     * Convert instance to data visualize the instance in chart.
-     * @param instance an instance
-     * @return convert an instance to data for GUI
-     */
-    private double[][] formatInstance(List<Double> instance) {
-        double[][] data = null;
-        if (instance == null) {
-            LOGGER.info("The instance is null!");
-            return data;
-        }
-
-        if (instance.size() == 0) {
-            LOGGER.info("The instance is empty!");
-            return data;
-        }
-
-        data = new double[2][instance.size()];
-
-        for (int i = 0; i < instance.size(); i++) {
-            data[0][i] = i;
-            data[1][i] = instance.get(i);
-        }
-
-        return data;
     }
 
     /** Listens to the radio buttons. */
@@ -131,7 +104,7 @@ public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
      */
     public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<List<Double>> probsForAllInstances) {
         // Create and set up the window
-        jFrame = new JFrame("Box Plot Over Probabilities Of All Instances");
+        jFrame = new JFrame("Boxplot over Probabilities of Instances in Clusters");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // save cluster labels
@@ -157,19 +130,18 @@ public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
      */
     public static void main(String[] args) {
 
-        double[] data1 = new double[]{0.1, 0.2, 0.1, 0.3};
-        double[] data2 = new double[]{0.1, 0.4, 0.2};
-
-//        BoxChartAdapter bc = new BoxChartAdapter("Boxplot1", "Series", "Y", data1, data2);
-//        JFrame jFrame = bc.view(600, 400);
-//
-//        jFrame.setVisible(true);
+        double[] data1 = null;
+        double[] data2 = null;
 
         List<List<Double>> probsForAllInstances = IOOperation.readProbsFromFile(Config.getFINALPROBSFORALLINSTANCESFILEPATH());
 
         data1 = Utilities.convertToOneDimensionalDoubleArray(probsForAllInstances.get(1));
 
         data2 = Utilities.convertToOneDimensionalDoubleArray(probsForAllInstances.get(2));
+
+        data1 = Utilities.normalizeArray(data1);
+        data2 = Utilities.normalizeArray(data2);
+
         BoxChartAdapter bc = new BoxChartAdapter("Boxplot1", "Series", "Y", data1, data2);
         JFrame jFrame = bc.view(600, 400);
 
