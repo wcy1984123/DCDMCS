@@ -9,6 +9,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -235,7 +236,7 @@ public class HiddenMarkovModel implements IModel, ICluster {
 
         // save weka-formated instances into file
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/sleepsequences.arff"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File("results" + File.separator + "sleepsequences.arff").getAbsoluteFile()));
 
             bw.write(seqs.toString());
             bw.flush();

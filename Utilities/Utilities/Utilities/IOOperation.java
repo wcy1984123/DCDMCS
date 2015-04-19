@@ -166,6 +166,41 @@ public class IOOperation {
     }
 
     /**
+     * Write the input list into file
+     * @param dataList a list
+     * @param path file path
+     */
+    public static void writeFile(double[] dataList, String path) {
+
+        if (dataList == null) {
+            LOGGER.info("The input array is null!");
+            return;
+        }
+
+        if (dataList.length == 0) {
+            LOGGER.info("The input array is empty!");
+            return;
+        }
+
+        try{
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            int N = dataList.length;
+
+            for (int i = 0; i < N; i++) {
+                bw.write(String.format("%.4f", dataList[i]));
+
+                if (i < N - 1) bw.write(' ');
+            }
+
+            bw.newLine();
+            bw.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Read initial cluster labels into memory
      * @param path file path
      * @return an array of integers
@@ -189,6 +224,32 @@ public class IOOperation {
         }
 
         return clusterLabels;
+    }
+
+    /**
+     * Read similarity trendline into memory
+     * @param path file path
+     * @return an array of doubles
+     */
+    public static List<Double> readSimilarityTrendline(String path) {
+        List<Double> similarityTrendline = new ArrayList<Double>(); // cache configuration parameters
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line = null;
+
+            while((line = br.readLine()) != null) {
+                String[] strs = line.split(" ");
+                for (int i = 0; i < strs.length; i++) {
+                    similarityTrendline.add(Double.parseDouble(strs[i]));
+                }
+            }
+            br.close();
+
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        return similarityTrendline;
     }
 
     /**

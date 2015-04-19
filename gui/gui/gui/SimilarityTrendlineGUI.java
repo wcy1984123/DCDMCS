@@ -4,8 +4,8 @@ package gui;
  * Project: DCDMC
  * Package: gui
  * Date: 18/Apr/2015
- * Time: 15:28
- * System Time: 3:28 PM
+ * Time: 21:02
+ * System Time: 9:02 PM
  */
 
 import adapters.XYLineChartApdater;
@@ -20,17 +20,17 @@ import umontreal.iro.lecuyer.charts.XYListSeriesCollection;
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.logging.Logger;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Class for visualizing data cluster distributions
+ * Class for similarity distribution during CDMC iterative process
  */
-public class DataClusterDistributionGraphGUI extends JPanel implements ActionListener {
-
-    private final static Logger LOGGER = Logger.getLogger(DataClusterDistributionGraphGUI.class.getName());
-    private static List<Integer> clusterLabels;
+public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
+    private final static Logger LOGGER = Logger.getLogger(SimilarityTrendlineGUI.class.getName());
+    private static List<Double> similarityTrendline;
     private IDAO idao;
     private List<List<Double>> instances;
     private GridBagConstraints gridBagConstraints;
@@ -39,7 +39,7 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
     /**
      * Class constructor
      */
-    public DataClusterDistributionGraphGUI() {
+    public SimilarityTrendlineGUI() {
 
         // set up layout
         super(new GridBagLayout());
@@ -54,14 +54,19 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
         this.idao = DaoFactory.getInstance().createData(DATATYPE.valueOf(Config.getDATASETTYPE()));
         this.instances = this.idao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getSTATENUM()));
 
-        // get data distribution for each cluster label
-        int clusterNum = Config.getCLUSTERNUM();
-        for (int i = 0; i < clusterNum; i++) {
-            JFrame jFrame = createOneClusterDistributionFrame(i, Config.getCOLORCOLLECTION()[i % Config.getCOLORCOLLECTION().length]);
-            Component jComponent = jFrame.getComponent(0);
-            add(jComponent, gridBagConstraints);
-            gridBagConstraints.gridy = gridBagConstraints.gridy + jComponent.getBounds().y;
-        }
+        double[][] data = formatInstance(similarityTrendline);
+        XYLineChartApdater chart = new XYLineChartApdater("CDMC Similarity Trendline", "Iteration No.", "Similarity", data);
+        XYListSeriesCollection collec = chart.getSeriesCollection();
+        collec.setColor(0, Color.magenta);
+
+        // change font and its size
+        JFreeChart jc = chart.getChart();
+        TextTitle tt = jc.getTitle();
+        tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
+        chart.getXAxis().setLabels(1); // set up Y axis tick
+
+        // add view to panel
+        add(chart.view(300, 400).getComponent(0), gridBagConstraints);
 
         //Set button
         JButton setButton = new JButton("Close");
@@ -72,47 +77,6 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
 
         // set up border
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    }
-
-    /**
-     * Create one cluster distribution
-     * @return a frame of one cluster distribution
-     */
-    private JFrame createOneClusterDistributionFrame(int modelSeq, Color color) {
-
-        double[][] origianl = new double[2][1]; // a null point
-        origianl[0][0] = 0;
-        origianl[1][0] = 0;
-        XYLineChartApdater chart = new XYLineChartApdater("", "Time", "State", origianl);
-        XYListSeriesCollection collec = chart.getSeriesCollection();
-        collec.setColor(0, color);
-
-        int count = 0; // actual number of instances in a given cluster
-        int maximumLength = 0;
-        for (int i = 0; i < instances.size(); i++) {
-            maximumLength = Math.max(maximumLength, instances.get(i).size());
-            if (clusterLabels.get(i) == modelSeq) {
-
-                // get data instance
-                double[][] data = formatInstance(instances.get(i));
-                chart.add(data);
-                collec.setColor(++count, color);
-            }
-        }
-
-        // set up title
-        chart.setTitle("Cluster [ " + (modelSeq + 1) + " ] - " + Config.getSTATENUM() + " States {" + count + " Instances}");
-
-        // set x and y axis range and ticks
-        chart.setManualRange(new double[]{0, maximumLength, 1, Config.getSTATENUM()});
-        chart.getYAxis().setLabels(1); // set up ticks in y axis
-
-        // change font and its size
-        JFreeChart jc = chart.getChart();
-        TextTitle tt = jc.getTitle();
-        tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
-
-        return chart.view(300, 400);
     }
 
     /**
@@ -157,16 +121,16 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
      * event-dispatching thread.
      * @param dcdmcgui a parent gui
      */
-    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Integer> clusterLabels) {
+    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Double> similarityTrendline) {
         // Create and set up the window
-        jFrame = new JFrame("Data Cluster Distribution Chart");
+        jFrame = new JFrame("Similarity Trendline");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // save cluster labels
-        DataClusterDistributionGraphGUI.clusterLabels = clusterLabels;
+        SimilarityTrendlineGUI.similarityTrendline = similarityTrendline;
 
         // Create and set up the content pane.
-        JComponent newContentPane = new DataClusterDistributionGraphGUI();
+        JComponent newContentPane = new SimilarityTrendlineGUI();
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);

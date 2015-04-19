@@ -44,9 +44,14 @@ public class Starter {
     private IDAO mIdao; // data
     private IStoppingCriteria mIsc; // stopping criteria
     private IModels mIModels; // dynamic model
+
+    // initialization variables
+    private double[][] distanceMatrix; // distance matrix
+
+    // CDMC results
     private int[] initialClusterLalels; // initial cluster labels
     private int[] finalClusterLabels; // final cluster labels
-    private double[][] distanceMatrix; // distance matrix
+    private List<Double> mSimilarities; // similarities
 
     /**
      * class constructor
@@ -273,6 +278,10 @@ public class Starter {
                 int[] currentClusterLabels = null;
                 int iterationCount = 1;
 
+                //-------------- CDMC Intermediate Results --------------//
+                Starter.this.mSimilarities = new ArrayList<Double>();
+                Starter.this.mSimilarities.add(similarity);
+
                 while(similarity < Config.getSIMILARITY()) {
 
                     printInBackground("\n   ============== " + iterationCount + " ==============");
@@ -300,6 +309,7 @@ public class Starter {
                     LOGGER.info("Cluster Agreement Evaluation Starts");
                     // compute similarity
                     similarity = mIsc.computeSimilarity(previousClusterLabels, currentClusterLabels);
+                    Starter.this.mSimilarities.add(similarity);
                     LOGGER.info("Cluster Agreement Evaluation Ends");
                     String curSimilarity = String.format("%.4f", similarity);
                     printInBackground("        Current Similarity  = " + curSimilarity + " [ " + Config.getSIMILARITY() + " ].");
@@ -345,6 +355,8 @@ public class Starter {
             @Override
             public void done() {
                 progressBar.dispose();
+                // save similarity trendline dataset
+                IOOperation.writeFile(Utilities.convertToOneDimensionalDoubleArray(Starter.this.mSimilarities), Config.getSIMILARITYTRENDLINEFILEPATH());
                 Toolkit.getDefaultToolkit().beep();
             }
         };
@@ -416,6 +428,8 @@ public class Starter {
         }
 
     }
+
+
 
     /**
      * Visualize

@@ -1,5 +1,6 @@
 package starter;
 
+import java.awt.*;
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -36,6 +37,7 @@ public final class CONSTANTS {
     public final static String DISTANCEMATRIXFILEPATH; // distance matrix file path
     public final static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     public final static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
+    public final static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
 
     /*-------------------- GUI Variables ------------------*/
     public final static Boolean PROBABILITYDENSITYVIEW; // probability density view
@@ -43,6 +45,9 @@ public final class CONSTANTS {
 
     /*---------------------- Separator --------------------*/
     public final static String CONFIGSEPARATOR; // separator between configuration parameters
+
+    /*--------------------- Color Array -------------------*/
+    public final static Color[] COLORCOLLECTION; // colors for plot
 
     static {
         // File Path Default Settings
@@ -52,6 +57,7 @@ public final class CONSTANTS {
         DISTANCEMATRIXFILEPATH = new File("results" + File.separator + "DistanceMatrix.txt").getAbsolutePath();
         HYPNOGRAMDATASETFILEPATH = new File("dataset" + File.separator + "hypnogram.csv").getAbsolutePath();
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = new File("dataset" + File.separator + "msnbcData.csv").getAbsolutePath();
+        SIMILARITYTRENDLINEFILEPATH = new File("results" + File.separator + "SimilarityTrendline.txt").getAbsolutePath();
 
 
         // DCDMC Parameter Default Configuration
@@ -75,5 +81,8 @@ public final class CONSTANTS {
 
         // Separator
         CONFIGSEPARATOR = "@@@";
+
+        // Color Array
+        COLORCOLLECTION = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
     }
 }
