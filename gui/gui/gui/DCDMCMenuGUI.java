@@ -190,6 +190,17 @@ public class DCDMCMenuGUI {
         });
 
         menuBar.add(menu);
+        menuItem = new JMenuItem("Boxplot For Probs of Data");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<List<Double>> probsForAllInstances = IOOperation.readProbsFromFile(Config.getFINALPROBSFORALLINSTANCESFILEPATH());
+                ProbsForAllInstancesGUI.createAndShowGUI(dcdmcgui, probsForAllInstances);
+            }
+        });
+
+        menuBar.add(menu);
         menuItem = new JMenuItem("Initial Data Cluster Distribution Graph");
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {

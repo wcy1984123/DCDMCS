@@ -495,6 +495,7 @@ public class Starter {
         HistogramChartAdapter chart;
         String modelName = this.mIModels.getModelName();
         chart = new HistogramChartAdapter(name + " [" + modelName + "]", "Clusters", "Frequency", initialClusterDistribution);
+        chart.getXAxis().setLabels(1); // set up X axis ticks
         HistogramSeriesCollection collec = chart.getSeriesCollection();
         collec.setBins(0, 2 * Config.getCLUSTERNUM());
         collec.setColor(0, new Color(179, 232, 172));

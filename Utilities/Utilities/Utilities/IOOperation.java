@@ -196,8 +196,6 @@ public class IOOperation {
                 }
                 bw.newLine();
             }
-
-            bw.newLine();
             bw.close();
         } catch(IOException e) {
             e.printStackTrace();
@@ -256,7 +254,9 @@ public class IOOperation {
                 String[] strs = line.split(" ");
                 List<Double> eachLine = new ArrayList<Double>();
                 for (int i = 0; i < strs.length; i++) {
-                    eachLine.add(Double.parseDouble(strs[i]));
+                    if (strs[i].length() > 0) {
+                        eachLine.add(Double.parseDouble(strs[i]));
+                    }
                 }
                 data.add(eachLine);
             }
