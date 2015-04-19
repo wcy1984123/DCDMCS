@@ -54,7 +54,7 @@ public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
 
         // create box plot
         offset += this.probsForAllInstances.get(0).size();
-        BoxChartAdapter chart = new BoxChartAdapter("Boxplot over Probabilities of Instances in Clusters", "Cluster No.", "Normalized Log-Probabilities", data);
+        BoxChartAdapter chart = new BoxChartAdapter("Boxplot over Probabilities of Instances in Clusters [ " + Config.getDYNAMICMODELTYPE() + " ]", "Cluster No.", "Normalized Log-Probabilities", data);
         BoxSeriesCollectionAdapter collec = chart.getSeriesCollection();
 
         for (int i = 1; i < this.probsForAllInstances.size(); i++) {
@@ -62,8 +62,6 @@ public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
             offset += this.probsForAllInstances.get(i).size();
             chart.add(data == null ? new double[]{0.0} : data);
         }
-
-        chart.getYAxis();
 
         // change font and its size
         JFreeChart jc = chart.getJFreeChart();
@@ -104,7 +102,7 @@ public class ProbsForAllInstancesGUI extends JPanel implements ActionListener{
      */
     public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<List<Double>> probsForAllInstances) {
         // Create and set up the window
-        jFrame = new JFrame("Boxplot over Probabilities of Instances in Clusters");
+        jFrame = new JFrame("Boxplot over Probabilities of Instances in Clusters [ " + Config.getDYNAMICMODELTYPE() + " ]");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // save cluster labels

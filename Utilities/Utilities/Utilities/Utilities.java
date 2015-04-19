@@ -627,7 +627,6 @@ public class Utilities {
 
         int COLUMN = array.length;
         res = new double[COLUMN];
-        double sum = 0.0;
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < COLUMN; i++) {
@@ -638,6 +637,41 @@ public class Utilities {
         if ((max - min) != 0) {
             for (int j = 0; j < COLUMN; j++) {
                 res[j] = (array[j] * 1.0 - min) / (max - min);
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Normalize the given one dimensional array
+     * @param array one dimensional matrix
+     * @return a normalized one dimensional array
+     */
+    public static double[] normalizeArrayByMax(List<Double> array) {
+
+        double[] res = null;
+
+        if (array == null) {
+            LOGGER.log(Level.INFO, "The one dimensional array of integers is null!");
+            return res;
+        }
+
+        if (array.size() == 0) {
+            LOGGER.log(Level.INFO, "The one dimensional array of integers is empty!");
+            return res;
+        }
+
+        int COLUMN = array.size();
+        res = new double[COLUMN];
+        double max = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < COLUMN; i++) {
+            max = Math.max(max, array.get(i));
+        }
+
+        if (max != 0) {
+            for (int j = 0; j < COLUMN; j++) {
+                res[j] = array.get(j) * 1.0 / max;
             }
         }
 

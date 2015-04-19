@@ -158,25 +158,35 @@ public class DataClusterDistributionGraphGUI extends JPanel implements ActionLis
      * @param dcdmcgui a parent gui
      */
     public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Integer> clusterLabels) {
-        // Create and set up the window
-        jFrame = new JFrame("Data Cluster Distribution Chart");
-        jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // save cluster labels
-        DataClusterDistributionGraphGUI.clusterLabels = clusterLabels;
+        // background thread
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                // Create and set up the window
+                jFrame = new JFrame("Data Cluster Distribution Chart [ " + Config.getDYNAMICMODELTYPE() + " ]");
+                jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Create and set up the content pane.
-        JComponent newContentPane = new DataClusterDistributionGraphGUI();
+                // save cluster labels
+                DataClusterDistributionGraphGUI.clusterLabels = clusterLabels;
 
-        newContentPane.setOpaque(true); //content panes must be opaque
-        jFrame.setContentPane(newContentPane);
+                // Create and set up the content pane.
+                JComponent newContentPane = new DataClusterDistributionGraphGUI();
 
-        //Display the window.
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        jFrame.pack();
-        jFrame.setSize(screenSize.width / 3, screenSize.height / 3);
-        jFrame.setLocationRelativeTo(null);
-        jFrame.setVisible(true);
+                newContentPane.setOpaque(true); //content panes must be opaque
+                jFrame.setContentPane(newContentPane);
+
+                //Display the window.
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                jFrame.pack();
+                jFrame.setSize(screenSize.width / 3, screenSize.height / 3);
+                jFrame.setLocationRelativeTo(null);
+                jFrame.setVisible(true);
+
+                return null;
+            }
+        }.execute();
+
     }
 
     /**

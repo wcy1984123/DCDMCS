@@ -9,6 +9,7 @@ package model;
  */
 
 import Utilities.IOOperation;
+import Utilities.Utilities;
 import adapters.HistogramChartAdapter;
 import starter.Config;
 import umontreal.iro.lecuyer.charts.HistogramSeriesCollection;
@@ -37,12 +38,14 @@ abstract public class AbstractDynamicModels implements IModels{
 
     // Intermidiate results
     private List<List<Double>> mProbsOfInstances; // posterior probabilities of instances given the best model
+    private List<Double> mProbsTrendline; // posterior probabilities of instances trendline
 
     /**
      * Class constructor
      */
     public AbstractDynamicModels() {
         this.mModels = null;
+        this.mProbsTrendline = new ArrayList<Double>();
     }
 
 
@@ -159,7 +162,7 @@ abstract public class AbstractDynamicModels implements IModels{
 
         double[][] instancesProbsOfModels = new double[ModelsNum][InstancesNum];
 
-        // initialize member variables
+        // initialize intermediate results variables
         this.mProbsOfInstances = new ArrayList<List<Double>>();
         for (int i = 0; i < ModelsNum; i++) {
             instancesProbsOfModels[i] = this.mModels.get(i).getInstancesProbs(instances);
@@ -170,7 +173,7 @@ abstract public class AbstractDynamicModels implements IModels{
         clusterLabels = new int[InstancesNum];
 
         int[] clusterLabelsDist = new int[ModelsNum];
-
+        double totalProbsOfInstances = 0;
         for (int i = 0; i < InstancesNum; i++) {
             double maxProb = instancesProbsOfModels[0][i];
             int index = 0; // model No.
@@ -184,9 +187,13 @@ abstract public class AbstractDynamicModels implements IModels{
 
             // record which model produces the maximum probabilities among all models
             this.mProbsOfInstances.get(index).add(maxProb);
+            totalProbsOfInstances += maxProb;
             clusterLabels[i] = index;
             clusterLabelsDist[index]++;
         }
+
+        // save total probabilities of all instances in each iteration
+        this.mProbsTrendline.add(totalProbsOfInstances);
 
         for (int i = 0; i < ModelsNum; i++) {
             System.out.println("        Mode[" + (i + 1) + "]: " + clusterLabelsDist[i] + " instances.");
@@ -228,6 +235,9 @@ abstract public class AbstractDynamicModels implements IModels{
             public void done() {
                 // save probabilities of each instance by the best model
                 IOOperation.writeProbsToFile(AbstractDynamicModels.this.mProbsOfInstances, Config.getFINALPROBSFORALLINSTANCESFILEPATH());
+
+                // save total probabilities of all instances in each iteration
+                IOOperation.writeFile(Utilities.convertToOneDimensionalDoubleArray(AbstractDynamicModels.this.mProbsTrendline), Config.getTOTALPROBABILITIESTRENDLINEFILEPATH());
             }
         };
 

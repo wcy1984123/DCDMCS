@@ -190,7 +190,18 @@ public class DCDMCMenuGUI {
         });
 
         menuBar.add(menu);
-        menuItem = new JMenuItem("Boxplot For Probs of Data");
+        menuItem = new JMenuItem("Total Probabilities Trendline");
+        menu.add(menuItem);
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Double> totalProbsTrendline = IOOperation.readSimilarityTrendline(Config.getTOTALPROBABILITIESTRENDLINEFILEPATH());
+                TotalProbsTrendlineGUI.createAndShowGUI(dcdmcgui, totalProbsTrendline);
+            }
+        });
+
+        menuBar.add(menu);
+        menuItem = new JMenuItem("Final Cluster Probabilities of Data Boxplot");
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override

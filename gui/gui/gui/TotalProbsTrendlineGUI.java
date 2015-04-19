@@ -1,17 +1,7 @@
 package gui;
 
-/**
- * Project: DCDMC
- * Package: gui
- * Date: 18/Apr/2015
- * Time: 21:02
- * System Time: 9:02 PM
- */
-
+import Utilities.Utilities;
 import adapters.XYLineChartApdater;
-import dao.DATATYPE;
-import dao.DaoFactory;
-import dao.IDAO;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.title.TextTitle;
 import starter.Config;
@@ -26,18 +16,27 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Class for similarity distribution during CDMC iterative process
+ * Project: DCDMC
+ * Package: gui
+ * Date: 19/Apr/2015
+ * Time: 15:22
+ * System Time: 3:22 PM
  */
-public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
-    private final static Logger LOGGER = Logger.getLogger(SimilarityTrendlineGUI.class.getName());
-    private static List<Double> similarityTrendline;
+
+
+/**
+ * Class for total probabilities distribution during CDMC iterative process
+ */
+public class TotalProbsTrendlineGUI extends JPanel implements ActionListener {
+    private final static Logger LOGGER = Logger.getLogger(TotalProbsTrendlineGUI.class.getName());
+    private static List<Double> totalProbsTrendline;
     private GridBagConstraints gridBagConstraints;
     private static JFrame jFrame = null;
 
     /**
      * Class constructor
      */
-    public SimilarityTrendlineGUI() {
+    public TotalProbsTrendlineGUI() {
 
         // set up layout
         super(new GridBagLayout());
@@ -48,18 +47,20 @@ public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
 
-        double[][] data = formatInstance(similarityTrendline);
-        XYLineChartApdater chart = new XYLineChartApdater("CDMC Similarity Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]", "Iteration No.", "Similarity", data);
+        double[][] data = formatInstance(totalProbsTrendline);
+        XYLineChartApdater chart = new XYLineChartApdater("CDMC Total Probabilities Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]", "Iteration No.", "Total Probabilities", data);
         XYListSeriesCollection collec = chart.getSeriesCollection();
-        collec.setColor(0, Color.magenta);
+        collec.setColor(0, Color.BLUE);
+        collec.setMarksType(0, "*");
+        collec.setPlotStyle(0, "sharp plot");
 
         // change font and its size
         JFreeChart jc = chart.getChart();
         TextTitle tt = jc.getTitle();
         tt.setFont(new FontUIResource("DensityChartSmallFont", Font.ITALIC, 12)); // set up font
         chart.getXAxis().setLabels(1); // set up Y axis tick
-        double tick = (data[1][similarityTrendline.size() - 1] - data[1][0]) / similarityTrendline.size();
-        chart.getYAxis().setLabels(10 * tick);
+        double tick = (data[1][0] - data[1][totalProbsTrendline.size() - 1]) / totalProbsTrendline.size();
+        chart.getYAxis().setLabels(2 * tick);
 
         // add view to panel
         JFrame jFrame = chart.view(300, 400);
@@ -97,9 +98,12 @@ public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
 
         data = new double[2][instance.size()];
 
-        for (int i = 0; i < instance.size(); i++) {
+        // normalize data by max format
+        double[] formatedData = Utilities.normalizeArrayByMax(instance);
+
+        for (int i = 0; i < formatedData.length; i++) {
             data[0][i] = i;
-            data[1][i] = instance.get(i);
+            data[1][i] = formatedData[i];
         }
 
         return data;
@@ -119,18 +123,18 @@ public class SimilarityTrendlineGUI extends JPanel implements ActionListener{
      * this method should be invoked from the
      * event-dispatching thread.
      * @param dcdmcgui a parent gui
-     * @param similarityTrendline similarity trendline dataset
+     * @param totalProbsTrendline total probabilities trendlien data
      */
-    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Double> similarityTrendline) {
+    public static void createAndShowGUI(final DCDMCGUI dcdmcgui, final List<Double> totalProbsTrendline) {
         // Create and set up the window
-        jFrame = new JFrame("Similarity Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]");
+        jFrame = new JFrame("Total Probabilities Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]");
         jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // save cluster labels
-        SimilarityTrendlineGUI.similarityTrendline = similarityTrendline;
+        TotalProbsTrendlineGUI.totalProbsTrendline = totalProbsTrendline;
 
         // Create and set up the content pane.
-        JComponent newContentPane = new SimilarityTrendlineGUI();
+        JComponent newContentPane = new TotalProbsTrendlineGUI();
 
         newContentPane.setOpaque(true); //content panes must be opaque
         jFrame.setContentPane(newContentPane);
