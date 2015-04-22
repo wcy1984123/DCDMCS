@@ -50,7 +50,9 @@ public class DCDMCMenuGUI {
         menuBar.add(menu);
 
         //Import Config File
-        menuItem = new JMenuItem("Import Config File ...", KeyEvent.VK_I);
+        ImageIcon icon = createImageIcon("icons/import.png");
+        menuItem = new JMenuItem("Import Config File ...", icon);
+        menuItem.setMnemonic(KeyEvent.VK_I);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -73,7 +75,9 @@ public class DCDMCMenuGUI {
         });
 
         // Export Config File
-        menuItem = new JMenuItem("Export Config File ...", KeyEvent.VK_E);
+        icon = createImageIcon("icons/export.png");
+        menuItem = new JMenuItem("Export Config File ...", icon);
+        menuItem.setMnemonic(KeyEvent.VK_E);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -98,11 +102,13 @@ public class DCDMCMenuGUI {
         menu.addSeparator();
 
         //a submenu
-
+        icon = createImageIcon("icons/settings.png");
         submenu = new JMenu("Settings...");
         submenu.setMnemonic(KeyEvent.VK_S);
+        submenu.setIcon(icon);
 
-        menuItem = new JMenuItem("Paths...");
+        icon = createImageIcon("icons/path.png");
+        menuItem = new JMenuItem("Paths...", icon);
         submenu.add(menuItem);
         menu.add(submenu);
         menuItem.addActionListener(new ActionListener() {
@@ -115,7 +121,9 @@ public class DCDMCMenuGUI {
 
         menu.addSeparator();
 
-        menuItem = new JMenuItem("Exit", KeyEvent.VK_0);
+        icon = createImageIcon("icons/exit.png");
+        menuItem = new JMenuItem("Exit", icon);
+        menuItem.setMnemonic(KeyEvent.VK_0);
         menuItem.addActionListener(
                 new ActionListener() {
                     /**
@@ -135,7 +143,8 @@ public class DCDMCMenuGUI {
         //-------------------------------------- Settings Menu --------------------------------------//
         menu = new JMenu("Edit");
         menuBar.add(menu);
-        menuItem = new JMenuItem("Reset Configurations");
+        icon = createImageIcon("icons/reset.png");
+        menuItem = new JMenuItem("Reset Configurations", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -165,7 +174,10 @@ public class DCDMCMenuGUI {
             }
         });
 
-        menuItem = new JMenuItem("Show All Configurations");
+        menu.addSeparator();
+
+        icon = createImageIcon("icons/showconfigs.png");
+        menuItem = new JMenuItem("Show All Configurations", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -179,7 +191,8 @@ public class DCDMCMenuGUI {
         menu = new JMenu("Analysis");
 
         menuBar.add(menu);
-        menuItem = new JMenuItem("Similarity Trendline");
+        icon = createImageIcon("icons/similaritytrendline.png");
+        menuItem = new JMenuItem("Similarity Trendline", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -190,7 +203,8 @@ public class DCDMCMenuGUI {
         });
 
         menuBar.add(menu);
-        menuItem = new JMenuItem("Total Probabilities Trendline");
+        icon = createImageIcon("icons/totalprobabilitiestrendline.png");
+        menuItem = new JMenuItem("Total Probabilities Trendline", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -200,8 +214,11 @@ public class DCDMCMenuGUI {
             }
         });
 
+        menu.addSeparator();
+
         menuBar.add(menu);
-        menuItem = new JMenuItem("Final Cluster Probabilities of Data Boxplot");
+        icon = createImageIcon("icons/finalclusterprobabilities.png");
+        menuItem = new JMenuItem("Final Cluster Probabilities of Data Boxplot", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -211,8 +228,11 @@ public class DCDMCMenuGUI {
             }
         });
 
+        menu.addSeparator();
+
         menuBar.add(menu);
-        menuItem = new JMenuItem("Initial Data Cluster Distribution Graph");
+        icon = createImageIcon("icons/initialdatadistributiongraph.png");
+        menuItem = new JMenuItem("Initial Data Cluster Distribution Graph", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -223,7 +243,8 @@ public class DCDMCMenuGUI {
         });
 
         menuBar.add(menu);
-        menuItem = new JMenuItem("Final Data Cluster Distribution Graph");
+        icon = createImageIcon("icons/finaldatadistributiongraph.png");
+        menuItem = new JMenuItem("Final Data Cluster Distribution Graph", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -238,7 +259,8 @@ public class DCDMCMenuGUI {
         menu = new JMenu("Help");
         menuBar.add(menu);
 
-        menuItem = new JMenuItem("Software website");
+        icon = createImageIcon("icons/website.png");
+        menuItem = new JMenuItem("Software website", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -254,7 +276,10 @@ public class DCDMCMenuGUI {
             }
         });
 
-        menuItem = new JMenuItem("Software Version & Copyright");
+        menu.addSeparator();
+
+        icon = createImageIcon("icons/copyright.png");
+        menuItem = new JMenuItem("Software Version & Copyright", icon);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
             @Override
@@ -263,8 +288,10 @@ public class DCDMCMenuGUI {
             }
         });
 
+        menu.addSeparator();
 
-        menuItem = new JMenuItem("About me");
+        icon = createImageIcon("icons/me.png");
+        menuItem = new JMenuItem("About me", icon);
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -317,6 +344,17 @@ public class DCDMCMenuGUI {
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    /**
+     * Return an iconimage
+     * @param path image file path
+     * @return an iconimage
+     */
+    private ImageIcon createImageIcon(String path) {
+        String filePath = new File(path).getAbsolutePath();
+        ImageIcon imageIcon = new ImageIcon((new ImageIcon(filePath)).getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT));
+        return imageIcon;
     }
 
     /**
