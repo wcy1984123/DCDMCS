@@ -48,7 +48,24 @@ public class TotalProbsTrendlineGUI extends JPanel implements ActionListener {
         gridBagConstraints.gridy = 1;
 
         double[][] data = formatInstance(totalProbsTrendline);
-        XYLineChartApdater chart = new XYLineChartApdater("CDMC Total Probabilities Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]", "Iteration No.", "Total Probabilities", data);
+
+        // detect NAN to deal with bad dataset
+        boolean flag = false;
+        for (int i = 0; i < data[0].length; i++) {
+            if (Double.isNaN(data[1][i])) {
+                flag = true;
+            }
+        }
+
+        // create panel
+        String title = null;
+        if (flag) {
+            title = "CDMC Total Probabilities Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]\n Not Available\n" +
+                    "***Values may be Negative Infinity Or Not A Number***";
+        } else {
+            title = "CDMC Total Probabilities Trendline [ " + Config.getDYNAMICMODELTYPE() + " ]";
+        }
+        XYLineChartApdater chart = new XYLineChartApdater(title, "Iteration No.", "Total Probabilities", data);
         XYListSeriesCollection collec = chart.getSeriesCollection();
         collec.setColor(0, Color.BLUE);
         collec.setMarksType(0, "*");
@@ -101,6 +118,7 @@ public class TotalProbsTrendlineGUI extends JPanel implements ActionListener {
         // normalize data by max format
         double[] formatedData = Utilities.normalizeArrayByMax(instance);
 
+        // format data to be display in GUI
         for (int i = 0; i < formatedData.length; i++) {
             data[0][i] = i;
             data[1][i] = formatedData[i];

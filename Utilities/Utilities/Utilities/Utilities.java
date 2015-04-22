@@ -706,7 +706,14 @@ public class Utilities {
 
         for (int i = 0; i < data.size(); i++) {
             for (int j = 0; j < data.get(i).size(); j++) {
-                output[count++] = data.get(i).get(j);
+                double value = data.get(i).get(j);
+
+                // deal with the special case when the value is infinity
+                if (Double.isInfinite(value)) {
+                    output[count++] = 0;
+                } else {
+                    output[count++] = value;
+                }
             }
         }
 
