@@ -6,6 +6,8 @@ import starter.InitialStarter;
 import starter.Starter;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -276,39 +278,28 @@ public class DCDMCGUI extends JFrame {
         });
 
         // setup tab for model parameters
-        setupJPanel.addComponentListener(new ComponentAdapter() {
+        modelParametersJPanel.setLayout(new BorderLayout());
+        modelParametersJPanel.setOpaque(true);
+        modelParametersTextPane.setContentType("text/html");
+        modelParametersTextPane.setEditable(false);
+        modelParametersTextPane.setText("\n");
+        Config config = new Config(getParameters()); // update configurations based on parameters
+        modelParametersTextPane.setText(Config.toFormatOnlyParametersAsString());
+        modelParametersTextPane.setCaretPosition(modelParametersTextPane.getDocument().getLength());
+        JScrollPane scrollPane = new JScrollPane(modelParametersTextPane);
+        modelParametersJPanel.add(scrollPane, BorderLayout.CENTER); //Add the text area to the content pane.
+        dcdmcTabbedPane.addChangeListener(new ChangeListener() {
             @Override
-            public void componentShown(ComponentEvent e) {
-                // setup jpanel
-                modelParametersJPanel.setLayout(new BorderLayout());
-                modelParametersJPanel.setOpaque(true);
-                modelParametersTextPane.setContentType("text/html");
-                modelParametersTextPane.setEditable(false);
-                modelParametersTextPane.setText("\n");
-                Config config = new Config(getParameters()); // update configurations based on parameters
-                modelParametersTextPane.setText(Config.toFormatOnlyParametersAsString());
-                modelParametersTextPane.setCaretPosition(modelParametersTextPane.getDocument().getLength());
-                JScrollPane scrollPane = new JScrollPane(modelParametersTextPane);
-                modelParametersJPanel.add(scrollPane, BorderLayout.CENTER); //Add the text area to the content pane.
+            public void stateChanged(ChangeEvent e) {
+                if (dcdmcTabbedPane.getSelectedIndex() == 2) {
+                    // update
+                    Config config = new Config(getParameters()); // update configurations based on parameters
+                    modelParametersTextPane.setText(Config.toFormatOnlyParametersAsString());
+                    modelParametersTextPane.setCaretPosition(modelParametersTextPane.getDocument().getLength());
+                }
             }
         });
 
-        setupJPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                // setup jpanel
-                modelParametersJPanel.setLayout(new BorderLayout());
-                modelParametersJPanel.setOpaque(true);
-                modelParametersTextPane.setContentType("text/html");
-                modelParametersTextPane.setEditable(false);
-                modelParametersTextPane.setText("\n");
-                Config config = new Config(getParameters()); // update configurations based on parameters
-                modelParametersTextPane.setText(Config.toFormatOnlyParametersAsString());
-                modelParametersTextPane.setCaretPosition(modelParametersTextPane.getDocument().getLength());
-                JScrollPane scrollPane = new JScrollPane(modelParametersTextPane);
-                modelParametersJPanel.add(scrollPane, BorderLayout.CENTER); //Add the text area to the content pane.
-            }
-        });
     }
 
     /**
