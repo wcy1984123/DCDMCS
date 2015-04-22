@@ -64,6 +64,16 @@ public class DCDMCGUI extends JFrame {
     private JLabel clusterNumberJLabel;
     private JLabel similarityThresholdJLabel;
     private JLabel stateNumberJLabel;
+    private JRadioButton standaloneSystemRadioButton;
+    private JRadioButton distributedSystemRadioButton;
+    private JPanel setupJPanel;
+    private JPanel systemModeJPanel;
+    private JPanel modelParametersJPanel;
+    private JTextPane modelParametersTextPane;
+    private JPanel systemDesignJPanel;
+    private JRadioButton allGroupingsRadioButton;
+    private JRadioButton fieldGroupingsRadioButton;
+    private JRadioButton shuffleGroupingsRadioButton;
     // ----------------------------------------------------------------------------//
 
     /**
@@ -265,6 +275,40 @@ public class DCDMCGUI extends JFrame {
             }
         });
 
+        // setup tab for model parameters
+        setupJPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                // setup jpanel
+                modelParametersJPanel.setLayout(new BorderLayout());
+                modelParametersJPanel.setOpaque(true);
+                modelParametersTextPane.setContentType("text/html");
+                modelParametersTextPane.setEditable(false);
+                modelParametersTextPane.setText("\n");
+                Config config = new Config(getParameters()); // update configurations based on parameters
+                modelParametersTextPane.setText(Config.toFormatOnlyParametersAsString());
+                modelParametersTextPane.setCaretPosition(modelParametersTextPane.getDocument().getLength());
+                JScrollPane scrollPane = new JScrollPane(modelParametersTextPane);
+                modelParametersJPanel.add(scrollPane, BorderLayout.CENTER); //Add the text area to the content pane.
+            }
+        });
+
+        setupJPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // setup jpanel
+                modelParametersJPanel.setLayout(new BorderLayout());
+                modelParametersJPanel.setOpaque(true);
+                modelParametersTextPane.setContentType("text/html");
+                modelParametersTextPane.setEditable(false);
+                modelParametersTextPane.setText("\n");
+                Config config = new Config(getParameters()); // update configurations based on parameters
+                modelParametersTextPane.setText(Config.toFormatOnlyParametersAsString());
+                modelParametersTextPane.setCaretPosition(modelParametersTextPane.getDocument().getLength());
+                JScrollPane scrollPane = new JScrollPane(modelParametersTextPane);
+                modelParametersJPanel.add(scrollPane, BorderLayout.CENTER); //Add the text area to the content pane.
+            }
+        });
     }
 
     /**

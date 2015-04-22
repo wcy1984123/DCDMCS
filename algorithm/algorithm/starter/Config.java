@@ -764,6 +764,105 @@ public final class Config {
     }
 
     /**
+     * Print out all config information
+     * @return all config information
+     */
+    public static String toFormatOnlyParametersAsString() {
+        StringBuffer sb = new StringBuffer();
+
+//        String color1 = "white";
+//        String color2 = "white";
+//        String color3 = "white";
+//        String color4 = "white";
+//        String color5 = "white";
+//        String color6 = "white";
+        String color1 = "#66CCCC";
+        String color2 = "#CCFF99";
+        String color3 = "#66CCFF";
+        String color4 = "#CCFFFF";
+        String color5 = "#CC99FF";
+        String color6 = "#FFA500";
+        sb.append(
+                "<html>\n" +
+                        "<head>\n" +
+                        "<style>\n" +
+                        "table, th, td {\n" +
+                        "    border: 1px solid black;\n" +
+                        "    border-collapse: collapse;\n" +
+                        "}\n" +
+                        "th, td {\n" +
+                        "    text-align: left;\n" +
+                        "    font: 10;" +
+                        "}\n" +
+                        "th {\n" +
+                        "    background-color: black;\n" +
+                        "    color: white;\n" +
+                        "}\n" +
+                        "</style>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "<table style=\"width:100%\">\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color1 + ">Cluster Num</td>\n" +
+                        "    <td bgcolor=" + color1 + ">" + CLUSTERNUM + "</td>\n" +
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color1 + ">Similarity</td>\n" +
+                        "    <td bgcolor=" + color1 + ">" + SIMILARITY + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color2 + ">Dataset Type</td>\n" +
+                        "    <td bgcolor=" + color2 + ">" + DATASETTYPE + "</td>\n" +
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color2 + ">State Number</td>\n" +
+                        "    <td bgcolor=" + color2 + ">" + STATENUM + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color2 + ">Dataset Format</td>\n" +
+                        "    <td bgcolor=" + color2 + ">" + DATAFORMAT + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color3 + ">DTW Type</td>\n" +
+                        "    <td bgcolor=" + color3 + ">" + DTWTYPE + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color3 + ">Deviated DTW Type</td>\n" +
+                        "    <td bgcolor=" + color3 + ">" + DEVIATEDDTWTYPE + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color4 + ">Stopping Criterion</td>\n" +
+                        "    <td bgcolor=" + color4 + "> " + STOPPINGCRITERIATYPE + " </td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color5 + ">Dynamic Model Type</td>\n" +
+                        "    <td bgcolor=" + color5 + ">" + DYNAMICMODELTYPE + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color6 + ">Initial Clustering Type</td>\n" +
+                        "    <td bgcolor=" + color6 + ">" + INITIALCLUSTERINGTYPE + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "  <tr>\n" +
+                        "    <td bgcolor=" + color6 + ">Hierarchical Linkage Type</td>\n" +
+                        "    <td bgcolor=" + color6 + ">" + HIERARCHICALLINKAGETYPE + "</td>\n" +
+
+                        "  </tr>\n" +
+                        "</table>\n" +
+                        "</body>\n" +
+                        "</html>");
+
+        return sb.toString();
+    }
+
+    /**
      * test
      * @param args user input
      */

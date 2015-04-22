@@ -290,7 +290,7 @@ public class DCDMCMenuGUI {
         output.setContentType("text/html");
         output.setEditable(false);
         output.setText("\n");
-        Config config = new Config(dcdmcgui.getParameters());
+        Config config = new Config(dcdmcgui.getParameters()); // update configurations based on parameters
         output.setText(Config.toFormatAsString());
         output.setCaretPosition(output.getDocument().getLength());
         JScrollPane scrollPane = new JScrollPane(output);
