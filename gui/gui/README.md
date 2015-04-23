@@ -1,4 +1,4 @@
 ##Distributed Collective Dynamic Modeling & Clustering
 ![GUIIMAGE](/images/GUIScreenSnapshot.png)
 
-![GUIIMAGE](/images/guiclassdiagram.jpg)
+![GUIIMAGE](/classdiagrams/guiclassdiagram.jpg)
