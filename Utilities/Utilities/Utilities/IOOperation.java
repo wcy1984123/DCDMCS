@@ -131,6 +131,36 @@ public class IOOperation {
     }
 
     /**
+     * Write the input array into file
+     * @param data a text
+     * @param path file path
+     */
+    public static void writeFile(String data, String path) {
+
+        if (data == null) {
+            LOGGER.info("The data is null!");
+            return;
+        }
+
+        if (data.length() == 0) {
+            LOGGER.info("The data is empty!");
+            return;
+        }
+
+        try{
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+
+            bw.write(data);
+
+            bw.newLine();
+            bw.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Write the input list into file
      * @param dataList a list
      * @param path file path

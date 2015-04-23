@@ -40,6 +40,7 @@ public final class CONSTANTS {
     public final static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
     public final static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances file path
     public final static String TOTALPROBABILITIESTRENDLINEFILEPATH; // total probabilities trendline file path
+    public final static String SAVECONSOLETODISKFILEPATH; // save console to disk file path
 
     /*-------------------- GUI Variables ------------------*/
     public final static Boolean PROBABILITYDENSITYVIEW; // probability density view
@@ -62,6 +63,7 @@ public final class CONSTANTS {
         SIMILARITYTRENDLINEFILEPATH = new File("results" + File.separator + "SimilarityTrendline.txt").getAbsolutePath();
         FINALPROBSFORALLINSTANCESFILEPATH = new File("results" + File.separator + "FinalProbsForAllInstances.txt").getAbsolutePath();
         TOTALPROBABILITIESTRENDLINEFILEPATH = new File("results" + File.separator + "TotalProbsTrendline.txt").getAbsolutePath();
+        SAVECONSOLETODISKFILEPATH = new File("results" + File.separator + "consoleData.txt").getAbsolutePath();
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = 3;

@@ -45,7 +45,7 @@ public final class Config {
     private static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
     private static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances file path
     private static String TOTALPROBABILITIESTRENDLINEFILEPATH; // total probabilities trendline file path
-
+    private static String SAVECONSOLETODISKFILEPATH; // save console to disk file path
 
     //*-------------------- GUI Variables ------------------*/
     private static Boolean PROBABILITYDENSITYVIEW; // probability density view
@@ -70,6 +70,7 @@ public final class Config {
         SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
         FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
         TOTALPROBABILITIESTRENDLINEFILEPATH = CONSTANTS.TOTALPROBABILITIESTRENDLINEFILEPATH;
+        SAVECONSOLETODISKFILEPATH = CONSTANTS.SAVECONSOLETODISKFILEPATH;
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -147,6 +148,7 @@ public final class Config {
         SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
         FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
         TOTALPROBABILITIESTRENDLINEFILEPATH = CONSTANTS.TOTALPROBABILITIESTRENDLINEFILEPATH;
+        SAVECONSOLETODISKFILEPATH = CONSTANTS.SAVECONSOLETODISKFILEPATH;
 
         // DCDMC Parameter Default Configuration
         CLUSTERNUM = CONSTANTS.CLUSTERNUM;
@@ -588,6 +590,22 @@ public final class Config {
      */
     public static void setTOTALPROBABILITIESTRENDLINEFILEPATH(String TOTALPROBABILITIESTRENDLINEFILEPATH) {
         Config.TOTALPROBABILITIESTRENDLINEFILEPATH = TOTALPROBABILITIESTRENDLINEFILEPATH;
+    }
+
+    /**
+     * Getter
+     * @return save console to dish file path
+     */
+    public static String getSAVECONSOLETODISKFILEPATH() {
+        return SAVECONSOLETODISKFILEPATH;
+    }
+
+    /**
+     * Setter
+     * @param SAVECONSOLETODISKFILEPATH save console to dish file path
+     */
+    public static void setSAVECONSOLETODISKFILEPATH(String SAVECONSOLETODISKFILEPATH) {
+        Config.SAVECONSOLETODISKFILEPATH = SAVECONSOLETODISKFILEPATH;
     }
 
     /**

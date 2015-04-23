@@ -1,6 +1,8 @@
 package gui;
 
 import Utilities.IOOperation;
+import Utilities.Utilities;
+import starter.Config;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +43,10 @@ public class ConsoleGUI extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 JPopupMenu jPopupMenu = new JPopupMenu();
-                JMenuItem jMenuItem = new JMenuItem("Clear");
+
+                // clear console info
+                ImageIcon icon = Utilities.createImageIcon("icons/clearconsole.png");
+                JMenuItem jMenuItem = new JMenuItem("Clear", icon);
                 jPopupMenu.add(jMenuItem);
                 jMenuItem.addActionListener(new ActionListener() {
                     @Override
@@ -49,6 +54,27 @@ public class ConsoleGUI extends JFrame{
                         ConsoleGUI.this.consoleTextArea.setText(""); // clear text field
                     }
                 });
+
+                jPopupMenu.addSeparator();
+
+                // save console info into file
+                icon = Utilities.createImageIcon("icons/saveconsole.png");
+                jMenuItem = new JMenuItem("Save", icon);
+                jPopupMenu.add(jMenuItem);
+                jMenuItem.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        //get text in the text area
+                        String text = ConsoleGUI.this.consoleTextArea.getText();
+                        if (text != null) {
+                            IOOperation.writeFile(text, Config.getSAVECONSOLETODISKFILEPATH());
+                            System.out.println("        Save console successfully!");
+                        } else {
+                            System.out.println("        Fail to save console!");
+                        }
+                    }
+                });
+
                 jPopupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         });

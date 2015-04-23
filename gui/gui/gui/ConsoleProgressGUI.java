@@ -2,6 +2,7 @@ package gui;
 
 import Utilities.IOOperation;
 import initializer.dtws.IDTW;
+import starter.Config;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,7 +90,7 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             consoleTextArea.append("\n ||-------- Distance Calculation Ends -------||\n");
 
             // save distance matrix into file
-            IOOperation.writeFile(distanceMatrix, "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/results/DistanceMatrix.txt");
+            IOOperation.writeFile(distanceMatrix, Config.getDISTANCEMATRIXFILEPATH());
             flag = true;
 
             LOGGER.info("Initialization Ends");

@@ -1,5 +1,8 @@
 package Utilities;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -758,6 +761,17 @@ public class Utilities {
         }
 
         return output;
+    }
+
+    /**
+     * Return an iconimage
+     * @param path image file path
+     * @return an iconimage
+     */
+    public static ImageIcon createImageIcon(String path) {
+        String filePath = new File(path).getAbsolutePath();
+        ImageIcon imageIcon = new ImageIcon((new ImageIcon(filePath)).getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT));
+        return imageIcon;
     }
 
     /**
