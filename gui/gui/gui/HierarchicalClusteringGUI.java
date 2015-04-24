@@ -109,9 +109,11 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
         } else if (e.getActionCommand().equals(weightedLinkageStrategy)) {
             Config.setHIERARCHICALLINKAGETYPE(weightedLinkageStrategy);
         } else if (e.getActionCommand().equals("setButton")) {
-            System.out.println("\n===================================");
+            System.out.println();
+            System.out.println("    ===================================");
             System.out.println("        Linkage Strategy: " + Config.getHIERARCHICALLINKAGETYPE());
-            System.out.println("===================================\n");
+            System.out.println("    ===================================");
+            System.out.println();
             this.dcdmcgui.setAllComponentsEnabled(true);
             jFrame.dispose(); // close this frame
         } else {

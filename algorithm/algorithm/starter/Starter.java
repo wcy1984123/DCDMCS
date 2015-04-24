@@ -255,7 +255,11 @@ public class Starter {
              * @param info printed-out information
              */
             private void printInBackground(String info) {
-                System.out.println(info);
+                if (info == null) {
+                    System.out.println();
+                } else {
+                    System.out.println(info);
+                }
                 // publish(info);
             }
 
@@ -265,7 +269,8 @@ public class Starter {
                 progressBar.createAndShowGUI();
 
                 LOGGER.info("Cluster & Models Starts");
-                printInBackground("\n||************** Cluster & Models Starts ************||");
+                printInBackground(null); // print out a new line
+                printInBackground("||************** Cluster & Models Starts ************||");
 
                 //------------------- Initialization --------------------//
                 List<List<Double>> instances = Starter.this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getDATAFORMAT()));
@@ -284,7 +289,8 @@ public class Starter {
 
                 while(similarity < Config.getSIMILARITY()) {
 
-                    printInBackground("\n   ============== " + iterationCount + " ==============");
+                    printInBackground(null); // print out a new line
+                    printInBackground("   ============== " + iterationCount + " ==============");
                     String preSimilarity = String.format("%.4f", similarity);
 
                     printInBackground("        Previous Similarity = " + preSimilarity + " [ " + Config.getSIMILARITY() + " ].");
@@ -316,7 +322,8 @@ public class Starter {
 
                     // update cluster labels
                     previousClusterLabels = currentClusterLabels;
-                    printInBackground("   ==============================\n");
+                    printInBackground("   ==============================");
+                    printInBackground(null); // print out a new line
 
                     iterationCount++;
                 }

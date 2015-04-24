@@ -221,13 +221,17 @@ abstract public class AbstractDynamicModels implements IModels{
         SwingWorker worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                System.out.println("\n   ======= Final Models Parameters ======= ");
+                System.out.println();
+                System.out.println("   ======= Final Models Parameters ======= ");
                 for (int i = 0; i < AbstractDynamicModels.this.mModels.size(); i++) {
                     AbstractDynamicModels.this.mModels.get(i).visualizeOutput();
                 }
 
-                System.out.println("\n   ============================== \n");
-                System.out.println("||************** Cluster & Models Ends *************||\n");
+                System.out.println();
+                System.out.println("   ============================== ");
+                System.out.println();
+                System.out.println("||************** Cluster & Models Ends *************||");
+                System.out.println();
                 return null;
             }
 

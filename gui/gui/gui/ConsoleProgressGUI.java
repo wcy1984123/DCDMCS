@@ -94,7 +94,9 @@ public class ConsoleProgressGUI extends JFrame implements PropertyChangeListener
             flag = true;
 
             LOGGER.info("Initialization Ends");
-            System.out.println("\n||------------ Initialization Ends ------------||\n");
+            System.out.println();
+            System.out.println("||------------ Initialization Ends ------------||");
+            System.out.println();
         }
     }
 

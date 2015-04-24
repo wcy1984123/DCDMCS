@@ -127,7 +127,9 @@ public class InitialStarter {
 
         //------------------- Initialization --------------------//
         LOGGER.info("Initialization Begins");
-        System.out.println("\n||----------- Initialization Begins -----------||\n");
+        System.out.println();
+        System.out.println("||----------- Initialization Begins -----------||");
+        System.out.println();
         List<List<Double>> instances = this.mIdao.getDataSourceAsLists(Config.getDATASETPATH(), String.valueOf(Config.getSTATENUM()));
         this.mInitializer.initializer(instances, Config.getCLUSTERNUM()); // compute distance
 
@@ -138,7 +140,7 @@ public class InitialStarter {
      * @param args user input
      */
     public static void main(String[] args) {
-        String configPath = "/Users/chiyingwang/Documents/IntelliJIdeaSpace/DCDMCS/config/config.txt";
+        String configPath = Config.getCONFIGPATH();
         InitialStarter test = new InitialStarter(configPath);
         test.runInitialization();
 

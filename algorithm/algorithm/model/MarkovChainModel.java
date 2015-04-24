@@ -139,7 +139,8 @@ public class MarkovChainModel implements IModel, ICluster {
     public void visualizeOutput() {
         int stateNum = Config.getSTATENUM();
         int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
-        System.out.println("\n               -------- Model [ " + modelSeq + " ] -------- ");
+        System.out.println();
+        System.out.println("               -------- Model [ " + modelSeq + " ] -------- ");
 
         // print out state transition matrix
         for (int i = 0; i < stateNum; i++) {

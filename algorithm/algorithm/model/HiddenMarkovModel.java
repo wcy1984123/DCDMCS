@@ -255,10 +255,12 @@ public class HiddenMarkovModel implements IModel, ICluster {
     public void visualizeOutput() {
         int stateNum = Config.getSTATENUM();
         int modelSeq = this.curSeq % Config.getCLUSTERNUM() + 1; // modulo current model sequence value under total clusters scope
-        System.out.println("\n               -------- Model [ " + modelSeq + " ] -------- ");
+        System.out.println();
+        System.out.println("               -------- Model [ " + modelSeq + " ] -------- ");
 
         // print out initial state transition matrix
-        System.out.print("                          Initial State Matrix\n");
+        System.out.print("                          Initial State Matrix");
+        System.out.println();
         for (int i = 0; i < stateNum; i++) {
             System.out.print("            " + String.format("%.4f", this.initialTranMatrix[i]) + " ");
         }
@@ -266,7 +268,8 @@ public class HiddenMarkovModel implements IModel, ICluster {
         System.out.println();
 
         // print out state transition matrix
-        System.out.print("                      State Transition Matrix\n");
+        System.out.print("                      State Transition Matrix");
+        System.out.println();
         for (int i = 0; i < stateNum; i++) {
             for (int j = 0; j < stateNum; j++) {
 
@@ -277,7 +280,8 @@ public class HiddenMarkovModel implements IModel, ICluster {
         System.out.println();
 
         // print out output transition matrix
-        System.out.print("                      Emission Output Matrix\n");
+        System.out.print("                      Emission Output Matrix");
+        System.out.println();
         for (int i = 0; i < stateNum; i++) {
             for (int j = 0; j < stateNum; j++) {
 

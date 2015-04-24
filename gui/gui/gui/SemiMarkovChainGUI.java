@@ -66,8 +66,11 @@ public class SemiMarkovChainGUI extends JFrame{
                     } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                         Config.setPROBABILITYDENSITYVIEW(false);
                     }
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("        Probability Density View: " + Config.isPROBABILITYDENSITYVIEW().toString().toUpperCase());
-
+                    System.out.println("    ===================================");
+                    System.out.println();
                 }
             }
         });
@@ -81,7 +84,11 @@ public class SemiMarkovChainGUI extends JFrame{
                     } else if (e.getStateChange() == ItemEvent.DESELECTED) {
                         Config.setCUMULATIVEDISTRIBUTIONVIEW(false);
                     }
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("        Cumulative Distribution View: " + Config.isCUMULATIVEDISTRIBUTIONVIEW().toString().toUpperCase());
+                    System.out.println("    ===================================");
+                    System.out.println();
                 }
             }
         });
@@ -114,9 +121,17 @@ public class SemiMarkovChainGUI extends JFrame{
                     Config.setCUMULATIVEDISTRIBUTIONVIEW(CONSTANTS.CUMULATIVEDISTRIBUTIONVIEW);
                     probabilityDensityViewCheckBox.setSelected(Config.isPROBABILITYDENSITYVIEW());
                     cumulativeDistributionViewCheckBox.setSelected(Config.isCUMULATIVEDISTRIBUTIONVIEW());
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("            Reset view configurations in Semi-Markov Chain GUI components successfully.");
+                    System.out.println("    ===================================");
+                    System.out.println();
                 } else {
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("            Cancel to reset view configurations in Semi-Markov Chain GUI components.");
+                    System.out.println("    ===================================");
+                    System.out.println();
                 }
             }
         });

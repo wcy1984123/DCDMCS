@@ -165,9 +165,18 @@ public class DCDMCMenuGUI {
                 if (n == 0) {
                     Config.resetConfig(); // reset all parameters
                     DCDMCMenuGUI.this.dcdmcgui.resetAllComponents(); // reset all gui configuration
+                    System.out.println();
+                    System.out.println("        ===========================================================");
                     System.out.println("            Reset configurations in all components successfully.");
+                    System.out.println();
+                    System.out.println("        ===========================================================");
+                    System.out.println();
                 } else {
+                    System.out.println();
+                    System.out.println("        ===========================================================");
                     System.out.println("            Cancel to reset configurations in all components.");
+                    System.out.println("        ===========================================================");
+                    System.out.println();
                 }
 
                 DCDMCMenuGUI.this.dcdmcgui.setAllComponentsEnabled(true);
