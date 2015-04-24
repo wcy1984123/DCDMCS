@@ -123,13 +123,13 @@ public class SemiMarkovChainGUI extends JFrame{
                     cumulativeDistributionViewCheckBox.setSelected(Config.isCUMULATIVEDISTRIBUTIONVIEW());
                     System.out.println();
                     System.out.println("    ===================================");
-                    System.out.println("            Reset view configurations in Semi-Markov Chain GUI components successfully.");
+                    System.out.println("            Reset view in Semi-Markov Chain GUI successfully.");
                     System.out.println("    ===================================");
                     System.out.println();
                 } else {
                     System.out.println();
                     System.out.println("    ===================================");
-                    System.out.println("            Cancel to reset view configurations in Semi-Markov Chain GUI components.");
+                    System.out.println("            Cancel to reset view in Semi-Markov Chain GUI components.");
                     System.out.println("    ===================================");
                     System.out.println();
                 }

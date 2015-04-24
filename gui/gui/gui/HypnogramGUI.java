@@ -120,9 +120,9 @@ public class HypnogramGUI extends JPanel implements ActionListener {
             dcdmcgui.getStateNumberTextField().setText("3");
         } else if (e.getActionCommand().equals("setButton")) {
             System.out.println();
-            System.out.println("===================================");
+            System.out.println("    ===================================");
             System.out.println("        Hypnogram Format: " + (Config.getDATAFORMAT() == 0 ? "" : Config.getDATAFORMAT()));
-            System.out.println("===================================");
+            System.out.println("    ===================================");
             System.out.println();
             dcdmcgui.setAllComponentsEnabled(true);
             jFrame.dispose(); // close this frame

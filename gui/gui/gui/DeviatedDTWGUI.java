@@ -90,9 +90,9 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
             Config.setDTWTYPE(sdDTW);
         } else if (e.getActionCommand().equals("setButton")) {
             System.out.println();
-            System.out.println("===================================");
+            System.out.println("    ===================================");
             System.out.println("        Deviated DTW: " + Config.getDEVIATEDDTWTYPE());
-            System.out.println("===================================");
+            System.out.println("    ===================================");
             System.out.println();
             this.dcdmcgui.setAllComponentsEnabled(true);
             jFrame.dispose(); // close this frame

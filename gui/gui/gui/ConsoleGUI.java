@@ -69,15 +69,15 @@ public class ConsoleGUI extends JFrame{
                         if (text != null) {
                             IOOperation.writeFile(text, Config.getSAVECONSOLETODISKFILEPATH());
                             System.out.println();
-                            System.out.println("===================================");
+                            System.out.println("    ===================================");
                             System.out.println("        Save console successfully!");
-                            System.out.println("===================================");
+                            System.out.println("    ===================================");
                             System.out.println();
                         } else {
                             System.out.println();
-                            System.out.println("===================================");
+                            System.out.println("    ===================================");
                             System.out.println("        Fail to save console!");
-                            System.out.println("===================================");
+                            System.out.println("    ===================================");
                             System.out.println();
                         }
                     }
