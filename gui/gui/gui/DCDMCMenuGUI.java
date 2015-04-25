@@ -64,12 +64,20 @@ public class DCDMCMenuGUI {
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("        Open File: [" + file.getAbsolutePath() + "] successfully.");
+                    System.out.println("    ===================================");
+                    System.out.println();
                     DCDMCMenuGUI.this.dcdmcgui.importConfigFile(file);
 
 
                 } else {
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("        Cancel to open file.");
+                    System.out.println("    ===================================");
+                    System.out.println();
                 }
             }
         });
@@ -91,10 +99,18 @@ public class DCDMCMenuGUI {
 
                     File file = fc.getSelectedFile();
                     DCDMCMenuGUI.this.dcdmcgui.exportConfigFile(file);
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("        Save File: [" + file.getAbsolutePath() + "] successfully.");
+                    System.out.println("    ===================================");
+                    System.out.println();
 
                 } else {
+                    System.out.println();
+                    System.out.println("    ===================================");
                     System.out.println("        Cancel to save file.");
+                    System.out.println("    ===================================");
+                    System.out.println();
                 }
             }
         });

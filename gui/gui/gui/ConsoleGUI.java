@@ -7,6 +7,7 @@ import starter.Config;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -64,22 +65,50 @@ public class ConsoleGUI extends JFrame{
                 jMenuItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //get text in the text area
-                        String text = ConsoleGUI.this.consoleTextArea.getText();
-                        if (text != null) {
-                            IOOperation.writeFile(text, Config.getSAVECONSOLETODISKFILEPATH());
+
+                        JFileChooser fc = new JFileChooser();
+                        fc.setCurrentDirectory(new File("results").getAbsoluteFile());
+                        int returnVal = fc.showSaveDialog(ConsoleGUI.this);
+
+                        // default save console data file path
+                        String filePath = Config.getSAVECONSOLETODISKFILEPATH();
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+                            File file = fc.getSelectedFile();
+                            filePath = file.getAbsolutePath();
+                            Config.setSAVECONSOLETODISKFILEPATH(filePath); // update save console data file path
+
                             System.out.println();
                             System.out.println("    ===================================");
-                            System.out.println("        Save console successfully!");
+                            System.out.println("        Set up [" + filePath + "] to save console data.");
                             System.out.println("    ===================================");
                             System.out.println();
+
+
+                            //get text in the text area
+                            String text = ConsoleGUI.this.consoleTextArea.getText();
+                            if (text != null) {
+                                IOOperation.writeFile(text, Config.getSAVECONSOLETODISKFILEPATH());
+                                System.out.println();
+                                System.out.println("    ===================================");
+                                System.out.println("        Save console successfully!");
+                                System.out.println("    ===================================");
+                                System.out.println();
+                            } else {
+                                System.out.println();
+                                System.out.println("    ===================================");
+                                System.out.println("        Fail to save console due to empty data!");
+                                System.out.println("    ===================================");
+                                System.out.println();
+                            }
                         } else {
                             System.out.println();
                             System.out.println("    ===================================");
-                            System.out.println("        Fail to save console!");
+                            System.out.println("        Cancel to save console data to file!");
                             System.out.println("    ===================================");
                             System.out.println();
                         }
+
                     }
                 });
 

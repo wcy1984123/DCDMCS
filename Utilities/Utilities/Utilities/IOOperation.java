@@ -142,11 +142,6 @@ public class IOOperation {
             return;
         }
 
-        if (data.length() == 0) {
-            LOGGER.info("The data is empty!");
-            return;
-        }
-
         try{
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(path));
