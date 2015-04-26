@@ -8,6 +8,8 @@ package Utilities;
  * System Time: 8:33 PM
  */
 
+import starter.Config;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -221,6 +223,45 @@ public class IOOperation {
                 }
                 bw.newLine();
             }
+            bw.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Write the input list into file
+     * @param dataList a list
+     * @param path file path
+     */
+    public static void writeDataAsCSVFile(List<List<Double>> dataList, String path) {
+
+        if (dataList == null) {
+            LOGGER.info("The input two dimensional list is null!");
+            return;
+        }
+
+        if (dataList.size() == 0) {
+            LOGGER.info("The input two dimensional list is empty!");
+            return;
+        }
+
+        try{
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+            int N = dataList.size();
+
+            for (int i = 0; i < N; i++) {
+                int M = dataList.get(i).size();
+                for (int j = 0; j < M; j++) {
+                    double value = dataList.get(i).get(j);
+                    bw.write(String.valueOf((int)value));
+
+                    if (j < M - 1) bw.write(Config.getCSVFILESEPARATOR());
+                }
+                bw.newLine();
+            }
+
             bw.close();
         } catch(IOException e) {
             e.printStackTrace();

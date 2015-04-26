@@ -42,6 +42,7 @@ public final class Config {
     private static String DISTANCEMATRIXFILEPATH; // distance matrix file path
     private static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     private static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
+    private static String WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH; // web user navigation behavior dataset length file path
     private static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
     private static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances file path
     private static String TOTALPROBABILITIESTRENDLINEFILEPATH; // total probabilities trendline file path
@@ -54,6 +55,7 @@ public final class Config {
 
     /*---------------------- Separator --------------------*/
     private static String CONFIGSEPARATOR; // separator between configuration parameters
+    private static String CSVFILESEPARATOR; // csv file separator
 
     /*--------------------- Color Array -------------------*/
     private static Color[] COLORCOLLECTION; // colors for plot
@@ -67,6 +69,7 @@ public final class Config {
         DISTANCEMATRIXFILEPATH = CONSTANTS.DISTANCEMATRIXFILEPATH;
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
+        WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH;
         SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
         FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
         TOTALPROBABILITIESTRENDLINEFILEPATH = CONSTANTS.TOTALPROBABILITIESTRENDLINEFILEPATH;
@@ -93,6 +96,7 @@ public final class Config {
 
         // Separator
         CONFIGSEPARATOR = CONSTANTS.CONFIGSEPARATOR;
+        CSVFILESEPARATOR = CONSTANTS.CSVFILESEPARATOR;
 
         // Color array
         COLORCOLLECTION = CONSTANTS.COLORCOLLECTION;
@@ -145,6 +149,7 @@ public final class Config {
         DISTANCEMATRIXFILEPATH = CONSTANTS.DISTANCEMATRIXFILEPATH;
         HYPNOGRAMDATASETFILEPATH = CONSTANTS.HYPNOGRAMDATASETFILEPATH;
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH;
+        WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH = CONSTANTS.WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH;
         SIMILARITYTRENDLINEFILEPATH = CONSTANTS.SIMILARITYTRENDLINEFILEPATH;
         FINALPROBSFORALLINSTANCESFILEPATH = CONSTANTS.FINALPROBSFORALLINSTANCESFILEPATH;
         TOTALPROBABILITIESTRENDLINEFILEPATH = CONSTANTS.TOTALPROBABILITIESTRENDLINEFILEPATH;
@@ -171,6 +176,7 @@ public final class Config {
 
         // Separator
         CONFIGSEPARATOR = CONSTANTS.CONFIGSEPARATOR;
+        CSVFILESEPARATOR = CONSTANTS.CSVFILESEPARATOR;
 
         // Color array
         COLORCOLLECTION = CONSTANTS.COLORCOLLECTION;
@@ -608,12 +614,61 @@ public final class Config {
         Config.SAVECONSOLETODISKFILEPATH = SAVECONSOLETODISKFILEPATH;
     }
 
+
+    /**
+     * Getter
+     * @return web user navigation behavior dataset length file path
+     */
+    public static String getWEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH() {
+        return WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH;
+    }
+
+    /**
+     * Setter
+     * @param WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH web user navigation behavior dataset length file path
+     */
+    public static void setWEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH(String WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH) {
+        Config.WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH = WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH;
+    }
+
+    /**
+     * Getter
+     * @return probability density view
+     */
+    public static Boolean getPROBABILITYDENSITYVIEW() {
+        return PROBABILITYDENSITYVIEW;
+    }
+
+    /**
+     * Getter
+     * @return cumulative distribution view
+     */
+    public static Boolean getCUMULATIVEDISTRIBUTIONVIEW() {
+        return CUMULATIVEDISTRIBUTIONVIEW;
+    }
+
     /**
      * Setter
      * @param CONFIGSEPARATOR config parameter separator
      */
     public static void setCONFIGSEPARATOR(String CONFIGSEPARATOR) {
         Config.CONFIGSEPARATOR = CONFIGSEPARATOR;
+    }
+
+    /**
+     * Getter
+     * @return csv file separator
+     */
+    public static String getCSVFILESEPARATOR() {
+        return CSVFILESEPARATOR;
+    }
+
+    /**
+     * Setter
+     * @param CSVFILESEPARATOR csv file separator
+     */
+    public static void setCSVFILESEPARATOR(String CSVFILESEPARATOR) {
+        Config.CSVFILESEPARATOR = CSVFILESEPARATOR;
     }
 
     /*--------------------- String Sources -------------------*/

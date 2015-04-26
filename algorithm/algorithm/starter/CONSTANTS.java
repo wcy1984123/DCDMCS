@@ -37,6 +37,7 @@ public final class CONSTANTS {
     public final static String DISTANCEMATRIXFILEPATH; // distance matrix file path
     public final static String HYPNOGRAMDATASETFILEPATH; // hypnogram dataset file path
     public final static String WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH; // web user navigation behavior dataset file path
+    public final static String WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH; // web user navigation behavior dataset length file path
     public final static String SIMILARITYTRENDLINEFILEPATH; // similarity trendline file path
     public final static String FINALPROBSFORALLINSTANCESFILEPATH; // final probabilities for all instances file path
     public final static String TOTALPROBABILITIESTRENDLINEFILEPATH; // total probabilities trendline file path
@@ -48,6 +49,7 @@ public final class CONSTANTS {
 
     /*---------------------- Separator --------------------*/
     public final static String CONFIGSEPARATOR; // separator between configuration parameters
+    public final static String CSVFILESEPARATOR; // csv file separator
 
     /*--------------------- Color Array -------------------*/
     public final static Color[] COLORCOLLECTION; // colors for plot
@@ -60,6 +62,7 @@ public final class CONSTANTS {
         DISTANCEMATRIXFILEPATH = new File("results" + File.separator + "DistanceMatrix.txt").getAbsolutePath();
         HYPNOGRAMDATASETFILEPATH = new File("dataset" + File.separator + "hypnogram.csv").getAbsolutePath();
         WEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH = new File("dataset" + File.separator + "msnbcData.csv").getAbsolutePath();
+        WEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH = new File("dataset" + File.separator + "msnbcLengths.csv").getAbsolutePath();
         SIMILARITYTRENDLINEFILEPATH = new File("results" + File.separator + "SimilarityTrendline.txt").getAbsolutePath();
         FINALPROBSFORALLINSTANCESFILEPATH = new File("results" + File.separator + "FinalProbsForAllInstances.txt").getAbsolutePath();
         TOTALPROBABILITIESTRENDLINEFILEPATH = new File("results" + File.separator + "TotalProbsTrendline.txt").getAbsolutePath();
@@ -86,6 +89,7 @@ public final class CONSTANTS {
 
         // Separator
         CONFIGSEPARATOR = "@@@";
+        CSVFILESEPARATOR = ",";
 
         // Color Array
         COLORCOLLECTION = new Color[]{Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.CYAN, Color.MAGENTA, Color.PINK, Color.YELLOW};
