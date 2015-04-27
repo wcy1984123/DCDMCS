@@ -143,14 +143,12 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 deviatedDynamicTimeWarpingRadioButton.setForeground(Color.BLUE);
-                deviatedDynamicTimeWarpingRadioButton.setBackground(Color.WHITE);
                 deviatedDynamicTimeWarpingRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 deviatedDynamicTimeWarpingRadioButton.setForeground(Color.BLACK);
-                deviatedDynamicTimeWarpingRadioButton.setBackground(Color.WHITE);
                 deviatedDynamicTimeWarpingRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
@@ -173,14 +171,12 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 hierarchicalClusteringRadioButton.setForeground(Color.ORANGE);
-                hierarchicalClusteringRadioButton.setBackground(Color.WHITE);
                 hierarchicalClusteringRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 hierarchicalClusteringRadioButton.setForeground(Color.BLACK);
-                hierarchicalClusteringRadioButton.setBackground(Color.WHITE);
                 hierarchicalClusteringRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
@@ -202,14 +198,12 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 hypnogramDatasetRadioButton.setForeground(Color.RED);
-                hypnogramDatasetRadioButton.setBackground(Color.WHITE);
                 hypnogramDatasetRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 hypnogramDatasetRadioButton.setForeground(Color.BLACK);
-                hypnogramDatasetRadioButton.setBackground(Color.WHITE);
                 hypnogramDatasetRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
@@ -231,14 +225,12 @@ public class DCDMCGUI extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 webUserNavigationBehaviorRadioButton.setForeground(Color.BLUE);
-                webUserNavigationBehaviorRadioButton.setBackground(Color.WHITE);
                 webUserNavigationBehaviorRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 webUserNavigationBehaviorRadioButton.setForeground(Color.BLACK);
-                webUserNavigationBehaviorRadioButton.setBackground(Color.WHITE);
                 webUserNavigationBehaviorRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
@@ -258,7 +250,6 @@ public class DCDMCGUI extends JFrame {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 captionLabel.setForeground(Color.YELLOW);
-                captionLabel.setBackground(Color.WHITE);
                 captionLabel.setFont(new Font("Helvetica neue", Font.BOLD, 22));
             }
 
@@ -266,7 +257,6 @@ public class DCDMCGUI extends JFrame {
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 captionLabel.setForeground(Color.BLACK);
-                captionLabel.setBackground(Color.WHITE);
                 captionLabel.setFont(new Font("Helvetica neue", Font.BOLD, 22));
             }
         });
@@ -284,7 +274,6 @@ public class DCDMCGUI extends JFrame {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 semiMarkovChainModelRadioButton.setForeground(Color.GREEN);
-                semiMarkovChainModelRadioButton.setBackground(Color.WHITE);
                 semiMarkovChainModelRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
             }
 
@@ -292,7 +281,6 @@ public class DCDMCGUI extends JFrame {
             public void mouseExited(MouseEvent e) {
                 super.mouseExited(e);
                 semiMarkovChainModelRadioButton.setForeground(Color.BLACK);
-                semiMarkovChainModelRadioButton.setBackground(Color.WHITE);
                 semiMarkovChainModelRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
