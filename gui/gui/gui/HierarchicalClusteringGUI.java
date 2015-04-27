@@ -13,6 +13,7 @@ import starter.Config;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Enumeration;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +27,7 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
     private final String completeLinkageStrategy = "COMPLETELINKAGESTRATEGY";
     private final String singleLinkageStrategy = "SINGLELINKAGESTRATEGY";
     private final String weightedLinkageStrategy = "WEIGHTEDLINKAGESTRATEGY";
+    private final ButtonGroup buttonGroup;
     private static DCDMCGUI dcdmcgui;
     private static JFrame jFrame = null;
 
@@ -54,11 +56,11 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
         weightedStrategyButton.setToolTipText("In Weighted Linkage Clustering, a weight is assigned to each pseudo-item, and this weight is used to compute the distances between this pseudo-item and all remaining items or pseudo-items using the same similarity metric as was used to calculate the initial similarity matrix.");
 
         //Group the radio buttons.
-        ButtonGroup group = new ButtonGroup();
-        group.add(averageStrategyButton);
-        group.add(completeStrategyButton);
-        group.add(singleStrategyButton);
-        group.add(weightedStrategyButton);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(averageStrategyButton);
+        buttonGroup.add(completeStrategyButton);
+        buttonGroup.add(singleStrategyButton);
+        buttonGroup.add(weightedStrategyButton);
 
         //Register a listener for the radio buttons.
         averageStrategyButton.addActionListener(this);
@@ -109,6 +111,10 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
         } else if (e.getActionCommand().equals(weightedLinkageStrategy)) {
             Config.setHIERARCHICALLINKAGETYPE(weightedLinkageStrategy);
         } else if (e.getActionCommand().equals("setButton")) {
+
+            // simulate user click on the selected button in the given button group
+            clickSelectedButton(buttonGroup);
+
             System.out.println();
             System.out.println("    ===================================");
             System.out.println("        Linkage Strategy: " + Config.getHIERARCHICALLINKAGETYPE());
@@ -118,6 +124,22 @@ public class HierarchicalClusteringGUI extends JPanel implements ActionListener 
             jFrame.dispose(); // close this frame
         } else {
             LOGGER.info("No corresponding action command!");
+        }
+    }
+
+    /**
+     * Simulate user click on the selected button in the given button group
+     * @param buttonGroup button group
+     */
+    public void clickSelectedButton(ButtonGroup buttonGroup) {
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                button.doClick(); // simulate user click
+                break;
+            }
         }
     }
 

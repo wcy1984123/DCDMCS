@@ -88,13 +88,12 @@ public class DCDMCGUI extends JFrame {
         DCDMCMenuGUI dcdmcMenuGUI = new DCDMCMenuGUI(DCDMCGUI.this);
         setJMenuBar(dcdmcMenuGUI.createMenuBar());
         setContentPane(DCDMCPanel);
-        pack();
 
 
         // initialize components
         initComponents();
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
 
         setLocationRelativeTo(null); // center the current frame
         setVisible(true); // show gui
@@ -212,6 +211,35 @@ public class DCDMCGUI extends JFrame {
                 hypnogramDatasetRadioButton.setForeground(Color.BLACK);
                 hypnogramDatasetRadioButton.setBackground(Color.WHITE);
                 hypnogramDatasetRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
+            }
+        });
+
+        // config msnbc dataset
+        webUserNavigationBehaviorRadioButton.addActionListener(new ActionListener() {
+            /**
+             * Action performed
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DCDMCGUI.this.setAllComponentsEnabled(false);
+                MSNBCGUI.createAndShowGUI(DCDMCGUI.this);
+            }
+        });
+
+        webUserNavigationBehaviorRadioButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                webUserNavigationBehaviorRadioButton.setForeground(Color.BLUE);
+                webUserNavigationBehaviorRadioButton.setBackground(Color.WHITE);
+                webUserNavigationBehaviorRadioButton.setFont(new Font("Helvetica neue", Font.BOLD, 15));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                webUserNavigationBehaviorRadioButton.setForeground(Color.BLACK);
+                webUserNavigationBehaviorRadioButton.setBackground(Color.WHITE);
+                webUserNavigationBehaviorRadioButton.setFont(new Font("Helvetica neue", Font.PLAIN, 13));
             }
         });
 

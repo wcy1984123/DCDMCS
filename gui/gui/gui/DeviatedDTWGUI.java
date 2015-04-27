@@ -14,6 +14,7 @@ import starter.Config;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Enumeration;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +27,7 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
 
     private final String gwDTW = "GLOBALWEIGHTEDDTW";
     private final String sdDTW = "STEPWISEDEVIATEDDTW";
+    private final ButtonGroup buttonGroup;
     private static DCDMCGUI dcdmcgui;
     private static JFrame jFrame = null;
 
@@ -45,9 +47,9 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
         sdDTWButton.setActionCommand(sdDTW);
 
         //Group the radio buttons.
-        ButtonGroup group = new ButtonGroup();
-        group.add(gwDTWButton);
-        group.add(sdDTWButton);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(gwDTWButton);
+        buttonGroup.add(sdDTWButton);
 
         //Register a listener for the radio buttons.
         gwDTWButton.addActionListener(this);
@@ -89,6 +91,10 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
             Config.setDEVIATEDDTWTYPE(sdDTW);
             Config.setDTWTYPE(sdDTW);
         } else if (e.getActionCommand().equals("setButton")) {
+
+            // simulate user click on the selected button in the given button group
+            clickSelectedButton(buttonGroup);
+
             System.out.println();
             System.out.println("    ===================================");
             System.out.println("        Deviated DTW: " + Config.getDEVIATEDDTWTYPE());
@@ -98,6 +104,22 @@ public class DeviatedDTWGUI extends JPanel implements ActionListener {
             jFrame.dispose(); // close this frame
         } else {
             LOGGER.info("No corresponding action command!");
+        }
+    }
+
+    /**
+     * Simulate user click on the selected button in the given button group
+     * @param buttonGroup button group
+     */
+    public void clickSelectedButton(ButtonGroup buttonGroup) {
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                button.doClick(); // simulate user click
+                break;
+            }
         }
     }
 

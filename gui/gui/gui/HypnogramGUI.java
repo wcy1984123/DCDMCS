@@ -5,6 +5,7 @@ import starter.Config;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Enumeration;
 import java.util.logging.Logger;
 
 /**
@@ -18,13 +19,6 @@ import java.util.logging.Logger;
 /**
  * GUI for hypnogram radio button
  */
-
-
-
-/**
- * Class for GUI of deviated dynamic time warping
- */
-
 public class HypnogramGUI extends JPanel implements ActionListener {
 
     private static final Logger LOGGER = Logger.getLogger(HypnogramGUI.class.getName());
@@ -33,6 +27,7 @@ public class HypnogramGUI extends JPanel implements ActionListener {
     private final String wsDataset = "WAKESLEEPDATASET";
     private final String wnrDataset = "WAKENREMREMDATASET";
     private final String wdlDataset = "WAKEDEEPLIGHTDATASET";
+    private final ButtonGroup buttonGroup;
     private static DCDMCGUI dcdmcgui;
     private static JFrame jFrame = null;
 
@@ -61,11 +56,11 @@ public class HypnogramGUI extends JPanel implements ActionListener {
         wdlButton.setToolTipText("It consists of 3 sleep stages: wake, deep, and light stages.");
 
         //Group the radio buttons.
-        ButtonGroup group = new ButtonGroup();
-        group.add(originalButton);
-        group.add(wsButton);
-        group.add(wnrButton);
-        group.add(wdlButton);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(originalButton);
+        buttonGroup.add(wsButton);
+        buttonGroup.add(wnrButton);
+        buttonGroup.add(wdlButton);
 
         //Register a listener for the radio buttons.
         originalButton.addActionListener(this);
@@ -83,7 +78,7 @@ public class HypnogramGUI extends JPanel implements ActionListener {
         add(radioPanel, BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // set up selected radio button according to existing deviatedDTW type value
+        // set up selected radio button according to existing hypnogram format
         String hypnogramFormat = Config.getDATAFORMAT() == 0 ? "" : String.valueOf(Config.getDATAFORMAT());
         if (hypnogramFormat.equals("5")) {
             originalButton.setSelected(true);
@@ -119,6 +114,10 @@ public class HypnogramGUI extends JPanel implements ActionListener {
             Config.setDATAFORMAT(4);
             dcdmcgui.getStateNumberTextField().setText("3");
         } else if (e.getActionCommand().equals("setButton")) {
+
+            // simulate user click on the selected button in the given button group
+            clickSelectedButton(buttonGroup);
+
             System.out.println();
             System.out.println("    ===================================");
             System.out.println("        Hypnogram Format: " + (Config.getDATAFORMAT() == 0 ? "" : Config.getDATAFORMAT()));
@@ -128,6 +127,23 @@ public class HypnogramGUI extends JPanel implements ActionListener {
             jFrame.dispose(); // close this frame
         } else {
             LOGGER.info("No corresponding action command!");
+        }
+    }
+
+    /**
+     * Simulate user click on the selected button in the given button group
+     * @param buttonGroup button group
+     */
+    public void clickSelectedButton(ButtonGroup buttonGroup) {
+
+        Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+        while (buttons.hasMoreElements()) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                button.doClick(); // simulate user click
+                break;
+            }
         }
     }
 

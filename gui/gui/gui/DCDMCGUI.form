@@ -58,7 +58,7 @@
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
-                      <text value="Web User Behavior Dataset       "/>
+                      <text value="Web User Behavior"/>
                       <toolTipText value="Web user navigation behavior dataset is data source of web user surfing behavior of webpages history."/>
                     </properties>
                   </component>
@@ -69,7 +69,7 @@
                     <properties>
                       <font name="Helvetica Neue"/>
                       <selected value="true"/>
-                      <text value="Hypnogram Dataset"/>
+                      <text value="Hypnogram"/>
                       <toolTipText value="Hypnogram dataset is data source of humna sleep sequences."/>
                     </properties>
                   </component>
@@ -105,7 +105,7 @@
                     </constraints>
                     <properties>
                       <font name="Helvetica Neue"/>
-                      <text value="KMeans Clustering"/>
+                      <text value="KMeans Clustering                           "/>
                       <toolTipText value="Kmeans clustering is a classic clustering algorithm."/>
                     </properties>
                   </component>

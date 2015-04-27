@@ -32,7 +32,7 @@ public class MSNBCDao extends AbstractDaoInput {
     @Override
     public double[][] getDataSourceAsMatrix(String path, String args) {
         // args refers to length info path
-        return readFileInMatrix(path, args);
+        return readFileInMatrix(path);
     }
 
     /**
@@ -43,7 +43,7 @@ public class MSNBCDao extends AbstractDaoInput {
      */
     @Override
     public List<List<Double>> getDataSourceAsLists(String path, String args) {
-        return readFileInArrayList(path, args);
+        return readFileInArrayList(path);
     }
 
     /**
@@ -65,6 +65,82 @@ public class MSNBCDao extends AbstractDaoInput {
             e.printStackTrace();
         }
         return res;
+    }
+
+    /**
+     * Combine data and length into two dimensional dataset
+     * @param datapath data path
+     * @return two dimensional array
+     */
+    private double[][] readFileInMatrix(String datapath) {
+
+        // Read data into a two-dimensional list
+        List<List<Double>> cache = readFileInArrayList(datapath);
+
+        // find the maximum length among sequences
+        int maxLength = 0;
+        if (cache != null && cache.size() > 0) {
+
+            for(int i = 0; i < cache.size(); i++) {
+                maxLength = Math.max(maxLength, cache.get(i).size());
+            }
+        }
+
+        double[][] res = new double[0][];
+        if (maxLength > 0) {
+            res = new double[cache.size()][maxLength];
+            int N = cache.size();
+            for (int i = 0; i < N; i++) {
+                int M = cache.get(i).size();
+
+                // copy values into two-dimensional matrix
+                for (int j = 0; j < M; j++) {
+                    res[i][j] = cache.get(i).get(j);
+                }
+
+                // pad the remaining places with "99"
+                for (int j = M; j < maxLength; j++) {
+                    res[i][j] = 99;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Read data into two dimensional dataset
+     * @param datapath data path
+     * @return a  two dimensional list
+     */
+    private List<List<Double>> readFileInArrayList(String datapath) {
+        List<List<Double>> res = new ArrayList<List<Double>>();
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(datapath));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                String[] strs = line.split(Config.getCSVFILESEPARATOR());
+                List<Double> data = new ArrayList<Double>();
+                if (strs != null && strs.length > 0) {
+
+                    // add one sequence into an arraylist
+                    for (int i = 0; i < strs.length; i++) {
+                        double value = Double.parseDouble(strs[i]);
+                        data.add(value);
+                    }
+
+                    // add to the final result
+                    res.add(data);
+                }
+            }
+
+            br.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return res;
+
     }
 
     /**
@@ -218,6 +294,7 @@ public class MSNBCDao extends AbstractDaoInput {
     public static void main(String[] args) {
         MSNBCDao test = new MSNBCDao();
 
+        // preprocess original MSNBC dataset
         test.removeOutliers(Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH(), Config.getWEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH());
 
 //        List<List<Double>> results = test.readFileInArrayList(Config.getWEBUSERNAVIGATIONBEHAVIORDATASETFILEPATH(), Config.getWEBUSERNAVIGATIONBEHAVIORDATALENGTHFILEPATH());
